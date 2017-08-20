@@ -21,6 +21,14 @@ namespace Impulse {
                 Eigen::MatrixXd forward(Eigen::MatrixXd input) {
                     return input;
                 }
+
+                Eigen::MatrixXd backward(Eigen::MatrixXd input) {
+                    return input;
+                }
+
+                void updateParameters(double learningRate) {
+
+                }
             };
         }
 

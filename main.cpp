@@ -1,3 +1,13 @@
+//#define EIGEN_DONT_VECTORIZE
+
+// SSE>2 doesn't affect these tests
+#ifndef EIGEN_DONT_VECTORIZE // Not needed with Intel C++ Compiler XE 15.0
+#define EIGEN_VECTORIZE_SSE4_2
+#define EIGEN_VECTORIZE_SSE4_1
+#define EIGEN_VECTORIZE_SSSE3
+#define EIGEN_VECTORIZE_SSE3
+#endif
+
 #include <iostream>
 #include <cstdlib>
 #include <iostream>
@@ -17,6 +27,8 @@
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
 
 #include "src/Impulse/NeuralNetwork/Builder/Builder.h"
+
+#include "src/Impulse/NeuralNetwork/Trainer/AbstractTrainer.h"
 
 int main() {
     // create dataset
@@ -40,6 +52,12 @@ int main() {
     Impulse::NeuralNetwork::Network * net = builder.getNetwork();
     //net->forward(datasetInput.getSampleAt(0)->exportToEigen());
     std::cout << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+
+    Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
+    Impulse::NeuralNetwork::Trainer::CostGradientResult result = trainer.cost(dataset);
+    std::cout << result.getCost() << std::endl;
+
+    trainer.train(dataset);
 
     return 0;
 }

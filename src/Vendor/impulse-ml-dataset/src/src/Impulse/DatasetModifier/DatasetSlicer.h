@@ -13,22 +13,22 @@ namespace Impulse {
         Impulse::Dataset input;
         Impulse::Dataset output;
 
-        Eigen::MatrixXd &getInput() {
-            if (this->inputVector.rows() == 0) {
-                this->inputVector.resize(this->input.getSize(), this->input.getSampleAt(0)->getSize());
+        Eigen::MatrixXd getInput() {
+            if (this->inputVector.cols() == 0) {
+                this->inputVector.resize(this->input.getSampleAt(0)->getSize(), this->input.getSize());
                 for (unsigned int i = 0; i < this->input.getSize(); i++) {
-                    this->inputVector.row(i) = this->input.getSampleAt(i)->exportToEigen();
+                    this->inputVector.col(i) = this->input.getSampleAt(i)->exportToEigen();
                 }
             }
 
             return this->inputVector;
         }
 
-        Eigen::MatrixXd &getOutput() {
-            if (this->outputVector.rows() == 0) {
-                this->outputVector.resize(this->output.getSize(), this->output.getSampleAt(0)->getSize());
+        Eigen::MatrixXd getOutput() {
+            if (this->outputVector.cols() == 0) {
+                this->outputVector.resize(this->output.getSampleAt(0)->getSize(), this->output.getSize());
                 for (unsigned int i = 0; i < this->output.getSize(); i++) {
-                    this->outputVector.row(i) = this->output.getSampleAt(i)->exportToEigen();
+                    this->outputVector.col(i) = this->output.getSampleAt(i)->exportToEigen();
                 }
             }
             return this->outputVector;
