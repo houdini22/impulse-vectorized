@@ -46,6 +46,12 @@ namespace Impulse {
                     Z.colwise() += this->b;
                     this->Z = Z;
                     this->A = this->activation(Z);
+
+                    assert(this->Z.rows() == this->W.rows());
+                    assert(this->Z.cols() == this->A.cols());
+                    assert(this->A.rows() == this->W.rows());
+                    assert(this->A.cols() == input.cols());
+
                     return this->A;
                 }
 
@@ -62,14 +68,15 @@ namespace Impulse {
                     this->dW = (1.0 / (double) dA.cols()) * (dZ.array() * dA.array());
                     this->db = (1.0 / (double) dA.cols()) * (dZ.colwise().sum());
 
-                    assert(dA.cols() == this->A.cols());
-                    assert(dA.rows() == this->A.rows());
+                    Eigen::MatrixXd result = this->W.transpose() * dZ;
+
+                    assert(result.cols() == this->A.cols());
+                    assert(result.rows() == this->A.rows());
                     assert(this->dW.cols() == this->W.cols());
                     assert(this->dW.rows() == this->W.rows());
                     assert(this->db.cols() == this->b.cols());
                     assert(this->db.rows() == this->b.rows());
 
-                    Eigen::MatrixXd result = this->W.transpose() * dZ;
                     return result;
                 }
 

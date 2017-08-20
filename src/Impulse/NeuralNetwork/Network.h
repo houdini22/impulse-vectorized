@@ -2,6 +2,7 @@
 #define IMPULSE_NETWORK_H_H
 
 #include <vector>
+#include <iostream>
 #include "Layer/Abstract.h"
 
 namespace Impulse {
@@ -29,6 +30,12 @@ namespace Impulse {
                 for (LayerContainer::iterator it = this->layers.begin(); it != this->layers.end(); ++it) {
                     output = (*it)->forward(output);
                 }
+
+                std::cout << output.rows() << "," << output.cols() << std::endl;
+
+                assert(output.cols() == input.cols());
+                //assert(output.rows() == input.rows());
+
                 return output;
             }
 
