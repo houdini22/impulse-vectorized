@@ -30,31 +30,20 @@ namespace Impulse {
                 for (LayerContainer::iterator it = this->layers.begin(); it != this->layers.end(); ++it) {
                     output = (*it)->forward(output);
                 }
-
-                std::cout << output.rows() << "," << output.cols() << std::endl;
-
-                assert(output.cols() == input.cols());
-                //assert(output.rows() == input.rows());
-
                 return output;
             }
 
             void backward(Eigen::MatrixXd predictions, Eigen::MatrixXd Y) {
-                Eigen::MatrixXd dA =
-                        (Y.array() / predictions.array()) +
-                        ((Y.unaryExpr([](const double x) { return 1.0 - x; }).array()))
-                        /
-                        (
-                                predictions.unaryExpr([](const double x) { return 1.0 - x; }).array()
-                        );
-                for (unsigned int layer = this->getSize() - 1; layer > 0; layer--) {
-                    dA = this->layers.at(layer)->backward(dA);
+                unsigned int size = this->getSize() - 1;
+                this->layers.at(size)->backward(predictions, Y);
+                for (unsigned int layer = size - 1; layer > 0; layer--) {
+                    this->layers.at(layer)->backward(this->layers.at(layer + 1));
                 }
             }
 
             void updateParameters(double learningRate) {
-                for (unsigned int layer = this->getSize() - 1; layer > 0; layer--) {
-                    this->layers.at(layer)->updateParameters(learningRate);
+                for (unsigned int layer = 0; layer < this->getSize(); layer++) {
+                    //this->layers.at(layer)->updateParameters(learningRate);
                 }
             }
         };

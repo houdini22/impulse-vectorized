@@ -29,6 +29,14 @@ namespace Impulse {
                 void updateParameters(double learningRate) {
 
                 }
+
+                void backward(Impulse::NeuralNetwork::Layer::Abstract *prevLayer) {
+
+                }
+
+                Eigen::MatrixXd derivative() {
+
+                }
             };
         }
 

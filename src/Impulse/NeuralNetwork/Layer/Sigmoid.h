@@ -14,13 +14,14 @@ namespace Impulse {
 
             class Sigmoid : public Abstract {
             protected:
-                Eigen::MatrixXd W;
                 Eigen::VectorXd b;
                 Eigen::MatrixXd A;
                 Eigen::MatrixXd Z;
                 Eigen::MatrixXd dW;
                 Eigen::MatrixXd db;
             public:
+                Eigen::MatrixXd dA;
+
                 Sigmoid(unsigned int size, unsigned int prevSize) : Abstract(size) {
                     this->prevSize = prevSize;
                     this->initialize();
@@ -40,12 +41,13 @@ namespace Impulse {
                 }
 
                 Eigen::MatrixXd forward(Eigen::MatrixXd input) {
-                    this->Z.resize(0, 0);
+                    this->Z.resize(this->W.rows(), this->A.cols());
 
                     Eigen::MatrixXd Z = this->W * input;
-                    Z.colwise() += this->b;
-                    this->Z = Z;
+
+                    this->Z = Z.colwise() + this->b;
                     this->A = this->activation(Z);
+                    this->dZ = this->A.array() * this->derivative().array();
 
                     assert(this->Z.rows() == this->W.rows());
                     assert(this->Z.cols() == this->A.cols());
@@ -60,24 +62,17 @@ namespace Impulse {
                     return result;
                 }
 
-                Eigen::MatrixXd backward(Eigen::MatrixXd dA) {
+                void backward(Impulse::NeuralNetwork::Layer::Abstract *nextLayer) {
                     this->dW.resize(0, 0);
                     this->db.resize(0, 0);
+                    //this->dZ.resize(0, 0);
 
-                    Eigen::MatrixXd dZ = dA.array() * this->derivative().array();
-                    this->dW = (1.0 / (double) dA.cols()) * (dZ.array() * dA.array());
-                    this->db = (1.0 / (double) dA.cols()) * (dZ.colwise().sum());
+                    //std::cout << this->dZ.rows() << "," << this->dZ.cols() << std::endl;
+                    //std::cout << nextLayer->dA.rows() << "," << nextLayer->dA.cols() << std::endl;
 
-                    Eigen::MatrixXd result = this->W.transpose() * dZ;
-
-                    assert(result.cols() == this->A.cols());
-                    assert(result.rows() == this->A.rows());
-                    assert(this->dW.cols() == this->W.cols());
-                    assert(this->dW.rows() == this->W.rows());
-                    assert(this->db.cols() == this->b.cols());
-                    assert(this->db.rows() == this->b.rows());
-
-                    return result;
+                    this->dW = (1.0 / (double) this->dA.cols()) * (this->dZ * nextLayer->dA.transpose());
+                    this->db = (1.0 / (double) this->dA.cols()) * (this->dZ.colwise().sum());
+                    this->dA = nextLayer->W.transpose() * nextLayer->dZ;
                 }
 
                 Eigen::MatrixXd derivative() {
@@ -85,6 +80,8 @@ namespace Impulse {
                 }
 
                 void updateParameters(double learningRate) {
+                    std::cout << this->W.rows() << "," << this->W.cols() << std::endl;
+                    std::cout << this->dW.rows() << "," << this->dW.cols() << std::endl;
                     this->W = this->W - (learningRate * this->dW);
                     this->b = this->b - (learningRate * this->db);
                 }
