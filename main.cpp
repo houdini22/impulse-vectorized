@@ -47,7 +47,7 @@ int main() {
     Impulse::NeuralNetwork::Builder::Builder builder;
     builder.createLayer(3, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
     builder.createLayer(2, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
-    builder.createLayer(1, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
+    builder.createLayer(2, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
 
     Impulse::NeuralNetwork::Network * net = builder.getNetwork();
 

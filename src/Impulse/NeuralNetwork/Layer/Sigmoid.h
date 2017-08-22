@@ -29,18 +29,18 @@ namespace Impulse {
 
                 void initialize() {
                     this->W.resize(this->size, this->prevSize);
-                    this->W.setOnes();
+                    this->W.setZero();
 
                     this->b.resize(this->size);
-                    this->b.setOnes();
+                    this->b.setZero();
                 }
 
                 Eigen::MatrixXd forward(Eigen::MatrixXd input) {
-                    /*std::cout << "input:" << std::endl << input << std::endl << std::endl;
+                    std::cout << "input:" << std::endl << input << std::endl << std::endl;
                     std::cout << "W: " << std::endl << this->W
                               << std::endl; //this->W.rows() << "," << this->W.cols() << std::endl;
                     std::cout << "b: " << std::endl << this->b
-                              << std::endl; //this->b.rows() << "," << this->b.cols() << std::endl;*/
+                              << std::endl; //this->b.rows() << "," << this->b.cols() << std::endl;
                     /*//std::cout << "Product: " << std::endl << (this->W.array().rowwise() * input.array()) << std::endl;
                     std::cout << "Product2: " << std::endl
                               << (this->W.transpose().array().colwise() * input.col(0).array()) << std::endl;
@@ -60,10 +60,10 @@ namespace Impulse {
                     this->A = this->activation(this->Z);
                     this->dZ = this->A.array() * this->derivative().array();
 
-                    /*std::cout << "Z: " << this->Z << std::endl;
+                    std::cout << "Z: " << this->Z << std::endl;
                     std::cout << "A: " << this->A << std::endl;
                     std::cout << "dZ: " << this->dZ << std::endl;
-                    std::cout << "---" << std::endl << std::endl;*/
+                    std::cout << "---" << std::endl << std::endl;
 
                     return this->A;
                 }
