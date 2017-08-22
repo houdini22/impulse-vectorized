@@ -36,6 +36,7 @@ namespace Impulse {
                 }
 
                 Eigen::MatrixXd forward(Eigen::MatrixXd input) {
+#ifdef DEBUG
                     std::cout << "input:" << std::endl << input << std::endl << std::endl;
                     std::cout << "W: " << std::endl << this->W
                               << std::endl; //this->W.rows() << "," << this->W.cols() << std::endl;
@@ -51,20 +52,20 @@ namespace Impulse {
                               << (this->W.transpose().array().colwise() * input.col(0).array()).colwise().sum().matrix() +
                                  this->b.transpose() << std::endl;
                     std::cout << "---" << std::endl;*/
-
-                    this->Z.resize(this->size, input.cols());
-                    this->A.resize(this->size, input.cols());
+#endif
+                    //this->Z.resize(this->size, input.cols());
+                    //this->A.resize(this->size, input.cols());
 
                     this->Z = ((this->W.transpose().array().colwise() * input.col(0).array()).colwise().sum().matrix() +
                                this->b.transpose()).transpose();
                     this->A = this->activation(this->Z);
                     this->dZ = this->A.array() * this->derivative().array();
-
+#ifdef DEBUG
                     std::cout << "Z: " << this->Z << std::endl;
                     std::cout << "A: " << this->A << std::endl;
                     std::cout << "dZ: " << this->dZ << std::endl;
                     std::cout << "---" << std::endl << std::endl;
-
+#endif
                     return this->A;
                 }
 
@@ -74,8 +75,8 @@ namespace Impulse {
                 }
 
                 void backward(Impulse::NeuralNetwork::Layer::Abstract *nextLayer) {
-                    this->dW.resize(0, 0);
-                    this->db.resize(0, 0);
+                    //this->dW.resize(0, 0);
+                    //this->db.resize(0, 0);
                     //this->dZ.resize(0, 0);
 
                     //std::cout << this->dZ.rows() << "," << this->dZ.cols() << std::endl;
