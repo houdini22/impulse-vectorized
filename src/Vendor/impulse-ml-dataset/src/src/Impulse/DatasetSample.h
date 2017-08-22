@@ -46,7 +46,7 @@ namespace Impulse {
 
         std::vector<double> exportToDoubleVector();
 
-        Eigen::VectorXd exportToEigen();
+        Eigen::MatrixXd exportToEigen();
     };
 
 }

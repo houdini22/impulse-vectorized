@@ -45,11 +45,17 @@ int main() {
     dataset.output = datasetOutput;
 
     Impulse::NeuralNetwork::Builder::Builder builder;
-    builder.createLayer(400, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
-    builder.createLayer(20, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
-    builder.createLayer(10, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
+    builder.createLayer(3, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
+    builder.createLayer(2, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
+    builder.createLayer(1, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
 
     Impulse::NeuralNetwork::Network * net = builder.getNetwork();
+
+    Impulse::DatasetSample sample({0, 0.5, 1});
+    Eigen::MatrixXd inputVector = sample.exportToEigen();
+    std::cout << net->forward(inputVector) << std::endl;
+
+    /*Impulse::NeuralNetwork::Network * net = builder.getNetwork();
     //net->forward(datasetInput.getSampleAt(0)->exportToEigen());
     std::cout << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 
@@ -57,7 +63,7 @@ int main() {
     Impulse::NeuralNetwork::Trainer::CostGradientResult result = trainer.cost(dataset);
     std::cout << result.getCost() << std::endl;
 
-    trainer.train(dataset);
+    trainer.train(dataset);*/
 
     return 0;
 }

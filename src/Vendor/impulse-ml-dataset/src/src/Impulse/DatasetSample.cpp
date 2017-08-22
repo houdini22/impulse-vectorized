@@ -76,11 +76,13 @@ namespace Impulse {
         return result;
     }
 
-    Eigen::VectorXd DatasetSample::exportToEigen() {
-        Eigen::VectorXd result(this->getSize());
+    Eigen::MatrixXd DatasetSample::exportToEigen() {
+        Eigen::MatrixXd result(this->getSize(), 1);
+        Eigen::VectorXd vec(this->getSize());
         for (unsigned int i = 0; i < this->getSize(); i++) {
-            result(i) = this->getColumnToDouble(i);
+            vec(i) = this->getColumnToDouble(i);
         }
+        result.col(0) = vec;
         return result;
     }
 }

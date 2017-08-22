@@ -29,30 +29,41 @@ namespace Impulse {
 
                 void initialize() {
                     this->W.resize(this->size, this->prevSize);
-                    this->W.setRandom();
+                    this->W.setOnes();
 
                     this->b.resize(this->size);
-                    this->b.setZero();
-
-                    assert(this->W.cols() == this->prevSize);
-                    assert(this->W.rows() == this->size);
-                    assert(this->b.cols() == 1);
-                    assert(this->b.rows() == this->size);
+                    this->b.setOnes();
                 }
 
                 Eigen::MatrixXd forward(Eigen::MatrixXd input) {
-                    this->Z.resize(this->W.rows(), this->A.cols());
+                    /*std::cout << "input:" << std::endl << input << std::endl << std::endl;
+                    std::cout << "W: " << std::endl << this->W
+                              << std::endl; //this->W.rows() << "," << this->W.cols() << std::endl;
+                    std::cout << "b: " << std::endl << this->b
+                              << std::endl; //this->b.rows() << "," << this->b.cols() << std::endl;*/
+                    /*//std::cout << "Product: " << std::endl << (this->W.array().rowwise() * input.array()) << std::endl;
+                    std::cout << "Product2: " << std::endl
+                              << (this->W.transpose().array().colwise() * input.col(0).array()) << std::endl;
+                    std::cout << "Product2: " << std::endl
+                              << (this->W.transpose().array().colwise() * input.col(0).array()).colwise().sum()
+                              << std::endl;
+                    std::cout << "Product2: " << std::endl
+                              << (this->W.transpose().array().colwise() * input.col(0).array()).colwise().sum().matrix() +
+                                 this->b.transpose() << std::endl;
+                    std::cout << "---" << std::endl;*/
 
-                    Eigen::MatrixXd Z = this->W * input;
+                    this->Z.resize(this->size, input.cols());
+                    this->A.resize(this->size, input.cols());
 
-                    this->Z = Z.colwise() + this->b;
-                    this->A = this->activation(Z);
+                    this->Z = ((this->W.transpose().array().colwise() * input.col(0).array()).colwise().sum().matrix() +
+                               this->b.transpose()).transpose();
+                    this->A = this->activation(this->Z);
                     this->dZ = this->A.array() * this->derivative().array();
 
-                    assert(this->Z.rows() == this->W.rows());
-                    assert(this->Z.cols() == this->A.cols());
-                    assert(this->A.rows() == this->W.rows());
-                    assert(this->A.cols() == input.cols());
+                    /*std::cout << "Z: " << this->Z << std::endl;
+                    std::cout << "A: " << this->A << std::endl;
+                    std::cout << "dZ: " << this->dZ << std::endl;
+                    std::cout << "---" << std::endl << std::endl;*/
 
                     return this->A;
                 }
