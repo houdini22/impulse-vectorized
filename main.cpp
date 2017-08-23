@@ -99,8 +99,8 @@ void test_xor() {
     std::cout << "Forward: " << net->forward(inputVector) << std::endl;
 
     Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
-    Impulse::NeuralNetwork::Trainer::CostGradientResult result = trainer.cost(slicedDataset);
-    std::cout << "Cost: " << result.getCost() << std::endl;
+    double cost = trainer.cost(slicedDataset);
+    std::cout << "Cost: " << cost << std::endl;
 }
 
 int main() {

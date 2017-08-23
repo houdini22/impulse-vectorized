@@ -22,22 +22,19 @@ namespace Impulse {
                 this->learningIterations = nb;
             }
 
-            Impulse::NeuralNetwork::Trainer::CostGradientResult AbstractTrainer::cost(Impulse::SlicedDataset &dataSet) {
+            double AbstractTrainer::cost(Impulse::SlicedDataset &dataSet) {
                 unsigned int m = dataSet.output.getSize();
-                Eigen::MatrixXd AL = this->network->forward(dataSet.getInput());
+                Eigen::MatrixXd A = this->network->forward(dataSet.getInput());
                 Eigen::MatrixXd Y = dataSet.getOutput();
 
-                double error = -(1.0 / (double) m) * (double) (
-                        (Y * AL.transpose().unaryExpr([](const double x) { return log(x); }))
-                        *
-                        ((Y.unaryExpr([](const double x) { return 1.0 - x; })) *
-                         AL.transpose().unaryExpr([](const double x) { return log(1.0 - x); }))
-                ).sum();
+                Eigen::MatrixXd errors = (Y.array() * A.unaryExpr([](const double x) { return log(x); }).array())
+                                         +
+                                         (Y.unaryExpr([](const double x) { return 1.0 - x; }).array()
+                                          *
+                                          A.unaryExpr([](const double x) { return log(1.0 - x); }).array()
+                                         );
 
-                CostGradientResult result;
-                result.error = error;
-
-                return result;
+                return (-1.0) / (double) m * errors.sum();
             }
 
             void AbstractTrainer::train(Impulse::SlicedDataset &dataSet) {
@@ -55,10 +52,10 @@ namespace Impulse {
 
                     network->updateParameters(this->learningRate);
 
-                    CostGradientResult result = this->cost(dataSet);
+                    double cost = this->cost(dataSet);
 
                     if (this->verbose) {
-                        std::cout << "Iteration: " << step << " | Error:" << result.getCost() << std::endl;
+                        std::cout << "Iteration: " << step << " | Error:" << cost << std::endl;
                     }
                 }
 
