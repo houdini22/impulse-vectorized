@@ -34,7 +34,9 @@ namespace Impulse {
             }
 
             void backward(Eigen::MatrixXd X, Eigen::MatrixXd Y, Eigen::MatrixXd predictions) {
-                Eigen::MatrixXd A = Y.array() - predictions.array();
+                //Eigen::MatrixXd A = Y.array() - predictions.array();
+                Eigen::MatrixXd A =
+                        -(Y.array() / predictions.array()) + ((1.0 - Y.array()) / (1.0 - predictions.array()));
                 for (long i = this->layers.size() - 1; i >= 0; i--) {
                     A = this->layers.at(i)->backward(A, i == 0 ? X : this->layers.at(i - 1)->getA());
                 }

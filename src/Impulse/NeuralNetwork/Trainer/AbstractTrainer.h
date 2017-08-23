@@ -30,18 +30,17 @@ namespace Impulse {
 
                 Impulse::NeuralNetwork::Network *getNetwork();
 
-                void setRegularization(double regularization);
+                void setRegularization(double value);
 
-                void setLearningIterations(unsigned int nb);
+                void setLearningIterations(unsigned int value);
+
+                void setLearningRate(double value);
+
+                void setVerbose(bool value);
 
                 double cost(Impulse::SlicedDataset &dataSet);
 
                 void train(Impulse::SlicedDataset &dataSet);
-/*
-                virtual double errorForSample(double prediction, double output) = 0;
-
-                virtual double
-                calculateOverallError(unsigned int size, double sumErrors, double errorRegularization) = 0;*/
             };
 
         }

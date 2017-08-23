@@ -14,12 +14,20 @@ namespace Impulse {
                 return this->network;
             }
 
-            void AbstractTrainer::setRegularization(double regularization) {
-                this->regularization = regularization;
+            void AbstractTrainer::setRegularization(double value) {
+                this->regularization = value;
             }
 
-            void AbstractTrainer::setLearningIterations(unsigned int nb) {
-                this->learningIterations = nb;
+            void AbstractTrainer::setLearningIterations(unsigned int value) {
+                this->learningIterations = value;
+            }
+
+            void AbstractTrainer::setLearningRate(double value) {
+                this->learningRate = value;
+            }
+
+            void AbstractTrainer::setVerbose(bool value) {
+                this->verbose = value;
             }
 
             double AbstractTrainer::cost(Impulse::SlicedDataset &dataSet) {

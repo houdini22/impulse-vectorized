@@ -101,10 +101,8 @@ namespace Impulse {
                 }
 
                 void updateParameters(double learningRate) {
-                    //std::cout << "this->W:" << std::endl << this->W << std::endl << std::endl;
-                    //std::cout << "this->dW:" << std::endl << this->dW << std::endl << std::endl;
-                    this->W = this->W.array() - (learningRate * this->dW.array());
-                    this->b = this->b.array() - (learningRate * this->db.array());
+                    this->W = this->W - (learningRate * this->dW);
+                    this->b = this->b - (learningRate * this->db);
                 }
             };
         }
