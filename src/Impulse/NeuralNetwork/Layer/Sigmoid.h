@@ -32,7 +32,6 @@ namespace Impulse {
 #endif
                     this->Z = (this->W * input).colwise() + this->b;
                     this->A = this->activation(this->Z);
-                    //this->dZ = this->A.array() * this->derivative().array();
 #ifdef DEBUG
                     std::cout << "Z: " << this->Z << std::endl;
                     std::cout << "A: " << this->A << std::endl;
@@ -47,25 +46,20 @@ namespace Impulse {
                     return result;
                 }
 
-                Eigen::MatrixXd backward(Eigen::MatrixXd dA, Eigen::MatrixXd prevA) {
+                Eigen::MatrixXd backward(Eigen::MatrixXd dZ, Eigen::MatrixXd prevA) {
                     // num examples
-                    long m = dA.cols();
-
-                    Eigen::MatrixXd dZ = dA.array() * this->derivative(this->Z).array();
+                    long m = dZ.cols();
 
                     this->dW = (1.0 / (double) m) * (dZ * prevA.transpose());
                     this->db = (1.0 / (double) m) * (dZ.rowwise().sum());
 
-                    Eigen::MatrixXd prevDA = (this->W.transpose() * dZ);
+                    Eigen::MatrixXd result = this->W.transpose() * dZ;
 
                     assert(this->size == this->A.rows());
                     assert(m == this->A.cols());
 
                     assert(this->size == this->Z.rows());
                     assert(m == this->Z.cols());
-
-                    assert(this->size == dZ.rows());
-                    assert(m == dZ.cols());
 
                     assert(this->size == this->W.rows());
                     assert(this->prevSize == this->W.cols());
@@ -78,6 +72,7 @@ namespace Impulse {
 
                     assert(this->b.rows() == this->db.rows());
                     assert(this->b.cols() == this->db.cols());
+
                     //std::cout << "m:" << std::endl << m << std::endl << std::endl;
                     //std::cout << "this->A:" << std::endl << this->A << std::endl << std::endl;
                     //std::cout << "this->Z:" << std::endl << this->Z << std::endl << std::endl;
@@ -93,11 +88,11 @@ namespace Impulse {
                     //std::cout << "result:" << std::endl << result << std::endl << std::endl;
                     //std::cout << "db:" << std::endl << this->db << std::endl << std::endl;
 
-                    return prevDA;
+                    return result;
                 }
 
-                Eigen::MatrixXd derivative(Eigen::MatrixXd Z) {
-                    return Z.array() * (1.0 - Z.array());
+                Eigen::MatrixXd derivative() {
+                    return this->A.array() * (1.0 - this->A.array());
                 }
 
                 void updateParameters(double learningRate) {

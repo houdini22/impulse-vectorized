@@ -102,7 +102,7 @@ void test_xor() {
 
     Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
     trainer.setLearningIterations(100);
-    trainer.setLearningRate(0.001);
+    trainer.setLearningRate(0.1);
 
     double cost = trainer.cost(slicedDataset);
     std::cout << "Cost: " << cost << std::endl;

@@ -41,9 +41,9 @@ namespace Impulse {
 
                 virtual Eigen::MatrixXd activation(Eigen::MatrixXd input) = 0;
 
-                virtual Eigen::MatrixXd derivative(Eigen::MatrixXd A) = 0;
+                virtual Eigen::MatrixXd derivative() = 0;
 
-                Eigen::MatrixXd getA() {
+                Eigen::MatrixXd getActivation() {
                     return this->A;
                 }
             };
