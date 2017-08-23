@@ -14,10 +14,6 @@ namespace Impulse {
 
             class Sigmoid : public Abstract {
             protected:
-                Eigen::MatrixXd A;
-                Eigen::MatrixXd Z;
-                Eigen::MatrixXd dW;
-                Eigen::MatrixXd db;
             public:
 
                 Sigmoid(unsigned int size, unsigned int prevSize) : Abstract(size, prevSize) {
@@ -53,31 +49,34 @@ namespace Impulse {
                     // num examples
                     long m = A.cols();
 
-                    this->dW = (1.0 / (double) m) * (A * this->A.transpose());
-                    this->db = (1.0 / (double) m) * (A.colwise().sum());
+                    std::cout << "A:" << std::endl << A << std::endl << std::endl;
+                    std::cout << "this->A:" << std::endl << this->A << std::endl << std::endl;
+                    std::cout << "this->W:" << std::endl << this->W << std::endl << std::endl;
 
-                    Eigen::MatrixXd result = (this->W.transpose() * A).unaryExpr(
-                            [](const double x) { return 1.0 - pow(x, 2.0); });
+                    Eigen::MatrixXd dZ = A.array() * this->derivative(A).array();
 
-                    std::cout << "A: " << A.rows() << "," << A.cols() << std::endl;
-                    std::cout << "this->A: " << this->A.rows() << "," << this->A.cols() << std::endl;
-                    std::cout << "W: " << this->W.rows() << "," << this->W.cols() << std::endl;
-                    std::cout << "dW: " << this->dW.rows() << "," << this->dW.cols() << std::endl;
-                    std::cout << "b: " << this->db.rows() << "," << this->db.cols() << std::endl;
-                    std::cout << "db: " << this->db.rows() << "," << this->db.cols() << std::endl;
+                    this->dW = (1.0 / (double) m) * (dZ * this->A.transpose());
+                    this->db = (1.0 / (double) m) * (dZ.rowwise().sum());
+
+                    Eigen::MatrixXd result = (this->W.transpose() * dZ);
+
+                    std::cout << "this->dW:" << std::endl << this->dW << std::endl << std::endl;
+                    std::cout << "dZ:" << std::endl << dZ << std::endl << std::endl;
+                    //std::cout << "b:" << std::endl << this->b << std::endl << std::endl;
+                    //std::cout << "db:" << std::endl << this->db << std::endl << std::endl;
 
                     return result;
                 }
 
-                Eigen::MatrixXd derivative() {
-                    return this->Z.array() * (1.0 - this->Z.array());
+                Eigen::MatrixXd derivative(Eigen::MatrixXd A) {
+                    return A.array() * (1.0 - A.array());
                 }
 
                 void updateParameters(double learningRate) {
-                    this->W = this->W - (learningRate * this->dW);
-                    std::cout << "OLD B:" <<
-                              std::endl << this->b << std::endl << "OLD DB:" << std::endl << this->db << std::endl;
-                    this->b = this->b - (learningRate * this->db);
+                    //std::cout << "this->W:" << std::endl << this->W << std::endl << std::endl;
+                    //std::cout << "this->dW:" << std::endl << this->dW << std::endl << std::endl;
+                    //this->W = this->W.array() - (learningRate * this->dW.array());
+                    //this->b = this->b.array() - (learningRate * this->db.array());
                 }
             };
         }

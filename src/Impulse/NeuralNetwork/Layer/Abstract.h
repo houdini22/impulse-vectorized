@@ -14,10 +14,13 @@ namespace Impulse {
             protected:
                 unsigned int size;
                 unsigned int prevSize = 0;
-            public:
                 Eigen::MatrixXd W;
                 Eigen::VectorXd b;
-                Eigen::MatrixXd dZ;
+                Eigen::MatrixXd A;
+                Eigen::MatrixXd Z;
+                Eigen::MatrixXd dW;
+                Eigen::MatrixXd db;
+            public:
 
                 Abstract(unsigned int size, unsigned int prevSize) {
                     this->size = size;
@@ -36,11 +39,9 @@ namespace Impulse {
 
                 virtual void updateParameters(double learningRate) = 0;
 
-                virtual Eigen::MatrixXd derivative() = 0;
+                virtual Eigen::MatrixXd activation(Eigen::MatrixXd input) = 0;
 
-                virtual Eigen::MatrixXd activation(Eigen::MatrixXd &input) {
-                    return Eigen::MatrixXd(input);
-                }
+                virtual Eigen::MatrixXd derivative(Eigen::MatrixXd A) = 0;
             };
         }
 
