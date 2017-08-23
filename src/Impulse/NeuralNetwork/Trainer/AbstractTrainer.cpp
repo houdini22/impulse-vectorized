@@ -49,7 +49,7 @@ namespace Impulse {
                 for (unsigned int step = 0; step < this->learningIterations; step++) {
                     Eigen::MatrixXd predictions = network->forward(X);
 
-                    network->backward(predictions, Y);
+                    network->backward(X, Y, predictions);
 
                     network->updateParameters(this->learningRate);
 

@@ -66,15 +66,27 @@ void test_logistic() {
 }
 
 void test_xor() {
-    Impulse::DatasetBuilder::CSVBuilder datasetBuilder2(
+    /*Impulse::DatasetBuilder::CSVBuilder datasetBuilder(
+            "/home/hud/CLionProjects/impulse-vectorized/data/test.csv");
+    */
+    Impulse::DatasetBuilder::CSVBuilder datasetBuilder(
             "/home/hud/CLionProjects/impulse-vectorized/data/xor.csv");
-    Impulse::Dataset dataset = datasetBuilder2.build();
+    Impulse::Dataset dataset = datasetBuilder.build();
 
     Impulse::DatasetModifier::DatasetSlicer slicer(&dataset);
 
     slicer.addInputColumn(0);
     slicer.addInputColumn(1);
     slicer.addOutputColumn(2);
+
+    /*slicer.addInputColumn(0);
+    slicer.addInputColumn(1);
+    slicer.addInputColumn(2);
+    slicer.addInputColumn(3);
+    slicer.addInputColumn(4);
+    slicer.addOutputColumn(5);
+    slicer.addOutputColumn(6);
+    slicer.addOutputColumn(7);*/
 
     Impulse::SlicedDataset slicedDataset = slicer.slice();
 
@@ -89,7 +101,7 @@ void test_xor() {
     std::cout << "Forward: " << net->forward(inputVector) << std::endl;
 
     Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
-    trainer.setLearningIterations(1);
+    trainer.setLearningIterations(100);
 
     double cost = trainer.cost(slicedDataset);
     std::cout << "Cost: " << cost << std::endl;

@@ -35,13 +35,17 @@ namespace Impulse {
 
                 virtual Eigen::MatrixXd forward(Eigen::MatrixXd input) = 0;
 
-                virtual Eigen::MatrixXd backward(Eigen::MatrixXd A) = 0;
+                virtual Eigen::MatrixXd backward(Eigen::MatrixXd dA, Eigen::MatrixXd prevA) = 0;
 
                 virtual void updateParameters(double learningRate) = 0;
 
                 virtual Eigen::MatrixXd activation(Eigen::MatrixXd input) = 0;
 
                 virtual Eigen::MatrixXd derivative(Eigen::MatrixXd A) = 0;
+
+                Eigen::MatrixXd getA() {
+                    return this->A;
+                }
             };
         }
 
