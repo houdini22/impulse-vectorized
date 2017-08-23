@@ -53,9 +53,6 @@ namespace Impulse {
                                  this->b.transpose() << std::endl;
                     std::cout << "---" << std::endl;*/
 #endif
-                    //this->Z.resize(this->size, input.cols());
-                    //this->A.resize(this->size, input.cols());
-
                     this->Z = ((this->W.transpose().array().colwise() * input.col(0).array()).colwise().sum().matrix() +
                                this->b.transpose()).transpose();
                     this->A = this->activation(this->Z);
