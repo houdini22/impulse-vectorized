@@ -42,19 +42,8 @@ namespace Impulse {
                               << std::endl; //this->W.rows() << "," << this->W.cols() << std::endl;
                     std::cout << "b: " << std::endl << this->b
                               << std::endl; //this->b.rows() << "," << this->b.cols() << std::endl;
-                    /*//std::cout << "Product: " << std::endl << (this->W.array().rowwise() * input.array()) << std::endl;
-                    std::cout << "Product2: " << std::endl
-                              << (this->W.transpose().array().colwise() * input.col(0).array()) << std::endl;
-                    std::cout << "Product2: " << std::endl
-                              << (this->W.transpose().array().colwise() * input.col(0).array()).colwise().sum()
-                              << std::endl;
-                    std::cout << "Product2: " << std::endl
-                              << (this->W.transpose().array().colwise() * input.col(0).array()).colwise().sum().matrix() +
-                                 this->b.transpose() << std::endl;
-                    std::cout << "---" << std::endl;*/
 #endif
-                    this->Z = ((this->W.transpose().array().colwise() * input.col(0).array()).colwise().sum().matrix() +
-                               this->b.transpose()).transpose();
+                    this->Z = (this->W * input).colwise() + this->b;
                     this->A = this->activation(this->Z);
                     this->dZ = this->A.array() * this->derivative().array();
 #ifdef DEBUG
@@ -66,7 +55,7 @@ namespace Impulse {
                     return this->A;
                 }
 
-                Eigen::MatrixXd activation(Eigen::MatrixXd &input) {
+                Eigen::MatrixXd activation(Eigen::MatrixXd input) {
                     Eigen::MatrixXd result = input.unaryExpr([](const double x) { return 1.0 / (1.0 + exp(-x)); });
                     return result;
                 }

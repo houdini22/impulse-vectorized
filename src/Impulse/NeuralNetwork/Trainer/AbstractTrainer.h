@@ -35,7 +35,7 @@ namespace Impulse {
 
                 Impulse::NeuralNetwork::Network *getNetwork();
 
-                void setRegularization(double regularization);
+                //void setRegularization(double regularization);
 
                 void setLearningIterations(unsigned int nb);
 

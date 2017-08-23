@@ -35,7 +35,7 @@ void test_simple() {
     builder.createLayer(2, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
     builder.createLayer(2, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
 
-    Impulse::NeuralNetwork::Network * net = builder.getNetwork();
+    Impulse::NeuralNetwork::Network *net = builder.getNetwork();
 
     Impulse::DatasetSample sample({0, 0.5, 1});
     Eigen::MatrixXd inputVector = sample.exportToEigen();
@@ -70,7 +70,7 @@ void test_logistic() {
     builder.createLayer(20, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
     builder.createLayer(10, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
 
-    Impulse::NeuralNetwork::Network * net = builder.getNetwork();
+    Impulse::NeuralNetwork::Network *net = builder.getNetwork();
 
     std::cout << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 }
@@ -92,15 +92,15 @@ void test_xor() {
     builder.createLayer(2, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
     builder.createLayer(1, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
 
-    Impulse::NeuralNetwork::Network * net = builder.getNetwork();
+    Impulse::NeuralNetwork::Network *net = builder.getNetwork();
 
-    Impulse::DatasetSample sample({0, 0});
+    Impulse::DatasetSample sample({0, 1});
     Eigen::MatrixXd inputVector = sample.exportToEigen();
-    std::cout << net->forward(inputVector) << std::endl;
+    std::cout << "Forward: " << net->forward(inputVector) << std::endl;
 
-    /*Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
+    Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
     Impulse::NeuralNetwork::Trainer::CostGradientResult result = trainer.cost(slicedDataset);
-    std::cout << result.getCost() << std::endl;*/
+    std::cout << "Cost: " << result.getCost() << std::endl;
 }
 
 int main() {
