@@ -14,25 +14,14 @@ namespace Impulse {
 
             class Sigmoid : public Abstract {
             protected:
-                Eigen::VectorXd b;
                 Eigen::MatrixXd A;
                 Eigen::MatrixXd Z;
                 Eigen::MatrixXd dW;
                 Eigen::MatrixXd db;
             public:
-                Eigen::MatrixXd dA;
 
-                Sigmoid(unsigned int size, unsigned int prevSize) : Abstract(size) {
-                    this->prevSize = prevSize;
-                    this->initialize();
-                }
+                Sigmoid(unsigned int size, unsigned int prevSize) : Abstract(size, prevSize) {
 
-                void initialize() {
-                    this->W.resize(this->size, this->prevSize);
-                    this->W.setZero();
-
-                    this->b.resize(this->size);
-                    this->b.setZero();
                 }
 
                 Eigen::MatrixXd forward(Eigen::MatrixXd input) {
@@ -45,7 +34,7 @@ namespace Impulse {
 #endif
                     this->Z = (this->W * input).colwise() + this->b;
                     this->A = this->activation(this->Z);
-                    this->dZ = this->A.array() * this->derivative().array();
+                    //this->dZ = this->A.array() * this->derivative().array();
 #ifdef DEBUG
                     std::cout << "Z: " << this->Z << std::endl;
                     std::cout << "A: " << this->A << std::endl;
@@ -60,17 +49,24 @@ namespace Impulse {
                     return result;
                 }
 
-                void backward(Impulse::NeuralNetwork::Layer::Abstract *nextLayer) {
-                    //this->dW.resize(0, 0);
-                    //this->db.resize(0, 0);
-                    //this->dZ.resize(0, 0);
+                Eigen::MatrixXd backward(Eigen::MatrixXd A) {
+                    // num examples
+                    long m = A.cols();
 
-                    //std::cout << this->dZ.rows() << "," << this->dZ.cols() << std::endl;
-                    //std::cout << nextLayer->dA.rows() << "," << nextLayer->dA.cols() << std::endl;
+                    this->dW = (1.0 / (double) m) * (A * this->A.transpose());
+                    this->db = (1.0 / (double) m) * (A.colwise().sum());
 
-                    this->dW = (1.0 / (double) this->dA.cols()) * (this->dZ * nextLayer->dA.transpose());
-                    this->db = (1.0 / (double) this->dA.cols()) * (this->dZ.colwise().sum());
-                    this->dA = nextLayer->W.transpose() * nextLayer->dZ;
+                    Eigen::MatrixXd result = (this->W.transpose() * A).unaryExpr(
+                            [](const double x) { return 1.0 - pow(x, 2.0); });
+
+                    std::cout << "A: " << A.rows() << "," << A.cols() << std::endl;
+                    std::cout << "this->A: " << this->A.rows() << "," << this->A.cols() << std::endl;
+                    std::cout << "W: " << this->W.rows() << "," << this->W.cols() << std::endl;
+                    std::cout << "dW: " << this->dW.rows() << "," << this->dW.cols() << std::endl;
+                    std::cout << "b: " << this->db.rows() << "," << this->db.cols() << std::endl;
+                    std::cout << "db: " << this->db.rows() << "," << this->db.cols() << std::endl;
+
+                    return result;
                 }
 
                 Eigen::MatrixXd derivative() {
@@ -78,9 +74,9 @@ namespace Impulse {
                 }
 
                 void updateParameters(double learningRate) {
-                    std::cout << this->W.rows() << "," << this->W.cols() << std::endl;
-                    std::cout << this->dW.rows() << "," << this->dW.cols() << std::endl;
                     this->W = this->W - (learningRate * this->dW);
+                    std::cout << "OLD B:" <<
+                              std::endl << this->b << std::endl << "OLD DB:" << std::endl << this->db << std::endl;
                     this->b = this->b - (learningRate * this->db);
                 }
             };

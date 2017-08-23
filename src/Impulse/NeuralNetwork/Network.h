@@ -34,16 +34,15 @@ namespace Impulse {
             }
 
             void backward(Eigen::MatrixXd predictions, Eigen::MatrixXd Y) {
-                unsigned int size = this->getSize() - 1;
-                this->layers.at(size)->backward(predictions, Y);
-                for (unsigned int layer = size - 1; layer > 0; layer--) {
-                    this->layers.at(layer)->backward(this->layers.at(layer + 1));
+                Eigen::MatrixXd A = Y.array() - predictions.array();
+                for (long i = this->layers.size() - 1; i >= 0; i--) {
+                    A = this->layers.at(i)->backward(A);
                 }
             }
 
             void updateParameters(double learningRate) {
                 for (unsigned int layer = 0; layer < this->getSize(); layer++) {
-                    //this->layers.at(layer)->updateParameters(learningRate);
+                    this->layers.at(layer)->updateParameters(learningRate);
                 }
             }
         };

@@ -1,4 +1,4 @@
-#define DEBUG 1
+//#define DEBUG 1
 
 //#define EIGEN_DONT_VECTORIZE
 #ifndef EIGEN_DONT_VECTORIZE // Not needed with Intel C++ Compiler XE 15.0
@@ -40,16 +40,6 @@ void test_simple() {
     Impulse::DatasetSample sample({0, 0.5, 1});
     Eigen::MatrixXd inputVector = sample.exportToEigen();
     std::cout << net->forward(inputVector) << std::endl;
-
-    /*Impulse::NeuralNetwork::Network * net = builder.getNetwork();
-    //net->forward(datasetInput.getSampleAt(0)->exportToEigen());
-    std::cout << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
-
-    Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
-    Impulse::NeuralNetwork::Trainer::CostGradientResult result = trainer.cost(dataset);
-    std::cout << result.getCost() << std::endl;
-
-    trainer.train(dataset);*/
 }
 
 void test_logistic() {
@@ -99,8 +89,12 @@ void test_xor() {
     std::cout << "Forward: " << net->forward(inputVector) << std::endl;
 
     Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
+    trainer.setLearningIterations(1);
+
     double cost = trainer.cost(slicedDataset);
     std::cout << "Cost: " << cost << std::endl;
+
+    trainer.train(slicedDataset);
 }
 
 int main() {
