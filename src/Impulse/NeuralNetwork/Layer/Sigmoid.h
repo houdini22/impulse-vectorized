@@ -27,33 +27,12 @@ namespace Impulse {
                 }
 
                 Eigen::MatrixXd backward(Eigen::MatrixXd delta) {
-                    /*// num examples
+                    // num examples
                     long m = delta.cols();
 
-                    this->dW = delta * prevA.transpose();
-                    this->db = (delta.rowwise().sum());
+                    Eigen::MatrixXd result;
 
-                    Eigen::MatrixXd result = (this->W.transpose() * delta);
-
-                    assert(this->size == this->A.rows());
-                    assert(m == this->A.cols());
-
-                    assert(this->size == this->Z.rows());
-                    assert(m == this->Z.cols());
-
-                    assert(this->size == this->W.rows());
-                    assert(this->prevSize == this->W.cols());
-
-                    assert(this->size == this->b.rows());
-                    assert(this->b.cols() == 1);
-
-                    assert(this->W.rows() == this->dW.rows());
-                    assert(this->W.cols() == this->dW.cols());
-
-                    assert(this->b.rows() == this->db.rows());
-                    assert(this->b.cols() == this->db.cols());
-
-                    return result;*/
+                    return result;
                 }
 
                 Eigen::MatrixXd derivative() {
@@ -61,8 +40,8 @@ namespace Impulse {
                 }
 
                 void updateParameters(double learningRate) {
-                    //this->W += -learningRate * this->dW;
-                    //this->b += -learningRate * this->db;
+                    this->W += learningRate * this->dW;
+                    this->b += learningRate * this->db;
                 }
             };
         }

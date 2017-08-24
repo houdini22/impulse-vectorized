@@ -50,26 +50,10 @@ namespace Impulse {
                 Eigen::MatrixXd dZ = E.array() * (this->layers.at(1)->derivative().array());
                 Eigen::MatrixXd dH = (this->layers.at(1)->W.transpose() * dZ).array() * (this->layers.at(0)->derivative().array());
 
-                /*std::cout << "DZ" << std::endl << dZ << std::endl << std::endl;
-                std::cout << "DH" << std::endl << dH << std::endl << std::endl;
-                std::cout << "db2" << std::endl << dZ.rowwise().sum() << std::endl << std::endl;
-                std::cout << "db1" << std::endl << dH.rowwise().sum() << std::endl << std::endl;
-                std::cout << "dW2" << std::endl << dZ * this->layers.at(0)->A.transpose() << std::endl << std::endl;
-                std::cout << "dW1" << std::endl << dH * X.transpose() << std::endl << std::endl;*/
-
-                this->layers.at(0)->W += dH * X.transpose();
-                this->layers.at(1)->W += dZ * this->layers.at(0)->A.transpose();
-                this->layers.at(0)->b += dH.rowwise().sum();
-                this->layers.at(1)->b += dZ.rowwise().sum();
-
-                /*std::cout << dZ << std::endl << std::endl;
-                std::cout << dH << std::endl << std::endl;
-
-                dZ = (1.0 / (double) m) * (dZ.rowwise().sum()).array();
-                dH = (1.0 / (double) m) * (dH.rowwise().sum()).array();
-
-                std::cout << dZ << std::endl << std::endl;
-                std::cout << dH << std::endl << std::endl;*/
+                this->layers.at(0)->dW = dH * X.transpose();
+                this->layers.at(1)->dW = dZ * this->layers.at(0)->A.transpose();
+                this->layers.at(0)->db = dH.rowwise().sum();
+                this->layers.at(1)->db = dZ.rowwise().sum();
             }
 
             void updateParameters(double learningRate) {

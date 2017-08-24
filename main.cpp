@@ -91,19 +91,19 @@ void test_xor() {
     Impulse::SlicedDataset slicedDataset = slicer.slice();
 
     Impulse::NeuralNetwork::Builder::Builder builder(2);
-    builder.createLayer(2, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
+    builder.createLayer(3, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
     builder.createLayer(1, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
 
     Impulse::NeuralNetwork::Network *net = builder.getNetwork();
 
-    Impulse::DatasetSample sample({0, 1});
+    Impulse::DatasetSample sample({0, 10});
     Eigen::MatrixXd inputVector = sample.exportToEigen();
     std::cout << "Forward: " << net->forward(inputVector) << std::endl;
 
     Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
-    trainer.setLearningIterations(1000);
-    trainer.setLearningRate(0.1);
-    trainer.setVerboseStep(10);
+    trainer.setLearningIterations(20000);
+    trainer.setLearningRate(20);
+    trainer.setVerboseStep(1000);
 
     double cost = trainer.cost(slicedDataset);
     std::cout << "Cost: " << cost << std::endl;

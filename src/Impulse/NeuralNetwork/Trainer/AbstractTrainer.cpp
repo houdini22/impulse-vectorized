@@ -67,13 +67,13 @@ namespace Impulse {
 
                     double cost = this->cost(dataSet);
 
-                    if (true || this->verbose && step + 1 % this->verboseStep == 0) {
-                        std::cout << "Iteration: " << step << " | Error:" << cost << std::endl;
+                    if (this->verbose && (step + 1) % this->verboseStep == 0) {
+                        std::cout << "Iteration: " << (step + 1) << " | Error:" << cost << std::endl;
                     }
                 }
 
                 if (this->verbose) {
-                    std::cout << "Learning ended after " << this->learningIterations << " iterations "
+                    std::cout << "Training ended after " << this->learningIterations << " iterations "
                               << "with error = " << this->cost(dataSet) << "." << std::endl;
                 }
             }
