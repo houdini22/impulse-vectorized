@@ -21,23 +21,8 @@ namespace Impulse {
                 }
 
                 Eigen::MatrixXd forward(Eigen::MatrixXd input) {
-#ifdef DEBUG
-                    std::cout << "input:" << std::endl << input << std::endl << std::endl;
-                    std::cout << "W: " << std::endl << this->W
-                              << std::endl;
-                    std::cout << "b: " << std::endl << this->b
-                              << std::endl;
-
-                    std::cout << "TEST:" << std::endl << (this->W * input).colwise() + this->b << std::endl << std::endl;
-#endif
                     this->Z = (this->W * input).colwise() + this->b;
                     this->A = this->activation(this->Z);
-#ifdef DEBUG
-                    std::cout << "Z: " << this->Z << std::endl;
-                    std::cout << "A: " << this->A << std::endl;
-                    std::cout << "dZ: " << this->dZ << std::endl;
-                    std::cout << "---" << std::endl << std::endl;
-#endif
                     return this->A;
                 }
 

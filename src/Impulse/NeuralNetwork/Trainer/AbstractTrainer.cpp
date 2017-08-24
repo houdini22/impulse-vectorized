@@ -30,6 +30,10 @@ namespace Impulse {
                 this->verbose = value;
             }
 
+            void AbstractTrainer::setVerboseStep(int value) {
+                this->verboseStep = value;
+            }
+
             double AbstractTrainer::cost(Impulse::SlicedDataset &dataSet) {
                 unsigned int m = dataSet.output.getSize();
                 Eigen::MatrixXd A = this->network->forward(dataSet.getInput());
@@ -63,13 +67,14 @@ namespace Impulse {
 
                     double cost = this->cost(dataSet);
 
-                    if (this->verbose) {
+                    if (this->verbose && step % this->verboseStep == 0) {
                         std::cout << "Iteration: " << step << " | Error:" << cost << std::endl;
                     }
                 }
 
                 if (this->verbose) {
-                    std::cout << "Learning ended." << std::endl;
+                    std::cout << "Learning ended after " << this->learningIterations << " iterations "
+                              << "with error = " << this->cost(dataSet) << "." << std::endl;
                 }
             }
         }

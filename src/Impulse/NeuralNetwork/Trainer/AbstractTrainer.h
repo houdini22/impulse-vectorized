@@ -25,6 +25,7 @@ namespace Impulse {
                 unsigned int learningIterations = 1000;
                 double learningRate = 0.1;
                 bool verbose = true;
+                int verboseStep = 100;
             public:
                 AbstractTrainer(Impulse::NeuralNetwork::Network *net);
 
@@ -37,6 +38,8 @@ namespace Impulse {
                 void setLearningRate(double value);
 
                 void setVerbose(bool value);
+
+                void setVerboseStep(int value);
 
                 double cost(Impulse::SlicedDataset &dataSet);
 
