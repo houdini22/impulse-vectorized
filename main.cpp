@@ -96,7 +96,7 @@ void test_xor() {
 
     Impulse::NeuralNetwork::Network *net = builder.getNetwork();
 
-    Impulse::DatasetSample sample({0, 10});
+    Impulse::DatasetSample sample({0, 1});
     Eigen::MatrixXd inputVector = sample.exportToEigen();
     std::cout << "Forward: " << net->forward(inputVector) << std::endl;
 
