@@ -21,18 +21,19 @@ namespace Impulse {
                 }
 
                 Eigen::MatrixXd activation(Eigen::MatrixXd input) {
-                    Eigen::MatrixXd result = input.unaryExpr([](const double x) { return 1.0 / (1.0 + exp(-x)); });
-                    return result;
+                    return input.unaryExpr([](const double x) {
+                        return 1.0 / (1.0 + exp(-x));
+                    });
                 }
 
-                Eigen::MatrixXd backward(Eigen::MatrixXd dZ, Eigen::MatrixXd prevA) {
+                Eigen::MatrixXd backward(Eigen::MatrixXd delta, Eigen::MatrixXd prevA) {
                     // num examples
-                    long m = dZ.cols();
+                    long m = delta.cols();
 
-                    this->dW = (1.0 / (double) m) * (dZ * prevA.transpose());
-                    this->db = (1.0 / (double) m) * (dZ.rowwise().sum());
+                    this->dW = delta * prevA.transpose();
+                    this->db = (delta.rowwise().sum());
 
-                    Eigen::MatrixXd result = this->W.transpose() * dZ;
+                    Eigen::MatrixXd result = (this->W.transpose() * delta);
 
                     assert(this->size == this->A.rows());
                     assert(m == this->A.cols());
@@ -60,8 +61,8 @@ namespace Impulse {
                 }
 
                 void updateParameters(double learningRate) {
-                    this->W = this->W.array() - (learningRate * this->dW.array());
-                    this->b = this->b.array() - (learningRate * this->db.array());
+                    this->W += -learningRate * this->dW;
+                    this->b += -learningRate * this->db;
                 }
             };
         }

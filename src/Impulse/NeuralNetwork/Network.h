@@ -27,19 +27,21 @@ namespace Impulse {
 
             Eigen::MatrixXd forward(Eigen::MatrixXd input) {
                 Eigen::MatrixXd output = input;
+
                 for (LayerContainer::iterator it = this->layers.begin(); it != this->layers.end(); ++it) {
                     output = (*it)->forward(output);
                 }
+
                 return output;
             }
 
             void backward(Eigen::MatrixXd X, Eigen::MatrixXd Y, Eigen::MatrixXd predictions) {
-                //Eigen::MatrixXd dZ = predictions.array() - Y.array();
-                Eigen::MatrixXd dZ = - (Y.array() / predictions.array()) - ((1.0 - Y.array()) / 1.0 - predictions.array());
+                Eigen::MatrixXd delta = predictions.array() - Y.array();
+
                 for (long i = this->layers.size() - 1; i >= 0; i--) {
-                    dZ = this->layers.at(i)->backward(dZ, i == 0 ? X : this->layers.at(i - 1)->getActivation());
+                    delta = this->layers.at(i)->backward(delta, i == 0 ? X : this->layers.at(i - 1)->getActivation());
                     if (i > 0) {
-                        dZ = dZ.array() * this->layers.at(i - 1)->derivative().array();
+                        delta = delta.array() * this->layers.at(i - 1)->derivative().array();
                     }
                 }
             }

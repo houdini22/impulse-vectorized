@@ -39,7 +39,8 @@ namespace Impulse {
                     return this->A;
                 }
 
-                virtual Eigen::MatrixXd backward(Eigen::MatrixXd dA, Eigen::MatrixXd prevA) = 0;
+                virtual Eigen::MatrixXd
+                backward(Eigen::MatrixXd delta, Eigen::MatrixXd prevA) = 0;
 
                 virtual void updateParameters(double learningRate) = 0;
 
