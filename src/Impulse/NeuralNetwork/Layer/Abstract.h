@@ -14,13 +14,13 @@ namespace Impulse {
             protected:
                 unsigned int size;
                 unsigned int prevSize = 0;
+            public:
                 Eigen::MatrixXd W;
                 Eigen::VectorXd b;
                 Eigen::MatrixXd A;
                 Eigen::MatrixXd Z;
                 Eigen::MatrixXd dW;
                 Eigen::MatrixXd db;
-            public:
 
                 Abstract(unsigned int size, unsigned int prevSize) {
                     this->size = size;
@@ -40,7 +40,7 @@ namespace Impulse {
                 }
 
                 virtual Eigen::MatrixXd
-                backward(Eigen::MatrixXd delta, Eigen::MatrixXd prevA) = 0;
+                backward(Eigen::MatrixXd delta) = 0;
 
                 virtual void updateParameters(double learningRate) = 0;
 

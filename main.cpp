@@ -101,7 +101,7 @@ void test_xor() {
     std::cout << "Forward: " << net->forward(inputVector) << std::endl;
 
     Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
-    trainer.setLearningIterations(100);
+    trainer.setLearningIterations(1000);
     trainer.setLearningRate(0.1);
     trainer.setVerboseStep(10);
 
