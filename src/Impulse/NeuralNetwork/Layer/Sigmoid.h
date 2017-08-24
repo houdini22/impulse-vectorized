@@ -20,12 +20,6 @@ namespace Impulse {
 
                 }
 
-                Eigen::MatrixXd forward(Eigen::MatrixXd input) {
-                    this->Z = (this->W * input).colwise() + this->b;
-                    this->A = this->activation(this->Z);
-                    return this->A;
-                }
-
                 Eigen::MatrixXd activation(Eigen::MatrixXd input) {
                     Eigen::MatrixXd result = input.unaryExpr([](const double x) { return 1.0 / (1.0 + exp(-x)); });
                     return result;
@@ -58,21 +52,6 @@ namespace Impulse {
                     assert(this->b.rows() == this->db.rows());
                     assert(this->b.cols() == this->db.cols());
 
-                    //std::cout << "m:" << std::endl << m << std::endl << std::endl;
-                    //std::cout << "this->A:" << std::endl << this->A << std::endl << std::endl;
-                    //std::cout << "this->Z:" << std::endl << this->Z << std::endl << std::endl;
-                    //std::cout << "A:" << std::endl << A << std::endl << std::endl;
-                    //std::cout << "this->W:" << std::endl << this->W << std::endl << std::endl;
-                    //std::cout << "b:" << std::endl << this->b << std::endl << std::endl;
-                    //std::cout << "dZ:" << std::endl << dZ << std::endl << std::endl;
-                    //std::cout << "result:" << std::endl << result << std::endl << std::endl;
-                    //std::cout << "this->dW:" << std::endl << this->dW << std::endl << std::endl;
-                    //std::cout << "---" << std::endl << std::endl << std::endl;
-                    //std::cout << "A: " << std::endl << A << std::endl << std::endl;
-                    //std::cout << "dZ:" << std::endl << dZ << std::endl << std::endl;
-                    //std::cout << "result:" << std::endl << result << std::endl << std::endl;
-                    //std::cout << "db:" << std::endl << this->db << std::endl << std::endl;
-
                     return result;
                 }
 
@@ -81,8 +60,8 @@ namespace Impulse {
                 }
 
                 void updateParameters(double learningRate) {
-                    this->W = this->W - (learningRate * this->dW);
-                    this->b = this->b - (learningRate * this->db);
+                    this->W = this->W.array() - (learningRate * this->dW.array());
+                    this->b = this->b.array() - (learningRate * this->db.array());
                 }
             };
         }

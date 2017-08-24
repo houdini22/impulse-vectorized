@@ -33,7 +33,11 @@ namespace Impulse {
                     this->b.setZero();
                 }
 
-                virtual Eigen::MatrixXd forward(Eigen::MatrixXd input) = 0;
+                Eigen::MatrixXd forward(Eigen::MatrixXd input) {
+                    this->Z = (this->W * input).colwise() + this->b;
+                    this->A = this->activation(this->Z);
+                    return this->A;
+                }
 
                 virtual Eigen::MatrixXd backward(Eigen::MatrixXd dA, Eigen::MatrixXd prevA) = 0;
 

@@ -103,6 +103,7 @@ void test_xor() {
     Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
     trainer.setLearningIterations(100);
     trainer.setLearningRate(0.1);
+    trainer.setVerboseStep(10);
 
     double cost = trainer.cost(slicedDataset);
     std::cout << "Cost: " << cost << std::endl;
@@ -110,6 +111,10 @@ void test_xor() {
     trainer.train(slicedDataset);
 
     std::cout << "Forward: " << net->forward(inputVector) << std::endl;
+
+    Impulse::DatasetSample sample2({1, 1});
+    Eigen::MatrixXd inputVector2 = sample2.exportToEigen();
+    std::cout << "Forward: " << net->forward(inputVector2) << std::endl;
 }
 
 int main() {
