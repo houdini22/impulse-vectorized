@@ -62,7 +62,19 @@ void test_logistic() {
 
     Impulse::NeuralNetwork::Network *net = builder.getNetwork();
 
-    std::cout << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+    std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+
+    Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
+    trainer.setLearningIterations(400);
+    trainer.setLearningRate(0.001);
+    trainer.setVerboseStep(50);
+
+    double cost = trainer.cost(dataset);
+    std::cout << "Cost: " << cost << std::endl;
+
+    trainer.train(dataset);
+
+    std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 }
 
 void test_xor() {
@@ -91,7 +103,7 @@ void test_xor() {
     Impulse::SlicedDataset slicedDataset = slicer.slice();
 
     Impulse::NeuralNetwork::Builder::Builder builder(2);
-    builder.createLayer(3, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
+    builder.createLayer(2, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
     builder.createLayer(1, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
 
     Impulse::NeuralNetwork::Network *net = builder.getNetwork();
@@ -119,8 +131,8 @@ void test_xor() {
 
 int main() {
     //test_simple();
-    //test_logistic();
-    test_xor();
+    test_logistic();
+    //test_xor();
 
     return 0;
 }

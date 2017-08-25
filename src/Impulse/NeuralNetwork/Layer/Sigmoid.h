@@ -26,22 +26,8 @@ namespace Impulse {
                     });
                 }
 
-                Eigen::MatrixXd backward(Eigen::MatrixXd delta) {
-                    // num examples
-                    long m = delta.cols();
-
-                    Eigen::MatrixXd result;
-
-                    return result;
-                }
-
                 Eigen::MatrixXd derivative() {
                     return this->A.array() * (1.0 - this->A.array());
-                }
-
-                void updateParameters(double learningRate) {
-                    this->W += learningRate * this->dW;
-                    this->b += learningRate * this->db;
                 }
             };
         }

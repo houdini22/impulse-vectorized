@@ -36,24 +36,16 @@ namespace Impulse {
             }
 
             void backward(Eigen::MatrixXd X, Eigen::MatrixXd Y, Eigen::MatrixXd predictions) {
-                /*Eigen::MatrixXd delta = (Y.array() - predictions.array());
+                Eigen::MatrixXd E = (Y.array() - predictions.array());
+                Eigen::MatrixXd dZ = E.array();
 
                 for (long i = this->layers.size() - 1; i >= 0; i--) {
-                    delta = this->layers.at(i)->backward(delta);
-                    if (i > 0) {
-                        delta.array() *= this->layers.at(i - 1)->derivative().array();
-                    }
-                }*/
-                long m = Y.cols();
+                    dZ.array() *= this->layers.at(i)->derivative().array();
+                    this->layers.at(i)->dW = dZ * (i == 0 ? X.transpose() : this->layers.at(i - 1)->A.transpose());
+                    this->layers.at(i)->db = dZ.rowwise().sum();
 
-                Eigen::MatrixXd E = (Y.array() - predictions.array());
-                Eigen::MatrixXd dZ = E.array() * (this->layers.at(1)->derivative().array());
-                Eigen::MatrixXd dH = (this->layers.at(1)->W.transpose() * dZ).array() * (this->layers.at(0)->derivative().array());
-
-                this->layers.at(0)->dW = dH * X.transpose();
-                this->layers.at(1)->dW = dZ * this->layers.at(0)->A.transpose();
-                this->layers.at(0)->db = dH.rowwise().sum();
-                this->layers.at(1)->db = dZ.rowwise().sum();
+                    dZ = this->layers.at(i)->W.transpose() * dZ;
+                }
             }
 
             void updateParameters(double learningRate) {

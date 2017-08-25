@@ -39,10 +39,8 @@ namespace Impulse {
                     return this->A;
                 }
 
-                virtual Eigen::MatrixXd
-                backward(Eigen::MatrixXd delta) = 0;
-
-                virtual void updateParameters(double learningRate) = 0;
+                /*virtual Eigen::MatrixXd
+                backward(Eigen::MatrixXd delta) = 0;*/
 
                 virtual Eigen::MatrixXd activation(Eigen::MatrixXd input) = 0;
 
@@ -50,6 +48,11 @@ namespace Impulse {
 
                 Eigen::MatrixXd getActivation() {
                     return this->A;
+                }
+
+                void updateParameters(double learningRate) {
+                    this->W += learningRate * this->dW;
+                    this->b += learningRate * this->db;
                 }
             };
         }
