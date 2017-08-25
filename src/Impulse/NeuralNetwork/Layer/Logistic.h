@@ -29,6 +29,10 @@ namespace Impulse {
                 Eigen::MatrixXd derivative() {
                     return this->A.array() * (1.0 - this->A.array());
                 }
+
+                std::string getType() {
+                    return TYPE_LOGISTIC;
+                }
             };
         }
 

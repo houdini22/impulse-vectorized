@@ -10,14 +10,16 @@ namespace Impulse {
     namespace NeuralNetwork {
 
         typedef std::vector<Impulse::NeuralNetwork::Layer::Abstract *> LayerContainer;
+        typedef std::vector<double> RolledTheta;
 
         class Network {
         protected:
             unsigned int size = 0;
+            unsigned int inputSize = 0;
             LayerContainer layers;
         public:
-            unsigned int getSize() {
-                return this->size;
+            Network(unsigned int inputSize) {
+                this->inputSize = inputSize;
             }
 
             void addLayer(Impulse::NeuralNetwork::Layer::Abstract *layer) {
@@ -51,6 +53,56 @@ namespace Impulse {
             void updateParameters(double learningRate) {
                 for (unsigned int layer = 0; layer < this->getSize(); layer++) {
                     this->layers.at(layer)->updateParameters(learningRate);
+                }
+            }
+
+            unsigned int getInputSize() {
+                return this->inputSize;
+            }
+
+            unsigned int getSize() {
+                return this->size;
+            }
+
+            Impulse::NeuralNetwork::Layer::Abstract *getLayer(unsigned int key) {
+                return this->layers.at(key);
+            }
+
+            RolledTheta getRolledTheta() {
+                RolledTheta result;
+
+                for (long i = 0; i < this->layers.size(); i++) {
+                    auto layer = this->layers.at(i);
+                    for (unsigned int j = 0; j < layer->W.rows(); j++) {
+                        for (unsigned int k = 0; k < layer->W.cols(); k++) {
+                            result.push_back(layer->W(j, k));
+                        }
+                    }
+                    for (unsigned int j = 0; j < layer->b.rows(); j++) {
+                        for (unsigned int k = 0; k < layer->b.cols(); k++) {
+                            result.push_back(layer->b(j, k));
+                        }
+                    }
+                }
+
+                return result;
+            }
+
+            void setRolledTheta(RolledTheta theta) {
+                unsigned long t = 0;
+
+                for (long i = 0; i < this->layers.size(); i++) {
+                    auto layer = this->layers.at(i);
+                    for (unsigned int j = 0; j < layer->W.rows(); j++) {
+                        for (unsigned int k = 0; k < layer->W.cols(); k++) {
+                            layer->W(j, k) = theta.at(t++);
+                        }
+                    }
+                    for (unsigned int j = 0; j < layer->b.rows(); j++) {
+                        for (unsigned int k = 0; k < layer->b.cols(); k++) {
+                            layer->b(j, k) = theta.at(t++);
+                        }
+                    }
                 }
             }
         };

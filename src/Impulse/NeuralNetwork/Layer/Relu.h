@@ -37,6 +37,10 @@ namespace Impulse {
                         return 1.0;
                     });
                 }
+
+                std::string getType() {
+                    return TYPE_RELU;
+                }
             };
         }
 

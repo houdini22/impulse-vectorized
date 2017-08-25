@@ -25,10 +25,9 @@
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetBuilder/CSVBuilder.h"
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset.h"
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
-
 #include "src/Impulse/NeuralNetwork/Builder/Builder.h"
-
 #include "src/Impulse/NeuralNetwork/Trainer/AbstractTrainer.h"
+#include "src/Impulse/NeuralNetwork/NetworkSerializer.h"
 
 void test_logistic() {
     // create dataset
@@ -53,9 +52,9 @@ void test_logistic() {
     std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 
     Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
-    trainer.setLearningIterations(400);
+    trainer.setLearningIterations(2000);
     trainer.setLearningRate(0.001);
-    trainer.setVerboseStep(1);
+    trainer.setVerboseStep(50);
 
     double cost = trainer.cost(dataset);
     std::cout << "Cost: " << cost << std::endl;
@@ -66,9 +65,6 @@ void test_logistic() {
 }
 
 void test_xor() {
-    /*Impulse::DatasetBuilder::CSVBuilder datasetBuilder(
-            "/home/hud/CLionProjects/impulse-vectorized/data/test.csv");
-    */
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder(
             "/home/hud/CLionProjects/impulse-vectorized/data/xor.csv");
     Impulse::Dataset dataset = datasetBuilder.build();
@@ -78,15 +74,6 @@ void test_xor() {
     slicer.addInputColumn(0);
     slicer.addInputColumn(1);
     slicer.addOutputColumn(2);
-
-    /*slicer.addInputColumn(0);
-    slicer.addInputColumn(1);
-    slicer.addInputColumn(2);
-    slicer.addInputColumn(3);
-    slicer.addInputColumn(4);
-    slicer.addOutputColumn(5);
-    slicer.addOutputColumn(6);
-    slicer.addOutputColumn(7);*/
 
     Impulse::SlicedDataset slicedDataset = slicer.slice();
 
@@ -115,11 +102,23 @@ void test_xor() {
     Impulse::DatasetSample sample2({1, 1});
     Eigen::MatrixXd inputVector2 = sample2.exportToEigen();
     std::cout << "Forward: " << net->forward(inputVector2) << std::endl;
+
+    Impulse::NeuralNetwork::NetworkSerializer serializer(net);
+    serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/xor.json");
+}
+
+void test_xor_load() {
+    Impulse::NeuralNetwork::Builder::Builder builder = Impulse::NeuralNetwork::Builder::Builder::fromJSON("/home/hud/CLionProjects/impulse-vectorized/saved/xor.json");
+    Impulse::NeuralNetwork::Network * net = builder.getNetwork();
+
+    Impulse::DatasetSample sample2({1, 1});
+    Eigen::MatrixXd inputVector2 = sample2.exportToEigen();
+    std::cout << "Saved Forward: " << net->forward(inputVector2) << std::endl;
 }
 
 int main() {
-    test_logistic();
-    //test_xor();
-
+    //test_logistic();
+    test_xor();
+    test_xor_load();
     return 0;
 }
