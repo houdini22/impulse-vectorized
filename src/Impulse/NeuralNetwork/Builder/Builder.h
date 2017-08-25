@@ -3,7 +3,8 @@
 
 #include <string>
 #include "../Network.h"
-#include "../Layer/Sigmoid.h"
+#include "../Layer/Logistic.h"
+#include "../Layer/Relu.h"
 
 namespace Impulse {
 
@@ -22,8 +23,10 @@ namespace Impulse {
                 }
 
                 void createLayer(unsigned int size, std::string type) {
-                    if (type == "sigmoid") {
-                        this->network->addLayer(new Impulse::NeuralNetwork::Layer::Sigmoid(size, this->prevSize));
+                    if (type == Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC) {
+                        this->network->addLayer(new Impulse::NeuralNetwork::Layer::Logistic(size, this->prevSize));
+                    } else if (type == Impulse::NeuralNetwork::Layer::TYPE_RELU) {
+                        this->network->addLayer(new Impulse::NeuralNetwork::Layer::Relu(size, this->prevSize));
                     }
                     this->prevSize = size;
                 }

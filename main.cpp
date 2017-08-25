@@ -30,18 +30,6 @@
 
 #include "src/Impulse/NeuralNetwork/Trainer/AbstractTrainer.h"
 
-void test_simple() {
-    Impulse::NeuralNetwork::Builder::Builder builder(3);
-    builder.createLayer(2, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
-    builder.createLayer(2, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
-
-    Impulse::NeuralNetwork::Network *net = builder.getNetwork();
-
-    Impulse::DatasetSample sample({0, 0.5, 1});
-    Eigen::MatrixXd inputVector = sample.exportToEigen();
-    std::cout << net->forward(inputVector) << std::endl;
-}
-
 void test_logistic() {
     // create dataset
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
@@ -57,8 +45,8 @@ void test_logistic() {
     dataset.output = datasetOutput;
 
     Impulse::NeuralNetwork::Builder::Builder builder(400);
-    builder.createLayer(20, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
-    builder.createLayer(10, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
+    builder.createLayer(20, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
+    builder.createLayer(10, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
 
     Impulse::NeuralNetwork::Network *net = builder.getNetwork();
 
@@ -67,7 +55,7 @@ void test_logistic() {
     Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
     trainer.setLearningIterations(400);
     trainer.setLearningRate(0.001);
-    trainer.setVerboseStep(50);
+    trainer.setVerboseStep(1);
 
     double cost = trainer.cost(dataset);
     std::cout << "Cost: " << cost << std::endl;
@@ -103,8 +91,8 @@ void test_xor() {
     Impulse::SlicedDataset slicedDataset = slicer.slice();
 
     Impulse::NeuralNetwork::Builder::Builder builder(2);
-    builder.createLayer(2, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
-    builder.createLayer(1, Impulse::NeuralNetwork::Layer::TYPE_SIGMOID);
+    builder.createLayer(2, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
+    builder.createLayer(1, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
 
     Impulse::NeuralNetwork::Network *net = builder.getNetwork();
 
@@ -130,7 +118,6 @@ void test_xor() {
 }
 
 int main() {
-    //test_simple();
     test_logistic();
     //test_xor();
 

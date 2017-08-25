@@ -10,13 +10,13 @@ namespace Impulse {
 
         namespace Layer {
 
-            const std::string TYPE_SIGMOID = "sigmoid";
+            const std::string TYPE_LOGISTIC = "logistic";
 
-            class Sigmoid : public Abstract {
+            class Logistic : public Abstract {
             protected:
             public:
 
-                Sigmoid(unsigned int size, unsigned int prevSize) : Abstract(size, prevSize) {
+                Logistic(unsigned int size, unsigned int prevSize) : Abstract(size, prevSize) {
 
                 }
 
