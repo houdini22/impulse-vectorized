@@ -37,13 +37,14 @@ namespace Impulse {
                 return output;
             }
 
-            void backward(Eigen::MatrixXd X, Eigen::MatrixXd Y, Eigen::MatrixXd predictions) {
+            void backward(Eigen::MatrixXd X, Eigen::MatrixXd Y, Eigen::MatrixXd predictions, double regularization) {
+                long m = X.cols();
                 Eigen::MatrixXd E = (Y.array() - predictions.array());
                 Eigen::MatrixXd dZ = E.array();
 
                 for (long i = this->layers.size() - 1; i >= 0; i--) {
                     dZ.array() *= this->layers.at(i)->derivative().array();
-                    this->layers.at(i)->dW = dZ * (i == 0 ? X.transpose() : this->layers.at(i - 1)->A.transpose());
+                    this->layers.at(i)->dW = dZ * (i == 0 ? X.transpose() : this->layers.at(i - 1)->A.transpose()) + (regularization / (double) m * this->layers.at(i)->W);
                     this->layers.at(i)->db = dZ.rowwise().sum();
 
                     dZ = this->layers.at(i)->W.transpose() * dZ;

@@ -46,7 +46,14 @@ namespace Impulse {
                                           A.unaryExpr([](const double x) { return log(1.0 - x); }).array()
                                          );
 
-                return (-1.0) / (double) m * errors.sum();
+                double regularization = 0.0;
+                for (unsigned int i = 0; i < this->network->getSize(); i++) {
+                    regularization += this->network->getLayer(i)->W.unaryExpr([](const double x) {
+                        return pow(x, 2.0);
+                    }).sum();
+                }
+
+                return (-1.0) / (double) m * errors.sum() + (this->regularization / 2 * regularization);
             }
 
             void AbstractTrainer::train(Impulse::SlicedDataset &dataSet) {
@@ -61,7 +68,7 @@ namespace Impulse {
                 for (unsigned int step = 0; step < this->learningIterations; step++) {
                     Eigen::MatrixXd predictions = network->forward(X);
 
-                    network->backward(X, Y, predictions);
+                    network->backward(X, Y, predictions, this->regularization);
 
                     network->updateParameters(this->learningRate);
 

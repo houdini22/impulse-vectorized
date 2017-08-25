@@ -28,6 +28,7 @@ namespace Impulse {
 
                     this->W.resize(this->size, this->prevSize);
                     this->W.setRandom();
+                    this->W = this->W.array() * sqrt(2.0 / this->prevSize);
 
                     this->b.resize(this->size);
                     this->b.setZero();

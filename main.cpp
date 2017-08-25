@@ -127,14 +127,26 @@ void test_logistic_load() {
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
             "/home/hud/CLionProjects/impulse-new/data/ex4data1_x.csv");
     Impulse::Dataset datasetInput = datasetBuilder1.build();
+    Impulse::DatasetBuilder::CSVBuilder datasetBuilder2(
+            "/home/hud/CLionProjects/impulse-new/data/ex4data1_y.csv");
+    Impulse::Dataset datasetOutput = datasetBuilder2.build();
+
+    Impulse::SlicedDataset dataset;
+    dataset.input = datasetInput;
+    dataset.output = datasetOutput;
 
     std::cout << "Saved Forward: " << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+
+    Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
+
+    double cost = trainer.cost(dataset);
+    std::cout << "Cost: " << cost << std::endl;
 }
 
 int main() {
     //test_logistic();
-    test_logistic_load();
-    //test_xor();
+    //test_logistic_load();
+    test_xor();
     //test_xor_load();
     return 0;
 }
