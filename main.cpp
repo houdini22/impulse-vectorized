@@ -44,6 +44,7 @@ void test_logistic() {
     dataset.output = datasetOutput;
 
     Impulse::NeuralNetwork::Builder::Builder builder(400);
+    builder.createLayer(100, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
     builder.createLayer(20, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
     builder.createLayer(10, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
 
@@ -52,7 +53,7 @@ void test_logistic() {
     std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 
     Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
-    trainer.setLearningIterations(2000);
+    trainer.setLearningIterations(10000);
     trainer.setLearningRate(0.001);
     trainer.setVerboseStep(50);
 
@@ -62,6 +63,9 @@ void test_logistic() {
     trainer.train(dataset);
 
     std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+
+    Impulse::NeuralNetwork::NetworkSerializer serializer(net);
+    serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/logistic.json");
 }
 
 void test_xor() {
@@ -116,9 +120,21 @@ void test_xor_load() {
     std::cout << "Saved Forward: " << net->forward(inputVector2) << std::endl;
 }
 
+void test_logistic_load() {
+    Impulse::NeuralNetwork::Builder::Builder builder = Impulse::NeuralNetwork::Builder::Builder::fromJSON("/home/hud/CLionProjects/impulse-vectorized/saved/logistic.json");
+    Impulse::NeuralNetwork::Network * net = builder.getNetwork();
+
+    Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
+            "/home/hud/CLionProjects/impulse-new/data/ex4data1_x.csv");
+    Impulse::Dataset datasetInput = datasetBuilder1.build();
+
+    std::cout << "Saved Forward: " << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+}
+
 int main() {
     //test_logistic();
-    test_xor();
-    test_xor_load();
+    test_logistic_load();
+    //test_xor();
+    //test_xor_load();
     return 0;
 }
