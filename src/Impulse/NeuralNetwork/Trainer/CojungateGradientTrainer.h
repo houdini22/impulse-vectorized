@@ -19,21 +19,20 @@ namespace Impulse {
 
                 void train(Impulse::SlicedDataset &dataSet) {
                     Impulse::NeuralNetwork::Math::Minimizer::Fmincg minimizer;
-
                     Impulse::NeuralNetwork::Network *network = this->network;
                     Eigen::VectorXd theta = network->getRolledTheta();
+                    double regularization = this->regularization;
 
-                    std::cout << theta.rows() << "," << theta.cols() << std::endl;
+                    network->backward(dataSet.getInput(), dataSet.getOutput(), network->forward(dataSet.getInput()), this->regularization);
 
                     std::function<Impulse::NeuralNetwork::Trainer::CostGradientResult(Eigen::VectorXd)> callback(
-                            [this, &dataSet](Eigen::VectorXd input) {
-                                std::cout << input.rows() << "," << input.cols() << std::endl;
+                            [this, &dataSet, &regularization](Eigen::VectorXd input) {
                                 this->network->setRolledTheta(input);
+                                this->network->backward(dataSet.getInput(), dataSet.getOutput(), this->network->forward(dataSet.getInput()), regularization);
                                 return this->cost(dataSet);
                             });
 
-                    minimizer.minimize(callback, theta, this->learningIterations, true);
-                    //this->network->setRolledTheta(minimizer.minimize(cf, theta, this->learningIterations, true));
+                    this->network->setRolledTheta(minimizer.minimize(callback, theta, this->learningIterations, true));
                 }
             };
 

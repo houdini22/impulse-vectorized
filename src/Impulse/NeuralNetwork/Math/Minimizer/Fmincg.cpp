@@ -213,7 +213,7 @@ namespace Impulse {
 
                         if (success == 1) { // if line search succeeded
                             f1 = f2;
-                            if (verbose) {
+                            if (true) {
                                 clock_t end = clock();
                                 std::cout << "Iteration: " << i
                                           << " | Cost: " << f1

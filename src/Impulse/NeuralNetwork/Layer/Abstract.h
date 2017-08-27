@@ -21,6 +21,10 @@ namespace Impulse {
                 Eigen::MatrixXd Z;
                 Eigen::MatrixXd dW;
                 Eigen::MatrixXd db;
+                Eigen::MatrixXd vW;
+                Eigen::MatrixXd vb;
+                Eigen::MatrixXd sW;
+                Eigen::MatrixXd sb;
 
                 Abstract(unsigned int size, unsigned int prevSize) {
                     this->size = size;
@@ -30,8 +34,20 @@ namespace Impulse {
                     this->W.setRandom();
                     this->W = this->W.array() * sqrt(2.0 / this->prevSize);
 
-                    this->b.resize(this->size);
+                    this->b.resize(this->size, 1);
                     this->b.setZero();
+
+                    this->vW.resize(this->size, this->prevSize);
+                    this->vW.setZero();
+
+                    this->vb.resize(this->size, 1);
+                    this->vb.setZero();
+
+                    this->sW.resize(this->size, this->prevSize);
+                    this->sW.setZero();
+
+                    this->sb.resize(this->size, 1);
+                    this->sb.setZero();
                 }
 
                 Eigen::MatrixXd forward(Eigen::MatrixXd input) {
@@ -45,8 +61,31 @@ namespace Impulse {
                 virtual Eigen::MatrixXd derivative() = 0;
 
                 void updateParameters(double learningRate) {
-                    this->W += learningRate * this->dW;
-                    this->b += learningRate * this->db;
+                    double t = 2.0;
+                    double epsilon = 1e-8;
+
+                    this->vW = (0.9 * this->vW) + ((1.0 - 0.9) * this->dW);
+                    this->vb = (0.9 * this->vb) + ((1.0 - 0.9) * this->db);
+
+                    Eigen::MatrixXd vWcorrected = this->vW / (1.0 - (pow(0.9, t)));
+                    Eigen::MatrixXd vbCorrected = this->vb / (1.0 - (pow(0.9, t)));
+
+                    this->sW = (0.999 * this->sW) + ((1.0 - 0.999) * this->dW.unaryExpr([](const double x) {
+                        return pow(x, 2.0);
+                    }));
+                    this->sb = (0.999 * this->sW) + ((1.0 - 0.999) * this->db.unaryExpr([](const double x) {
+                        return pow(x, 2.0);
+                    }));
+
+                    Eigen::MatrixXd sWCorrected = this->sW / (1.0 - (pow(0.999, t)));
+                    Eigen::MatrixXd sbCorrected = this->sb / (1.0 - pow(0.999, t));
+
+                    this->W += learningRate * (vWcorrected.array() / (sWCorrected.unaryExpr([&epsilon](const double x) {
+                        return sqrt(x + epsilon);
+                    })).array()).array();
+                    this->b += learningRate * (vbCorrected.array() / (sbCorrected.unaryExpr([&epsilon](const double x) {
+                        return sqrt(x + epsilon);
+                    })).array()).array();
                 }
 
                 unsigned int getSize() {

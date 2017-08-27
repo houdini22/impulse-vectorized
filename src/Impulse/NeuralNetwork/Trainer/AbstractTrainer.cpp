@@ -57,7 +57,6 @@ namespace Impulse {
 
                 Impulse::NeuralNetwork::Trainer::CostGradientResult result;
                 result.error = error;
-                result.gradient = this->network->getRolledTheta();
 
                 return result;
             }
