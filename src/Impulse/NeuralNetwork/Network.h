@@ -69,39 +69,43 @@ namespace Impulse {
                 return this->layers.at(key);
             }
 
-            RolledTheta getRolledTheta() {
-                RolledTheta result;
+            Eigen::VectorXd getRolledTheta() {
+                std::vector<double> tmp;
 
                 for (long i = 0; i < this->layers.size(); i++) {
                     auto layer = this->layers.at(i);
+                    tmp.reserve((unsigned long) (layer->W.cols() * layer->W.rows()) + (layer->b.cols() * layer->b.rows()));
+
                     for (unsigned int j = 0; j < layer->W.rows(); j++) {
                         for (unsigned int k = 0; k < layer->W.cols(); k++) {
-                            result.push_back(layer->W(j, k));
+                            tmp.push_back(layer->W(j, k));
                         }
                     }
+
                     for (unsigned int j = 0; j < layer->b.rows(); j++) {
                         for (unsigned int k = 0; k < layer->b.cols(); k++) {
-                            result.push_back(layer->b(j, k));
+                            tmp.push_back(layer->b(j, k));
                         }
                     }
                 }
 
+                Eigen::VectorXd result = Eigen::Map<Eigen::VectorXd, Eigen::Unaligned>(tmp.data(), tmp.size());
                 return result;
             }
 
-            void setRolledTheta(RolledTheta theta) {
+            void setRolledTheta(Eigen::VectorXd theta) {
                 unsigned long t = 0;
 
-                for (long i = 0; i < this->layers.size(); i++) {
+                for (unsigned long i = 0; i < this->layers.size(); i++) {
                     auto layer = this->layers.at(i);
                     for (unsigned int j = 0; j < layer->W.rows(); j++) {
                         for (unsigned int k = 0; k < layer->W.cols(); k++) {
-                            layer->W(j, k) = theta.at(t++);
+                            layer->W(j, k) = theta(t++);
                         }
                     }
                     for (unsigned int j = 0; j < layer->b.rows(); j++) {
                         for (unsigned int k = 0; k < layer->b.cols(); k++) {
-                            layer->b(j, k) = theta.at(t++);
+                            layer->b(j, k) = theta(t++);
                         }
                     }
                 }

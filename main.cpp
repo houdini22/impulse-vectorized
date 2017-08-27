@@ -1,13 +1,5 @@
 //#define DEBUG 1
 
-//#define EIGEN_DONT_VECTORIZE
-#ifndef EIGEN_DONT_VECTORIZE // Not needed with Intel C++ Compiler XE 15.0
-#define EIGEN_VECTORIZE_SSE4_2
-#define EIGEN_VECTORIZE_SSE4_1
-#define EIGEN_VECTORIZE_SSSE3
-#define EIGEN_VECTORIZE_SSE3
-#endif
-
 #include <iostream>
 #include <cstdlib>
 #include <iostream>
@@ -26,10 +18,11 @@
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset.h"
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
 #include "src/Impulse/NeuralNetwork/Builder/Builder.h"
-#include "src/Impulse/NeuralNetwork/Trainer/AbstractTrainer.h"
+#include "src/Impulse/NeuralNetwork/Trainer/BatchGradientDescentTrainer.h"
 #include "src/Impulse/NeuralNetwork/NetworkSerializer.h"
+#include "src/Impulse/NeuralNetwork/Trainer/CojungateGradientTrainer.h"
 
-void test_logistic() {
+void test_logistic_gradient_descent() {
     // create dataset
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
             "/home/hud/CLionProjects/impulse-new/data/ex4data1_x.csv");
@@ -52,13 +45,59 @@ void test_logistic() {
 
     std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 
-    Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
-    trainer.setLearningIterations(10000);
+    Impulse::NeuralNetwork::Trainer::ConjugateGradientTrainer trainer(net);
+    trainer.setLearningIterations(500);
     trainer.setLearningRate(0.001);
     trainer.setVerboseStep(50);
 
-    double cost = trainer.cost(dataset);
-    std::cout << "Cost: " << cost << std::endl;
+    Impulse::NeuralNetwork::Trainer::CostGradientResult cost = trainer.cost(dataset);
+    std::cout << "Cost: " << cost.getError() << std::endl;
+
+    trainer.train(dataset);
+
+    std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+
+    Impulse::NeuralNetwork::NetworkSerializer serializer(net);
+    serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/logistic.json");
+}
+
+void test_logistic_conjugate_gradient() {
+    // create dataset
+    Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
+            "/home/hud/CLionProjects/impulse-new/data/ex4data1_x.csv");
+    Impulse::Dataset datasetInput = datasetBuilder1.build();
+
+    Impulse::DatasetBuilder::CSVBuilder datasetBuilder2(
+            "/home/hud/CLionProjects/impulse-new/data/ex4data1_y.csv");
+    Impulse::Dataset datasetOutput = datasetBuilder2.build();
+
+    Impulse::SlicedDataset dataset;
+    dataset.input = datasetInput;
+    dataset.output = datasetOutput;
+
+    Impulse::NeuralNetwork::Builder::Builder builder(400);
+    builder.createLayer(100, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
+    builder.createLayer(20, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
+    builder.createLayer(10, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
+
+    Impulse::NeuralNetwork::Network *net = builder.getNetwork();
+
+    std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+
+    /*Eigen::VectorXd theta = net->getRolledTheta();
+    net->setRolledTheta(theta);
+
+    std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+
+    return;*/
+
+    Impulse::NeuralNetwork::Trainer::ConjugateGradientTrainer trainer(net);
+    trainer.setLearningIterations(500);
+    trainer.setLearningRate(0.001);
+    trainer.setVerboseStep(50);
+
+    Impulse::NeuralNetwork::Trainer::CostGradientResult cost = trainer.cost(dataset);
+    std::cout << "Cost: " << cost.getError() << std::endl;
 
     trainer.train(dataset);
 
@@ -91,15 +130,19 @@ void test_xor() {
     Eigen::MatrixXd inputVector = sample.exportToEigen();
     std::cout << "Forward: " << net->forward(inputVector) << std::endl;
 
-    Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
-    trainer.setLearningIterations(20000);
+    Impulse::NeuralNetwork::Trainer::ConjugateGradientTrainer trainer(net);
+    trainer.setLearningIterations(1000);
     trainer.setLearningRate(20);
-    trainer.setVerboseStep(1000);
+    trainer.setVerboseStep(100);
 
-    double cost = trainer.cost(slicedDataset);
-    std::cout << "Cost: " << cost << std::endl;
+    Impulse::NeuralNetwork::Trainer::CostGradientResult cost = trainer.cost(slicedDataset);
+    std::cout << "Cost: " << cost.getError() << std::endl;
 
+    clock_t begin = clock();
     trainer.train(slicedDataset);
+    clock_t end = clock();
+
+    std::cout << "Training time: " << (double(end - begin) / CLOCKS_PER_SEC) << std::endl;
 
     std::cout << "Forward: " << net->forward(inputVector) << std::endl;
 
@@ -137,16 +180,17 @@ void test_logistic_load() {
 
     std::cout << "Saved Forward: " << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 
-    Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
+    Impulse::NeuralNetwork::Trainer::ConjugateGradientTrainer trainer(net);
 
-    double cost = trainer.cost(dataset);
-    std::cout << "Cost: " << cost << std::endl;
+    Impulse::NeuralNetwork::Trainer::CostGradientResult cost = trainer.cost(dataset);
+    std::cout << "Cost: " << cost.getError() << std::endl;
 }
 
 int main() {
-    //test_logistic();
+    //test_logistic_gradient_descent();
     //test_logistic_load();
-    test_xor();
+    //test_xor();
     //test_xor_load();
+    test_logistic_conjugate_gradient();
     return 0;
 }

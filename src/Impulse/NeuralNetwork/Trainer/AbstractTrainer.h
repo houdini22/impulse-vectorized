@@ -13,13 +13,17 @@ namespace Impulse {
 
             struct CostGradientResult {
                 double error;
-
-                double &getCost() {
+                Eigen::VectorXd gradient;
+                double &getError() {
                     return this->error;
+                }
+                Eigen::VectorXd &getGradient() {
+                    return this->gradient;
                 }
             };
 
             class AbstractTrainer {
+            protected:
                 Impulse::NeuralNetwork::Network *network;
                 double regularization = 0.0;
                 unsigned int learningIterations = 1000;
@@ -41,9 +45,9 @@ namespace Impulse {
 
                 void setVerboseStep(int value);
 
-                double cost(Impulse::SlicedDataset &dataSet);
+                Impulse::NeuralNetwork::Trainer::CostGradientResult cost(Impulse::SlicedDataset &dataSet);
 
-                void train(Impulse::SlicedDataset &dataSet);
+                virtual void train(Impulse::SlicedDataset &dataSet) = 0;
             };
 
         }

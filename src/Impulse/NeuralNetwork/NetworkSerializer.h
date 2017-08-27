@@ -24,7 +24,7 @@ namespace Impulse {
             }
 
             void toJSON(std::string path) {
-                json result;
+                /*json result;
 
                 result["inputSize"] = this->network->getInputSize();
                 result["layers"] = {};
@@ -37,7 +37,7 @@ namespace Impulse {
 
                 std::ofstream out(path);
                 out << result.dump();
-                out.close();
+                out.close();*/
             }
         };
 

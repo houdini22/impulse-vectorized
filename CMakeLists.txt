@@ -30,7 +30,18 @@ set(SOURCE_FILES
         src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetSample.h
         src/Vendor/json.hpp
         main.cpp
-        src/Impulse/NeuralNetwork/Builder/Builder.h src/Impulse/NeuralNetwork/Network.h src/Impulse/NeuralNetwork/Layer/Logistic.h src/Impulse/NeuralNetwork/Layer/Abstract.h src/Impulse/NeuralNetwork/Trainer/AbstractTrainer.h src/Impulse/NeuralNetwork/Trainer/AbstractTrainer.cpp)
+        src/Impulse/NeuralNetwork/Builder/Builder.h
+        src/Impulse/NeuralNetwork/Network.h
+        src/Impulse/NeuralNetwork/Layer/Logistic.h
+        src/Impulse/NeuralNetwork/Layer/Abstract.h
+        src/Impulse/NeuralNetwork/Trainer/AbstractTrainer.h
+        src/Impulse/NeuralNetwork/Trainer/AbstractTrainer.cpp
+        src/Impulse/NeuralNetwork/Trainer/BatchGradientDescentTrainer.h
+        src/Impulse/NeuralNetwork/Math/Matrix.h
+        src/Impulse/NeuralNetwork/Math/Vector.h
+        src/Impulse/NeuralNetwork/Math/Minimizer/Fmincg.cpp
+        src/Impulse/NeuralNetwork/Math/Minimizer/Fmincg.h
+    )
 
 find_package(Boost 1.57.0 COMPONENTS system filesystem REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})

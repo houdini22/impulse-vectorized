@@ -34,7 +34,7 @@ namespace Impulse {
                 this->verboseStep = value;
             }
 
-            double AbstractTrainer::cost(Impulse::SlicedDataset &dataSet) {
+            Impulse::NeuralNetwork::Trainer::CostGradientResult AbstractTrainer::cost(Impulse::SlicedDataset &dataSet) {
                 unsigned int m = dataSet.output.getSize();
                 Eigen::MatrixXd A = this->network->forward(dataSet.getInput());
                 Eigen::MatrixXd Y = dataSet.getOutput();
@@ -53,36 +53,13 @@ namespace Impulse {
                     }).sum();
                 }
 
-                return (-1.0) / (double) m * errors.sum() + (this->regularization / 2 * regularization);
-            }
+                double error = (-1.0) / (double) m * errors.sum() + (this->regularization / 2 * regularization);
 
-            void AbstractTrainer::train(Impulse::SlicedDataset &dataSet) {
-                Eigen::MatrixXd X = dataSet.getInput();
-                Eigen::MatrixXd Y = dataSet.getOutput();
-                Impulse::NeuralNetwork::Network *network = this->getNetwork();
+                Impulse::NeuralNetwork::Trainer::CostGradientResult result;
+                result.error = error;
+                result.gradient = this->network->getRolledTheta();
 
-                if (this->verbose) {
-                    std::cout << "Starting training with " << this->learningIterations << " iterations." << std::endl;
-                }
-
-                for (unsigned int step = 0; step < this->learningIterations; step++) {
-                    Eigen::MatrixXd predictions = network->forward(X);
-
-                    network->backward(X, Y, predictions, this->regularization);
-
-                    network->updateParameters(this->learningRate);
-
-                    double cost = this->cost(dataSet);
-
-                    if (this->verbose && (step + 1) % this->verboseStep == 0) {
-                        std::cout << "Iteration: " << (step + 1) << " | Error:" << cost << std::endl;
-                    }
-                }
-
-                if (this->verbose) {
-                    std::cout << "Training ended after " << this->learningIterations << " iterations "
-                              << "with error = " << this->cost(dataSet) << "." << std::endl;
-                }
+                return result;
             }
         }
 

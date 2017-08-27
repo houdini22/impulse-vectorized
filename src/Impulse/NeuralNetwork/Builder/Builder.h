@@ -39,7 +39,7 @@ namespace Impulse {
                 }
 
                 static Builder fromJSON(std::string path) {
-                    std::ifstream fileStream(path);
+                    /*std::ifstream fileStream(path);
                     json jsonFile;
                     fileStream >> jsonFile;
                     fileStream.close();
@@ -52,10 +52,11 @@ namespace Impulse {
                         builder.createLayer(it.value()[0], it.value()[1]);
                     }
 
-                    RolledTheta theta = jsonFile["weights"];
-                    builder.getNetwork()->setRolledTheta(theta);
+                    std::vector<double> theta = jsonFile["weights"];
 
-                    return builder;
+                    builder.getNetwork()->setRolledTheta(Eigen::Map<Eigen::VectorXd, Eigen::Unaligned>(theta.data(), theta.size()));
+
+                    return builder;*/
                 }
             };
 
