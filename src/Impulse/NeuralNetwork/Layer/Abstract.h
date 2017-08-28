@@ -30,7 +30,7 @@ namespace Impulse {
                     this->W.setRandom();
                     this->W = this->W.array() * sqrt(2.0 / this->prevSize);
 
-                    this->b.resize(this->size);
+                    this->b.resize(this->size, 1);
                     this->b.setZero();
                 }
 

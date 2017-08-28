@@ -1,12 +1,25 @@
-//#define DEBUG 1
-
-//#define EIGEN_DONT_VECTORIZE
-#ifndef EIGEN_DONT_VECTORIZE // Not needed with Intel C++ Compiler XE 15.0
-#define EIGEN_VECTORIZE_SSE4_2
+/*#define EIGEN_USE_MKL_ALL
+#define EIGEN_NO_DEBUG
+#define EIGEN_VECTORIZE
+#define VECTORIZE
+#define EIGEN_VECTORIZE_FMA
 #define EIGEN_VECTORIZE_SSE4_1
-#define EIGEN_VECTORIZE_SSSE3
-#define EIGEN_VECTORIZE_SSE3
-#endif
+#define EIGEN_VECTORIZE_SSE4_2
+#define EIGEN_VECTORIZE_AVX
+#define EIGEN_VECTORIZE_AVX2
+#define EIGEN_USE_BLAS
+*/
+
+#define EIGEN_USE_MKL_ALL
+#define EIGEN_NO_DEBUG
+#define EIGEN_VECTORIZE
+#define VECTORIZE
+#define EIGEN_VECTORIZE_FMA
+#define EIGEN_VECTORIZE_SSE4_1
+#define EIGEN_VECTORIZE_SSE4_2
+#define EIGEN_VECTORIZE_AVX
+#define EIGEN_VECTORIZE_AVX2
+#define EIGEN_USE_BLAS
 
 #include <iostream>
 #include <cstdlib>
@@ -14,6 +27,7 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include <chrono>
 #include <vector>
 #include <ios>
 #include <ctime>
@@ -28,6 +42,8 @@
 #include "src/Impulse/NeuralNetwork/Builder/Builder.h"
 #include "src/Impulse/NeuralNetwork/Trainer/AbstractTrainer.h"
 #include "src/Impulse/NeuralNetwork/NetworkSerializer.h"
+
+using namespace std::chrono;
 
 void test_logistic() {
     // create dataset
@@ -53,14 +69,18 @@ void test_logistic() {
     std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 
     Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
-    trainer.setLearningIterations(10000);
+    trainer.setLearningIterations(100);
     trainer.setLearningRate(0.001);
     trainer.setVerboseStep(50);
 
     double cost = trainer.cost(dataset);
     std::cout << "Cost: " << cost << std::endl;
 
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
     trainer.train(dataset);
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    auto duration = duration_cast<seconds>( t2 - t1 ).count();
+    std::cout << "Time: " << duration << std::endl;
 
     std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 
@@ -144,9 +164,9 @@ void test_logistic_load() {
 }
 
 int main() {
-    //test_logistic();
+    test_logistic();
     //test_logistic_load();
-    test_xor();
+    // test_xor();
     //test_xor_load();
     return 0;
 }
