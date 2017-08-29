@@ -12,87 +12,104 @@ namespace Impulse {
 
             class Abstract {
             protected:
-                unsigned int size;
-                unsigned int prevSize = 0;
+                unsigned int size; // number of neurons
+                unsigned int prevSize = 0; // number of prev layer size (input)
             public:
-                Eigen::MatrixXd W;
-                Eigen::VectorXd b;
-                Eigen::MatrixXd A;
-                Eigen::MatrixXd Z;
-                Eigen::MatrixXd dW;
-                Eigen::MatrixXd db;
-                Eigen::MatrixXd vW;
-                Eigen::MatrixXd vb;
-                Eigen::MatrixXd sW;
-                Eigen::MatrixXd sb;
+                Eigen::MatrixXd W; // weights
+                Eigen::VectorXd b; // bias
+                Eigen::MatrixXd A; // output of the layer after activation
+                Eigen::MatrixXd Z; // output of the layer before activation
+                Eigen::MatrixXd dW; // deltas for weights
+                Eigen::MatrixXd db; // deltas for bias
+                Eigen::MatrixXd gW; // gradient for weights
+                Eigen::MatrixXd gb; // gradient for bias (filled by ones)
 
                 Abstract(unsigned int size, unsigned int prevSize) {
                     this->size = size;
                     this->prevSize = prevSize;
 
+                    // initialize weights
                     this->W.resize(this->size, this->prevSize);
                     this->W.setRandom();
                     this->W = this->W.array() * sqrt(2.0 / this->prevSize);
 
+                    // initialize bias
                     this->b.resize(this->size, 1);
                     this->b.setZero();
 
-                    this->vW.resize(this->size, this->prevSize);
-                    this->vW.setZero();
+                    // initialize gradient for weights
+                    this->gW.resize(this->size, this->prevSize);
 
-                    this->vb.resize(this->size, 1);
-                    this->vb.setZero();
-
-                    this->sW.resize(this->size, this->prevSize);
-                    this->sW.setZero();
-
-                    this->sb.resize(this->size, 1);
-                    this->sb.setZero();
+                    // initialize gradient for bias
+                    this->gb.resize(this->size, 1);
+                    this->gb.setOnes(); // always 1 since its bias
                 }
 
+                /**
+                 * Forward propagation.
+                 * @param input
+                 * @return
+                 */
                 Eigen::MatrixXd forward(Eigen::MatrixXd input) {
                     this->Z = (this->W * input).colwise() + this->b;
                     this->A = this->activation(this->Z);
                     return this->A;
                 }
 
+                /**
+                 * Calculates activated values.
+                 * @param input
+                 * @return
+                 */
                 virtual Eigen::MatrixXd activation(Eigen::MatrixXd input) = 0;
 
+                /**
+                 * Calculates derivative. It depends on activation function.
+                 * @return
+                 */
                 virtual Eigen::MatrixXd derivative() = 0;
 
                 void updateParameters(double learningRate) {
-                    double t = 2.0;
-                    double epsilon = 1e-8;
-
-                    this->vW = (0.9 * this->vW) + ((1.0 - 0.9) * this->dW);
-                    this->vb = (0.9 * this->vb) + ((1.0 - 0.9) * this->db);
-
-                    Eigen::MatrixXd vWcorrected = this->vW / (1.0 - (pow(0.9, t)));
-                    Eigen::MatrixXd vbCorrected = this->vb / (1.0 - (pow(0.9, t)));
-
-                    this->sW = (0.999 * this->sW) + ((1.0 - 0.999) * this->dW.unaryExpr([](const double x) {
-                        return pow(x, 2.0);
-                    }));
-                    this->sb = (0.999 * this->sW) + ((1.0 - 0.999) * this->db.unaryExpr([](const double x) {
-                        return pow(x, 2.0);
-                    }));
-
-                    Eigen::MatrixXd sWCorrected = this->sW / (1.0 - (pow(0.999, t)));
-                    Eigen::MatrixXd sbCorrected = this->sb / (1.0 - pow(0.999, t));
-
-                    this->W += learningRate * (vWcorrected.array() / (sWCorrected.unaryExpr([&epsilon](const double x) {
-                        return sqrt(x + epsilon);
-                    })).array()).array();
-                    this->b += learningRate * (vbCorrected.array() / (sbCorrected.unaryExpr([&epsilon](const double x) {
-                        return sqrt(x + epsilon);
-                    })).array()).array();
+                    this->W -= learningRate * this->dW;
+                    this->b -= learningRate * this->db;
                 }
 
+                /**
+                 * Getter for layer size.
+                 * @return
+                 */
                 unsigned int getSize() {
                     return this->size;
                 }
 
+                /**
+                 * Getter for layer type.
+                 * @return
+                 */
                 virtual std::string getType() = 0;
+
+                /**
+                 * Calculates gradient for weights. Not for bias vector since its... bias - gradient always is
+                 * equal 1.
+                 * @param backwardInput
+                 * @return
+                 */
+                Eigen::MatrixXd calculateGradient(Eigen::MatrixXd backwardInput) {
+                    this->gW = backwardInput.array() * this->derivative().array();
+                    return this->gW;
+                }
+
+                /**
+                 * Calculates deltas.
+                 * @param backwardInput
+                 * @param prevA
+                 * @param regularization
+                 * @param m
+                 */
+                void calculateDeltas(Eigen::MatrixXd backwardInput, Eigen::MatrixXd prevA, double regularization, double m) {
+                    this->dW = backwardInput * prevA.transpose() + (regularization / m * this->W);
+                    this->db = backwardInput.rowwise().sum();
+                }
             };
         }
 

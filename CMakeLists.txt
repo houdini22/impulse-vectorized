@@ -44,16 +44,49 @@ set(SOURCE_FILES
     )
 
 find_package(Boost 1.57.0 COMPONENTS system filesystem REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
+if(BOOST_FOUND)
+    message("Boost FOUND")
+    include_directories(${Boost_INCLUDE_DIRS})
+endif()
 
+#OpenMP
+#-fopenmp
 FIND_PACKAGE(OpenMP REQUIRED)
 if(OPENMP_FOUND)
     message("OPENMP FOUND")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS} -m64 -Ofast -flto -march=native -funroll-loops -mavx -msse4.2 -fopenmp")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
+
+#Intel MLK
+#[[include(cmake/FindMKL.cmake)
+if(MKL_FOUND)
+    include_directories(MLK_INCLUDE_DIRS)
+    link_directories(MKL_LIBRARIES)
+endif()]]
+
+#-lblas
+#[[FIND_PACKAGE(BLAS REQUIRED)
+if(BLAS_FOUND)
+    message("BLAS FOUND")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${BLAS_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${BLAS_CXX_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${BLAS_EXE_LINKER_FLAGS}")
+endif()]]
+
+#its slower with lapack
+#-llapack
+#[[FIND_PACKAGE(LAPACK REQUIRED)
+if(LAPACK_FOUND)
+    message("LAPACK FOUND")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LAPACK_LINKER_FLAGS}")
+    link_directories(LAPACK_LIBRARIES)
+endif()]]
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -m64 -lboost_system -lboost_filesystem -flto -march=native -funroll-loops -mavx -msse4.2 -fopenmp")
 
 add_executable(impulse_vectorized ${SOURCE_FILES})
 
 target_link_libraries(impulse_vectorized ${Boost_LIBRARIES})
+#target_link_libraries(impulse_vectorized ${BLAS_LIBRARIES})

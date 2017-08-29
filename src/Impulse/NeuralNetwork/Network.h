@@ -39,13 +39,20 @@ namespace Impulse {
 
             void backward(Eigen::MatrixXd X, Eigen::MatrixXd Y, Eigen::MatrixXd predictions, double regularization) {
                 long m = X.cols();
-                Eigen::MatrixXd E = (Y.array() - predictions.array());
-                Eigen::MatrixXd dZ = E.array();
+                Eigen::MatrixXd dZ = predictions.array() - Y.array();
 
                 for (long i = this->layers.size() - 1; i >= 0; i--) {
-                    dZ.array() *= this->layers.at(i)->derivative().array();
-                    this->layers.at(i)->dW = dZ * (i == 0 ? X.transpose() : this->layers.at(i - 1)->A.transpose()) + (regularization / (double) m * this->layers.at(i)->W);
-                    this->layers.at(i)->db = dZ.rowwise().sum();
+                    auto currentLayer = this->layers.at(i);
+
+                    dZ = currentLayer->calculateGradient(dZ);
+
+                    currentLayer->calculateDeltas(dZ,
+                                                  (i == 0 ?
+                                                   X :
+                                                   this->layers.at(i - 1)->A),
+                                                  regularization,
+                                                  (double) m
+                    );
 
                     dZ = this->layers.at(i)->W.transpose() * dZ;
                 }
@@ -74,7 +81,8 @@ namespace Impulse {
 
                 for (long i = 0; i < this->layers.size(); i++) {
                     auto layer = this->layers.at(i);
-                    tmp.reserve((unsigned long) (layer->W.cols() * layer->W.rows()) + (layer->b.cols() * layer->b.rows()));
+                    tmp.reserve(
+                            (unsigned long) (layer->W.cols() * layer->W.rows()) + (layer->b.cols() * layer->b.rows()));
 
                     for (unsigned int j = 0; j < layer->W.rows(); j++) {
                         for (unsigned int k = 0; k < layer->W.cols(); k++) {
