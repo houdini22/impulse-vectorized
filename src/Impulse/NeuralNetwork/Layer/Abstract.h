@@ -45,8 +45,8 @@ namespace Impulse {
                 virtual Eigen::MatrixXd derivative() = 0;
 
                 void updateParameters(double learningRate) {
-                    this->W += learningRate * this->dW;
-                    this->b += learningRate * this->db;
+                    this->W -= learningRate * this->dW;
+                    this->b -= learningRate * this->db;
                 }
 
                 unsigned int getSize() {

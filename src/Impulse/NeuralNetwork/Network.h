@@ -39,7 +39,7 @@ namespace Impulse {
 
             void backward(Eigen::MatrixXd X, Eigen::MatrixXd Y, Eigen::MatrixXd predictions, double regularization) {
                 long m = X.cols();
-                Eigen::MatrixXd E = (Y.array() - predictions.array());
+                Eigen::MatrixXd E = (predictions.array() - Y.array());
                 Eigen::MatrixXd dZ = E.array();
 
                 for (long i = this->layers.size() - 1; i >= 0; i--) {
