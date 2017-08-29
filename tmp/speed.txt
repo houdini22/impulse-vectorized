@@ -4,18 +4,6 @@ trainer.setVerboseStep(50);
 
 gradient descent
 
-without vectorization #defines:
-Time: 500.772
-
-with vectorization #defines
-Time: 474.576
-
-with only BLAS
-Time: ??? to slow ???
-
-BLAS + vectorization
-Time: ??? to slow ???
-
 /////////////
 
 100 iterations

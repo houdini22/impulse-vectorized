@@ -1,25 +1,10 @@
-/*#define EIGEN_USE_MKL_ALL
-#define EIGEN_NO_DEBUG
-#define EIGEN_VECTORIZE
-#define VECTORIZE
-#define EIGEN_VECTORIZE_FMA
-#define EIGEN_VECTORIZE_SSE4_1
-#define EIGEN_VECTORIZE_SSE4_2
-#define EIGEN_VECTORIZE_AVX
-#define EIGEN_VECTORIZE_AVX2
-#define EIGEN_USE_BLAS
-*/
-
+/*
 #define EIGEN_USE_MKL_ALL
-#define EIGEN_NO_DEBUG
-#define EIGEN_VECTORIZE
-#define VECTORIZE
-#define EIGEN_VECTORIZE_FMA
-#define EIGEN_VECTORIZE_SSE4_1
-#define EIGEN_VECTORIZE_SSE4_2
-#define EIGEN_VECTORIZE_AVX
-#define EIGEN_VECTORIZE_AVX2
 #define EIGEN_USE_BLAS
+#define EIGEN_USE_THREADS
+#define EIGEN_USE_GPU
+#define EIGEN_USE_SYCL
+*/
 
 #include <iostream>
 #include <cstdlib>
@@ -71,7 +56,7 @@ void test_logistic() {
     Impulse::NeuralNetwork::Trainer::AbstractTrainer trainer(net);
     trainer.setLearningIterations(100);
     trainer.setLearningRate(0.001);
-    trainer.setVerboseStep(50);
+    trainer.setVerboseStep(1);
 
     double cost = trainer.cost(dataset);
     std::cout << "Cost: " << cost << std::endl;

@@ -49,32 +49,33 @@ if(OPENMP_FOUND)
 endif()
 
 #Intel MLK
-include(cmake/FindMKL.cmake)
+#[[include(cmake/FindMKL.cmake)
 if(MKL_FOUND)
     include_directories(MLK_INCLUDE_DIRS)
     link_directories(MKL_LIBRARIES)
-endif()
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -m64 -lboost_system -lboost_filesystem -flto -march=native -funroll-loops -mavx -msse4.2 -fopenmp -llapack -lblas")
+endif()]]
 
 #-lblas
-FIND_PACKAGE(BLAS REQUIRED)
+#[[FIND_PACKAGE(BLAS REQUIRED)
 if(BLAS_FOUND)
     message("BLAS FOUND")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${BLAS_C_FLAGS}")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${BLAS_CXX_FLAGS}")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${BLAS_EXE_LINKER_FLAGS}")
-endif()
+endif()]]
 
+#its slower with lapack
 #-llapack
-FIND_PACKAGE(LAPACK REQUIRED)
+#[[FIND_PACKAGE(LAPACK REQUIRED)
 if(LAPACK_FOUND)
     message("LAPACK FOUND")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LAPACK_LINKER_FLAGS}")
     link_directories(LAPACK_LIBRARIES)
-endif()
+endif()]]
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -m64 -lboost_system -lboost_filesystem -flto -march=native -funroll-loops -mavx -msse4.2 -fopenmp")
 
 add_executable(impulse_vectorized ${SOURCE_FILES})
 
 target_link_libraries(impulse_vectorized ${Boost_LIBRARIES})
-target_link_libraries(impulse_vectorized ${BLAS_LIBRARIES})
+#target_link_libraries(impulse_vectorized ${BLAS_LIBRARIES})
