@@ -14,10 +14,10 @@ namespace Impulse {
             struct CostGradientResult {
                 double error;
                 Eigen::VectorXd gradient;
-                double &getError() {
+                double getError() {
                     return this->error;
                 }
-                Eigen::VectorXd &getGradient() {
+                Eigen::VectorXd getGradient() {
                     return this->gradient;
                 }
             };

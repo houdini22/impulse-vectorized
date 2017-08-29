@@ -7,6 +7,7 @@
 #include <ctime>
 
 #include "Fmincg.h"
+#include "../../Trainer/CojungateGradientTrainer.h"
 
 /*
  * Minimize a continuous differentialble multivariate function. Starting point <br/>
@@ -66,12 +67,15 @@
  */
 
 namespace Impulse {
+
     namespace NeuralNetwork {
+
         namespace Math {
+
             namespace Minimizer {
+
                 Eigen::VectorXd Fmincg::minimize(
-                        std::function<Impulse::NeuralNetwork::Trainer::CostGradientResult(
-                                Eigen::VectorXd)> costFunction,
+                        Impulse::NeuralNetwork::Trainer::CostFunction costFunction,
                         Eigen::VectorXd theta, unsigned int length, bool verbose) {
                     // input will be the pointer to our current active parameter set
                     Eigen::VectorXd input(theta);
@@ -91,6 +95,7 @@ namespace Impulse {
                     Impulse::NeuralNetwork::Trainer::CostGradientResult evaluateCost = costFunction(input);
                     double f1 = evaluateCost.getError();
                     df1 = evaluateCost.getGradient();
+                    std::cout << "GRADIENT: " << df1.rows() << "," << df1.cols() << std::endl;
                     i = i + (length < 0 ? 1 : 0);
                     // search direction is steepest
                     s = (df1 * -1.0);

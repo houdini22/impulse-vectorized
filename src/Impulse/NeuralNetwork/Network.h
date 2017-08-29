@@ -44,7 +44,7 @@ namespace Impulse {
                 for (long i = this->layers.size() - 1; i >= 0; i--) {
                     auto currentLayer = this->layers.at(i);
 
-                    dZ = currentLayer->calculateGradient(dZ);
+                    dZ = currentLayer->calculateDerivative(dZ);
 
                     currentLayer->calculateDeltas(dZ,
                                                   (i == 0 ?
@@ -93,6 +93,29 @@ namespace Impulse {
                     for (unsigned int j = 0; j < layer->b.rows(); j++) {
                         for (unsigned int k = 0; k < layer->b.cols(); k++) {
                             tmp.push_back(layer->b(j, k));
+                        }
+                    }
+                }
+
+                Eigen::VectorXd result = Eigen::Map<Eigen::VectorXd, Eigen::Unaligned>(tmp.data(), tmp.size());
+                return result;
+            }
+
+            Eigen::VectorXd getRolledGradient() {
+                std::vector<double> tmp;
+
+                for (unsigned long i = 0; i < this->layers.size(); i++) {
+                    auto layer = this->layers.at(i);
+
+                    for (unsigned int j = 0; j < layer->gW.rows(); j++) {
+                        for (unsigned int k = 0; k < layer->gW.cols(); k++) {
+                            tmp.push_back(layer->gW(j, k));
+                        }
+                    }
+
+                    for (unsigned int j = 0; j < layer->gb.rows(); j++) {
+                        for (unsigned int k = 0; k < layer->gb.cols(); k++) {
+                            tmp.push_back(layer->gb(j, k));
                         }
                     }
                 }

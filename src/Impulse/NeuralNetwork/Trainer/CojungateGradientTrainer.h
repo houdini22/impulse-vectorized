@@ -11,6 +11,9 @@ namespace Impulse {
 
         namespace Trainer {
 
+            typedef std::function<Impulse::NeuralNetwork::Trainer::CostGradientResult(
+                    Eigen::VectorXd)> CostFunction;
+
             class ConjugateGradientTrainer : public AbstractTrainer {
             public:
                 ConjugateGradientTrainer(Network *net) : AbstractTrainer(net) {
@@ -25,10 +28,10 @@ namespace Impulse {
 
                     network->backward(dataSet.getInput(), dataSet.getOutput(), network->forward(dataSet.getInput()), this->regularization);
 
-                    std::function<Impulse::NeuralNetwork::Trainer::CostGradientResult(Eigen::VectorXd)> callback(
+                    CostFunction callback(
                             [this, &dataSet, &regularization](Eigen::VectorXd input) {
-                                this->network->setRolledTheta(input);
-                                this->network->backward(dataSet.getInput(), dataSet.getOutput(), this->network->forward(dataSet.getInput()), regularization);
+                                //this->network->setRolledTheta(input);
+                                //this->network->backward(dataSet.getInput(), dataSet.getOutput(), this->network->forward(dataSet.getInput()), regularization);
                                 return this->cost(dataSet);
                             });
 

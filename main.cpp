@@ -51,7 +51,7 @@ void test_logistic_cg() {
 
     Impulse::NeuralNetwork::Network *net = builder.getNetwork();
 
-    std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+    //std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 
     Impulse::NeuralNetwork::Trainer::ConjugateGradientTrainer trainer(net);
     trainer.setLearningIterations(1000);
@@ -193,8 +193,8 @@ void test_logistic_load() {
 }
 
 int main() {
-    //test_logistic_cg();
-    test_logistic();
+    test_logistic_cg();
+    //test_logistic();
     //test_logistic_load();
     //test_xor();
     //test_xor_load();

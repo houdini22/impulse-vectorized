@@ -94,7 +94,7 @@ namespace Impulse {
                  * @param backwardInput
                  * @return
                  */
-                Eigen::MatrixXd calculateGradient(Eigen::MatrixXd backwardInput) {
+                Eigen::MatrixXd calculateDerivative(Eigen::MatrixXd backwardInput) {
                     this->gW = backwardInput.array() * this->derivative().array();
                     return this->gW;
                 }
