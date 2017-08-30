@@ -1,4 +1,7 @@
 #include "AbstractTrainer.h"
+#include "../Math/Matrix.h"
+
+using Matrix = Impulse::NeuralNetwork::Math::T_Matrix;
 
 namespace Impulse {
 
@@ -36,10 +39,10 @@ namespace Impulse {
 
             Impulse::NeuralNetwork::Trainer::CostGradientResult AbstractTrainer::cost(Impulse::SlicedDataset &dataSet) {
                 unsigned int m = dataSet.output.getSize();
-                Eigen::MatrixXd A = this->network->forward(dataSet.getInput());
-                Eigen::MatrixXd Y = dataSet.getOutput();
+                Matrix A = this->network->forward(dataSet.getInput());
+                Matrix Y = dataSet.getOutput();
 
-                Eigen::MatrixXd errors = (Y.array() * A.unaryExpr([](const double x) { return log(x); }).array())
+                Matrix errors = (Y.array() * A.unaryExpr([](const double x) { return log(x); }).array())
                                          +
                                          (Y.unaryExpr([](const double x) { return 1.0 - x; }).array()
                                           *

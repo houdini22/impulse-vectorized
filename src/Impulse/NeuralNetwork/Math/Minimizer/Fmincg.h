@@ -18,6 +18,7 @@
 
 #include "../../Trainer/AbstractTrainer.h"
 #include "../../Network.h"
+#include "../Matrix.h"
 
 namespace Impulse {
     namespace NeuralNetwork {
@@ -34,10 +35,10 @@ namespace Impulse {
                     ~Fmincg(void) {
                     }
 
-                    Eigen::VectorXd minimize(
+                    Vector minimize(
                             std::function<Impulse::NeuralNetwork::Trainer::CostGradientResult(
-                                    Eigen::VectorXd)> costFunction,
-                            Eigen::VectorXd theta, unsigned int length, bool verbose);
+                                    Vector)> costFunction,
+                            Vector theta, unsigned int length, bool verbose);
                 };
 
             }

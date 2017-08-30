@@ -4,6 +4,10 @@
 #include <vector>
 #include <iostream>
 #include "Layer/Abstract.h"
+#include "Math/Matrix.h"
+
+using Matrix = Impulse::NeuralNetwork::Math::T_Matrix;
+using Vector = Impulse::NeuralNetwork::Math::T_Vector;
 
 namespace Impulse {
 
@@ -27,8 +31,8 @@ namespace Impulse {
                 this->layers.push_back(layer);
             }
 
-            Eigen::MatrixXd forward(Eigen::MatrixXd input) {
-                Eigen::MatrixXd output = input;
+            Matrix forward(Matrix input) {
+                Matrix output = input;
 
                 for (LayerContainer::iterator it = this->layers.begin(); it != this->layers.end(); ++it) {
                     output = (*it)->forward(output);
@@ -37,22 +41,26 @@ namespace Impulse {
                 return output;
             }
 
-            void backward(Eigen::MatrixXd X, Eigen::MatrixXd Y, Eigen::MatrixXd predictions, double regularization) {
+            void backward(Matrix X, Matrix Y, Matrix predictions, double regularization) {
                 long m = X.cols();
-                Eigen::MatrixXd dZ = predictions.array() - Y.array();
+                unsigned int size = this->getSize();
+
+                Matrix dZ = predictions.array() - Y.array();
+                Matrix sigma = dZ;
 
                 for (long i = this->layers.size() - 1; i >= 0; i--) {
-                    auto currentLayer = this->layers.at(i);
+                    auto layer = this->layers.at(i);
 
-                    dZ = currentLayer->calculateDerivative(dZ);
+                    dZ = layer->calculateDerivative(dZ);
 
-                    currentLayer->calculateDeltas(dZ,
-                                                  (i == 0 ?
-                                                   X :
-                                                   this->layers.at(i - 1)->A),
-                                                  regularization,
-                                                  (double) m
+                    layer->calculateGradient(dZ,
+                                                    (i == 0 ?
+                                                     X :
+                                                     this->layers.at(i - 1)->A),
+                                                    regularization,
+                                                    (double) m
                     );
+
 
                     dZ = this->layers.at(i)->W.transpose() * dZ;
                 }
@@ -76,7 +84,7 @@ namespace Impulse {
                 return this->layers.at(key);
             }
 
-            Eigen::VectorXd getRolledTheta() {
+            Vector getRolledTheta() {
                 std::vector<double> tmp;
 
                 for (long i = 0; i < this->layers.size(); i++) {
@@ -97,34 +105,34 @@ namespace Impulse {
                     }
                 }
 
-                Eigen::VectorXd result = Eigen::Map<Eigen::VectorXd, Eigen::Unaligned>(tmp.data(), tmp.size());
+                Vector result = Eigen::Map<Vector, Eigen::Unaligned>(tmp.data(), tmp.size());
                 return result;
             }
 
-            Eigen::VectorXd getRolledGradient() {
+            Vector getRolledGradient() {
                 std::vector<double> tmp;
 
                 for (unsigned long i = 0; i < this->layers.size(); i++) {
                     auto layer = this->layers.at(i);
 
-                    for (unsigned int j = 0; j < layer->gW.rows(); j++) {
-                        for (unsigned int k = 0; k < layer->gW.cols(); k++) {
-                            tmp.push_back(layer->gW(j, k));
+                    for (unsigned int j = 0; j < layer->wDerivative.rows(); j++) {
+                        for (unsigned int k = 0; k < layer->wDerivative.cols(); k++) {
+                            tmp.push_back(layer->wDerivative(j, k));
                         }
                     }
 
-                    for (unsigned int j = 0; j < layer->gb.rows(); j++) {
-                        for (unsigned int k = 0; k < layer->gb.cols(); k++) {
-                            tmp.push_back(layer->gb(j, k));
+                    for (unsigned int j = 0; j < layer->bDerivative.rows(); j++) {
+                        for (unsigned int k = 0; k < layer->bDerivative.cols(); k++) {
+                            tmp.push_back(layer->bDerivative(j, k));
                         }
                     }
                 }
 
-                Eigen::VectorXd result = Eigen::Map<Eigen::VectorXd, Eigen::Unaligned>(tmp.data(), tmp.size());
+                Vector result = Eigen::Map<Vector, Eigen::Unaligned>(tmp.data(), tmp.size());
                 return result;
             }
 
-            void setRolledTheta(Eigen::VectorXd theta) {
+            void setRolledTheta(Vector theta) {
                 unsigned long t = 0;
 
                 for (unsigned long i = 0; i < this->layers.size(); i++) {

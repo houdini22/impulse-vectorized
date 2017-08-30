@@ -2,6 +2,9 @@
 #define IMPULSE_VECTORIZED_GRADIENTDESCENTTRAINER_H
 
 #include "AbstractTrainer.h"
+#include "../Math/Matrix.h"
+
+using Matrix = Impulse::NeuralNetwork::Math::T_Matrix;
 
 namespace Impulse {
 
@@ -16,8 +19,8 @@ namespace Impulse {
                 }
 
                 void train(Impulse::SlicedDataset &dataSet) {
-                    Eigen::MatrixXd X = dataSet.getInput();
-                    Eigen::MatrixXd Y = dataSet.getOutput();
+                    Matrix X = dataSet.getInput();
+                    Matrix Y = dataSet.getOutput();
                     Impulse::NeuralNetwork::Network *network = this->getNetwork();
 
                     if (this->verbose) {
@@ -25,7 +28,7 @@ namespace Impulse {
                     }
 
                     for (unsigned int step = 0; step < this->learningIterations; step++) {
-                        Eigen::MatrixXd predictions = network->forward(X);
+                        Matrix predictions = network->forward(X);
 
                         network->backward(X, Y, predictions, this->regularization);
 

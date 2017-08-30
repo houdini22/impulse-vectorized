@@ -1,32 +1,24 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+#include <eigen3/Eigen/Core>
+#include <eigen3/Eigen/Dense>
 #include "Vector.h"
 
 namespace Impulse {
 
-    namespace Math {
+    namespace NeuralNetwork {
 
-        class Matrix {
-        public:
+        namespace Math {
 
-            static void rollMatrixToVector(Eigen::MatrixXd &matrix, Impulse::Math::TypeVector &vector) {
-                unsigned int xSize = matrix.cols();
-                unsigned int ySize = matrix.rows();
-                unsigned int vectorSize = xSize * ySize;
+            typedef Eigen::MatrixXd T_Matrix;
+            typedef Eigen::VectorXd T_Vector;
 
-                vector.reserve(vectorSize);
+        }
 
-                for (unsigned int i = 0; i < xSize; i++) {
-                    Eigen::RowVectorXd row = matrix.col(i);
-                    for (unsigned int j = 0; j < ySize; j++) {
-                        vector.push_back(row(j));
-                    }
-                }
-            }
-        };
     }
-};
+
+}
 
 
 #endif /* MATRIX_H */

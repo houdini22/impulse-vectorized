@@ -9,6 +9,7 @@
 #include "Fmincg.h"
 #include "../../Trainer/CojungateGradientTrainer.h"
 
+using Vector = Impulse::NeuralNetwork::Math::T_Vector;
 /*
  * Minimize a continuous differentialble multivariate function. Starting point <br/>
  * is given by "X" (D by 1), and the function named in the string "f", must<br/>
@@ -74,18 +75,18 @@ namespace Impulse {
 
             namespace Minimizer {
 
-                Eigen::VectorXd Fmincg::minimize(
+                Vector Fmincg::minimize(
                         Impulse::NeuralNetwork::Trainer::CostFunction costFunction,
-                        Eigen::VectorXd theta, unsigned int length, bool verbose) {
+                        Vector theta, unsigned int length, bool verbose) {
                     // input will be the pointer to our current active parameter set
-                    Eigen::VectorXd input(theta);
-                    Eigen::VectorXd X0(input);
+                    Vector input(theta);
+                    Vector X0(input);
                     // search directions
-                    Eigen::VectorXd s(input.size());
+                    Vector s(input.size());
                     // gradients
-                    Eigen::VectorXd df0(input.size());
-                    Eigen::VectorXd df1(input.size());
-                    Eigen::VectorXd df2(input.size());
+                    Vector df0(input.size());
+                    Vector df1(input.size());
+                    Vector df2(input.size());
 
                     // define some integers for bookkeeping and then start
                     int M = 0;

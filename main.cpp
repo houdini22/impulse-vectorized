@@ -20,6 +20,7 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
 
+#include "src/Impulse/NeuralNetwork/Math/Matrix.h"
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetBuilder/CSVBuilder.h"
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset.h"
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
@@ -29,6 +30,7 @@
 #include "src/Impulse/NeuralNetwork/Trainer/CojungateGradientTrainer.h"
 
 using namespace std::chrono;
+using Matrix = Impulse::NeuralNetwork::Math::T_Matrix;
 
 void test_logistic_cg() {
     // create dataset
@@ -137,7 +139,7 @@ void test_xor() {
     Impulse::NeuralNetwork::Network *net = builder.getNetwork();
 
     Impulse::DatasetSample sample({0, 1});
-    Eigen::MatrixXd inputVector = sample.exportToEigen();
+    Matrix inputVector = sample.exportToEigen();
     std::cout << "Forward: " << net->forward(inputVector) << std::endl;
 
     Impulse::NeuralNetwork::Trainer::ConjugateGradientTrainer trainer(net);
@@ -153,7 +155,7 @@ void test_xor() {
     std::cout << "Forward: " << net->forward(inputVector) << std::endl;
 
     Impulse::DatasetSample sample2({1, 1});
-    Eigen::MatrixXd inputVector2 = sample2.exportToEigen();
+    Matrix inputVector2 = sample2.exportToEigen();
     std::cout << "Forward: " << net->forward(inputVector2) << std::endl;
 
     Impulse::NeuralNetwork::NetworkSerializer serializer(net);
@@ -165,7 +167,7 @@ void test_xor_load() {
     Impulse::NeuralNetwork::Network * net = builder.getNetwork();
 
     Impulse::DatasetSample sample2({1, 1});
-    Eigen::MatrixXd inputVector2 = sample2.exportToEigen();
+    Matrix inputVector2 = sample2.exportToEigen();
     std::cout << "Saved Forward: " << net->forward(inputVector2) << std::endl;
 }
 
@@ -193,8 +195,8 @@ void test_logistic_load() {
 }
 
 int main() {
-    test_logistic_cg();
-    //test_logistic();
+    //test_logistic_cg();
+    test_logistic();
     //test_logistic_load();
     //test_xor();
     //test_xor_load();

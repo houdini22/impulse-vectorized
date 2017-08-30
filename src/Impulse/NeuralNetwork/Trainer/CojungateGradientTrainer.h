@@ -4,6 +4,10 @@
 #include "AbstractTrainer.h"
 #include "../Math/Minimizer/Fmincg.h"
 #include "../Network.h"
+#include "../Math/Matrix.h"
+
+using Matrix = Impulse::NeuralNetwork::Math::T_Matrix;
+using Vector = Impulse::NeuralNetwork::Math::T_Vector;
 
 namespace Impulse {
 
@@ -12,7 +16,7 @@ namespace Impulse {
         namespace Trainer {
 
             typedef std::function<Impulse::NeuralNetwork::Trainer::CostGradientResult(
-                    Eigen::VectorXd)> CostFunction;
+                    Vector)> CostFunction;
 
             class ConjugateGradientTrainer : public AbstractTrainer {
             public:
@@ -23,13 +27,13 @@ namespace Impulse {
                 void train(Impulse::SlicedDataset &dataSet) {
                     Impulse::NeuralNetwork::Math::Minimizer::Fmincg minimizer;
                     Impulse::NeuralNetwork::Network *network = this->network;
-                    Eigen::VectorXd theta = network->getRolledTheta();
+                    Vector theta = network->getRolledTheta();
                     double regularization = this->regularization;
 
                     network->backward(dataSet.getInput(), dataSet.getOutput(), network->forward(dataSet.getInput()), this->regularization);
 
                     CostFunction callback(
-                            [this, &dataSet, &regularization](Eigen::VectorXd input) {
+                            [this, &dataSet, &regularization](Vector input) {
                                 //this->network->setRolledTheta(input);
                                 //this->network->backward(dataSet.getInput(), dataSet.getOutput(), this->network->forward(dataSet.getInput()), regularization);
                                 return this->cost(dataSet);

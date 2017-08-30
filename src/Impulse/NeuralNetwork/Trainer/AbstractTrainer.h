@@ -3,7 +3,10 @@
 
 #include <math.h>
 #include "../Network.h"
+#include "../Math/Matrix.h"
 #include "../../../Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
+
+using Vector = Impulse::NeuralNetwork::Math::T_Vector;
 
 namespace Impulse {
 
@@ -13,11 +16,11 @@ namespace Impulse {
 
             struct CostGradientResult {
                 double error;
-                Eigen::VectorXd gradient;
+                Vector gradient;
                 double getError() {
                     return this->error;
                 }
-                Eigen::VectorXd getGradient() {
+                Vector getGradient() {
                     return this->gradient;
                 }
             };

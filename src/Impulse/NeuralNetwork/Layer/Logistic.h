@@ -3,6 +3,9 @@
 
 #include <string>
 #include "Abstract.h"
+#include "../Math/Matrix.h"
+
+using Matrix = Impulse::NeuralNetwork::Math::T_Matrix;
 
 namespace Impulse {
 
@@ -20,14 +23,14 @@ namespace Impulse {
 
                 }
 
-                Eigen::MatrixXd activation(Eigen::MatrixXd input) {
+                Matrix activation(Matrix input) {
                     return input.unaryExpr([](const double x) {
                         return 1.0 / (1.0 + exp(-x));
                     });
                 }
 
-                Eigen::MatrixXd derivative() {
-                    return this->A.array() * (1.0 - this->A.array());
+                Matrix derivative(Matrix input) {
+                    return input.array() * (1.0 - input.array());
                 }
 
                 std::string getType() {
