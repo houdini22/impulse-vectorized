@@ -39,7 +39,7 @@ namespace Impulse {
                                 return this->cost(dataSet);
                             });
 
-                    this->network->setRolledTheta(minimizer.minimize(callback, theta, this->learningIterations, true));
+                    this->network->setRolledTheta(minimizer.minimize(callback, theta, this->learningIterations, this->verbose));
                 }
             };
 

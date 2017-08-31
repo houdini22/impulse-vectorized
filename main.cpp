@@ -56,7 +56,7 @@ void test_logistic_cg() {
     //std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 
     Impulse::NeuralNetwork::Trainer::ConjugateGradientTrainer trainer(net);
-    trainer.setLearningIterations(1000);
+    trainer.setLearningIterations(400);
     trainer.setLearningRate(0.001);
     trainer.setVerboseStep(1);
 
@@ -143,7 +143,7 @@ void test_xor() {
     std::cout << "Forward: " << net->forward(inputVector) << std::endl;
 
     Impulse::NeuralNetwork::Trainer::ConjugateGradientTrainer trainer(net);
-    trainer.setLearningIterations(5000);
+    trainer.setLearningIterations(400);
     trainer.setLearningRate(20);
     trainer.setVerboseStep(100);
 

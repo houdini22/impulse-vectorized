@@ -5,11 +5,15 @@
 #include <algorithm>
 #include <iostream>
 #include <ctime>
+#include <chrono>
+#include <ctime>
 
 #include "Fmincg.h"
 #include "../../Trainer/CojungateGradientTrainer.h"
 
 using Vector = Impulse::NeuralNetwork::Math::T_Vector;
+using namespace std::chrono;
+
 /*
  * Minimize a continuous differentialble multivariate function. Starting point <br/>
  * is given by "X" (D by 1), and the function named in the string "f", must<br/>
@@ -65,6 +69,7 @@ using Vector = Impulse::NeuralNetwork::Math::T_Vector;
  * BTW "fmincg" stands for Function minimize nonlinear conjugate gradient
  * [hud]
  * 1) move vector class to Eigen
+ * 2) adjust types
  */
 
 namespace Impulse {
@@ -96,7 +101,6 @@ namespace Impulse {
                     Impulse::NeuralNetwork::Trainer::CostGradientResult evaluateCost = costFunction(input);
                     double f1 = evaluateCost.getError();
                     df1 = evaluateCost.getGradient();
-                    std::cout << "GRADIENT: " << df1.rows() << "," << df1.cols() << std::endl;
                     i = i + (length < 0 ? 1 : 0);
                     // search direction is steepest
                     s = (df1 * -1.0);
@@ -105,7 +109,7 @@ namespace Impulse {
                     double z1 = red / (1.0 - d1); // initial step is red/(|s|+1)
 
                     while (i < abs(length)) { // while not finished
-                        clock_t begin = clock();
+                        high_resolution_clock::time_point begin = high_resolution_clock::now();
                         i = i + (length > 0 ? 1 : 0); // count iterations?!
                         // make a copy of current values
                         X0 = input;
@@ -219,11 +223,12 @@ namespace Impulse {
 
                         if (success == 1) { // if line search succeeded
                             f1 = f2;
-                            if (true) {
-                                clock_t end = clock();
+                            if (verbose) {
+                                high_resolution_clock::time_point end = high_resolution_clock::now();
+                                auto duration = duration_cast<milliseconds>( end - begin ).count();
                                 std::cout << "Iteration: " << i
                                           << " | Cost: " << f1
-                                          << " | Time: " << (double(end - begin) / CLOCKS_PER_SEC)
+                                          << " | Time: " << duration
                                           << std::endl;
                             }
                             // Polack-Ribiere direction: s =
