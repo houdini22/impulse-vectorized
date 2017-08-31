@@ -34,8 +34,8 @@ namespace Impulse {
 
                     CostFunction callback(
                             [this, &dataSet, &regularization](Vector input) {
-                                //this->network->setRolledTheta(input);
-                                //this->network->backward(dataSet.getInput(), dataSet.getOutput(), this->network->forward(dataSet.getInput()), regularization);
+                                this->network->setRolledTheta(input);
+                                this->network->backward(dataSet.getInput(), dataSet.getOutput(), this->network->forward(dataSet.getInput()), regularization);
                                 return this->cost(dataSet);
                             });
 

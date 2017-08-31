@@ -23,11 +23,7 @@ namespace Impulse {
                 Vector b; // bias
                 Matrix A; // output of the layer after activation
                 Matrix Z; // output of the layer before activation
-                Matrix wGradient; // deltas for weights
-                Matrix bGradient; // deltas for bias
-                Matrix wDerivative; // derivative for weights
-                Matrix bDerivative; // derivative for bias (filled by ones)
-                Matrix accumulator; // accumulator for gradient computation
+                Matrix gW;
 
                 Abstract(unsigned int size, unsigned int prevSize) {
                     this->size = size;
@@ -41,13 +37,6 @@ namespace Impulse {
                     // initialize bias
                     this->b.resize(this->size);
                     this->b.setZero();
-
-                    // initialize gradient for weights
-                    this->wDerivative.resize(this->size, this->prevSize);
-
-                    // initialize gradient for bias
-                    this->bDerivative.resize(this->size, 1);
-                    this->bDerivative.setOnes(); // always 1 since its bias
                 }
 
                 /**
@@ -75,8 +64,8 @@ namespace Impulse {
                 virtual Matrix derivative(Matrix input) = 0;
 
                 void updateParameters(double learningRate) {
-                    this->W -= learningRate * this->wGradient;
-                    this->b -= learningRate * this->bGradient;
+                    /*this->W -= learningRate * this->wGradient;
+                    this->b -= learningRate * this->bGradient;*/
                 }
 
                 /**
@@ -92,38 +81,6 @@ namespace Impulse {
                  * @return
                  */
                 virtual std::string getType() = 0;
-
-                /**
-                 * Calculates gradient for weights. Not for bias vector since its... bias - gradient always is
-                 * equal 1.
-                 * @param backwardActivation
-                 * @return
-                 */
-                Matrix calculateDerivative(Matrix backwardActivation) {
-                    this->wDerivative = backwardActivation.array() * this->derivative(this->A).array();
-                    return this->wDerivative;
-                }
-
-                /**
-                 * Calculates deltas.
-                 * @param gradientPrev
-                 * @param aPrev
-                 * @param regularization
-                 * @param m
-                 */
-                void calculateGradient(Matrix gradientPrev, Matrix aPrev, double regularization,
-                                       double m) {
-                    this->wGradient = gradientPrev * aPrev.transpose() + (regularization / m * this->W);
-                    this->bGradient = gradientPrev.rowwise().sum();
-                }
-
-                void calculateAccumulation() {
-                    this->accumulator;
-                }
-
-                void resetBackward(unsigned int m) {
-
-                }
             };
         }
 

@@ -45,24 +45,22 @@ namespace Impulse {
                 long m = X.cols();
                 unsigned int size = this->getSize();
 
-                Matrix dZ = predictions.array() - Y.array();
-                Matrix sigma = dZ;
+                Matrix sigma = predictions.array() - Y.array();
 
                 for (long i = this->layers.size() - 1; i >= 0; i--) {
                     auto layer = this->layers.at(i);
 
-                    dZ = layer->calculateDerivative(dZ);
+                    Matrix delta = sigma * (i == 0 ? X : this->layers.at(i - 1)->A).transpose().conjugate();
+                    layer->gW = delta.array() / m;
 
-                    layer->calculateGradient(dZ,
-                                                    (i == 0 ?
-                                                     X :
-                                                     this->layers.at(i - 1)->A),
-                                                    regularization,
-                                                    (double) m
-                    );
+                    if (i > 0) {
+                        auto prevLayer = this->layers.at(i - 1);
 
+                        Matrix tmp1 = layer->W.transpose() * sigma;
+                        Matrix tmp2 = prevLayer->derivative(prevLayer->Z);
 
-                    dZ = this->layers.at(i)->W.transpose() * dZ;
+                        sigma = tmp1.array() * tmp2.array();
+                    }
                 }
             }
 
@@ -97,12 +95,6 @@ namespace Impulse {
                             tmp.push_back(layer->W(j, k));
                         }
                     }
-
-                    for (unsigned int j = 0; j < layer->b.rows(); j++) {
-                        for (unsigned int k = 0; k < layer->b.cols(); k++) {
-                            tmp.push_back(layer->b(j, k));
-                        }
-                    }
                 }
 
                 Vector result = Eigen::Map<Vector, Eigen::Unaligned>(tmp.data(), tmp.size());
@@ -115,15 +107,9 @@ namespace Impulse {
                 for (unsigned long i = 0; i < this->layers.size(); i++) {
                     auto layer = this->layers.at(i);
 
-                    for (unsigned int j = 0; j < layer->wDerivative.rows(); j++) {
-                        for (unsigned int k = 0; k < layer->wDerivative.cols(); k++) {
-                            tmp.push_back(layer->wDerivative(j, k));
-                        }
-                    }
-
-                    for (unsigned int j = 0; j < layer->bDerivative.rows(); j++) {
-                        for (unsigned int k = 0; k < layer->bDerivative.cols(); k++) {
-                            tmp.push_back(layer->bDerivative(j, k));
+                    for (unsigned int j = 0; j < layer->gW.rows(); j++) {
+                        for (unsigned int k = 0; k < layer->gW.cols(); k++) {
+                            tmp.push_back(layer->gW(j, k));
                         }
                     }
                 }
@@ -140,11 +126,6 @@ namespace Impulse {
                     for (unsigned int j = 0; j < layer->W.rows(); j++) {
                         for (unsigned int k = 0; k < layer->W.cols(); k++) {
                             layer->W(j, k) = theta(t++);
-                        }
-                    }
-                    for (unsigned int j = 0; j < layer->b.rows(); j++) {
-                        for (unsigned int k = 0; k < layer->b.cols(); k++) {
-                            layer->b(j, k) = theta(t++);
                         }
                     }
                 }
