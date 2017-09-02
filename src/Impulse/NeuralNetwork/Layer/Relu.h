@@ -1,5 +1,5 @@
-#ifndef IMPULSE_VECTORIZED_RELU_H
-#define IMPULSE_VECTORIZED_RELU_H
+#ifndef RELU_LAYER_H
+#define RELU_LAYER_H
 
 #include <string>
 #include "Abstract.h"
@@ -15,7 +15,7 @@ namespace Impulse {
 
         namespace Layer {
 
-            const std::string TYPE_RELU = "relu";
+            const T_String TYPE_RELU = "relu";
 
             class Relu : public Abstract {
             protected:
@@ -43,14 +43,12 @@ namespace Impulse {
                     });
                 }
 
-                const std::string getType() {
+                const T_String getType() {
                     return TYPE_RELU;
                 }
             };
         }
-
     }
-
 }
 
-#endif //IMPULSE_VECTORIZED_RELU_H
+#endif //RELU_LAYER_H

@@ -1,5 +1,5 @@
-#ifndef MATRIX_H
-#define MATRIX_H
+#ifndef MATH_TYPES_H
+#define MATH_TYPES_H
 
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
@@ -12,9 +12,8 @@ namespace Impulse {
 
             typedef Eigen::MatrixXd T_Matrix;
             typedef Eigen::VectorXd T_Vector;
-
         }
     }
 }
 
-#endif /* MATRIX_H */
+#endif /* MATH_TYPES_H */

@@ -1,5 +1,5 @@
-#ifndef IMPULSE_VECTORIZED_ABSTRACTTRAINER_H
-#define IMPULSE_VECTORIZED_ABSTRACTTRAINER_H
+#ifndef ABSTRACT_TRAINER_H
+#define ABSTRACT_TRAINER_H
 
 #include <math.h>
 #include "../Network.h"
@@ -45,11 +45,8 @@ namespace Impulse {
 
                 virtual void train(Impulse::SlicedDataset &dataSet) = 0;
             };
-
         }
-
     }
-
 }
 
-#endif //IMPULSE_VECTORIZED_ABSTRACTTRAINER_H
+#endif //ABSTRACT_TRAINER_H

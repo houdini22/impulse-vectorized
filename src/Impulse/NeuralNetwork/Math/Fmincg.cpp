@@ -227,7 +227,7 @@ namespace Impulse {
                             high_resolution_clock::time_point end = high_resolution_clock::now();
                             auto duration = duration_cast<milliseconds>( end - begin ).count();
                             std::cout << "Iteration: " << i
-                                      << " | Cost: " << f1
+                                      << " | Error: " << f1
                                       << " | Time: " << duration
                                       << std::endl;
                         }

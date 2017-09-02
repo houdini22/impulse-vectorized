@@ -1,5 +1,5 @@
-#ifndef IMPULSE_VECTORIZED_SIGMOID_H
-#define IMPULSE_VECTORIZED_SIGMOID_H
+#ifndef LOGISTIC_LAYER_H
+#define LOGISTIC_LAYER_H
 
 #include <string>
 #include "Abstract.h"
@@ -15,7 +15,7 @@ namespace Impulse {
 
         namespace Layer {
 
-            const std::string TYPE_LOGISTIC = "logistic";
+            const T_String TYPE_LOGISTIC = "logistic";
 
             class Logistic : public Abstract {
             protected:
@@ -35,14 +35,12 @@ namespace Impulse {
                     return this->A.array() * (1.0 - this->A.array());
                 }
 
-                const std::string getType() {
+                const T_String getType() {
                     return TYPE_LOGISTIC;
                 }
             };
         }
-
     }
-
 }
 
-#endif //IMPULSE_VECTORIZED_SIGMOID_H
+#endif //LOGISTIC_LAYER_H

@@ -1,5 +1,5 @@
-#ifndef IMPULSE_NETWORK_H_H
-#define IMPULSE_NETWORK_H_H
+#ifndef NETWORK_H
+#define NETWORK_H
 
 #include <vector>
 #include <iostream>
@@ -16,8 +16,7 @@ namespace Impulse {
 
     namespace NeuralNetwork {
 
-        typedef std::vector<Impulse::NeuralNetwork::Layer::Abstract *> LayersContainer;
-        typedef std::vector<double> RolledTheta;
+        typedef std::vector<AbstractLayer *> LayersContainer;
 
         class Network {
         protected:
@@ -29,7 +28,7 @@ namespace Impulse {
                 this->inputSize = inputSize;
             }
 
-            void addLayer(Impulse::NeuralNetwork::Layer::Abstract *layer) {
+            void addLayer(AbstractLayer *layer) {
                 this->size++;
                 this->layers.push_back(layer);
             }
@@ -146,9 +145,7 @@ namespace Impulse {
                 }
             }
         };
-
     }
-
 }
 
-#endif //IMPULSE_NETWORK_H_H
+#endif //NETWORK_H

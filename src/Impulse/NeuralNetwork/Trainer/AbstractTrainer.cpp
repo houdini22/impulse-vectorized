@@ -65,7 +65,5 @@ namespace Impulse {
                 return result;
             }
         }
-
     }
-
 }

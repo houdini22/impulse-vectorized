@@ -1,5 +1,5 @@
-#ifndef IMPULSE_VECTORIZED_ABSTRACT_H
-#define IMPULSE_VECTORIZED_ABSTRACT_H
+#ifndef ABSTRACT_LAYER_H
+#define ABSTRACT_LAYER_H
 
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
@@ -78,12 +78,10 @@ namespace Impulse {
                  * Getter for layer type.
                  * @return
                  */
-                virtual const std::string getType() = 0;
+                virtual const T_String getType() = 0;
             };
         }
-
     }
-
 }
 
-#endif //IMPULSE_VECTORIZED_ABSTRACT_H
+#endif //ABSTRACT_LAYER_H

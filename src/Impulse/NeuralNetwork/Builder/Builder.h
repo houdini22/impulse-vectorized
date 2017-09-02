@@ -1,5 +1,5 @@
-#ifndef IMPULSE_VECTORIZED_BUILDER_H
-#define IMPULSE_VECTORIZED_BUILDER_H
+#ifndef BUILDER_H
+#define BUILDER_H
 
 #include <string>
 #include "../Network.h"
@@ -8,14 +8,14 @@
 #include "../../../Vendor/json.hpp"
 #include "../../types.h"
 
-using json = nlohmann::json;
-
 using Impulse::NeuralNetwork::Network;
 using Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC;
 using Impulse::NeuralNetwork::Layer::TYPE_RELU;
 using LogisticLayer = Impulse::NeuralNetwork::Layer::Logistic;
 using ReluLayer = Impulse::NeuralNetwork::Layer::Relu;
 using Impulse::T_Size;
+
+using json = nlohmann::json;
 
 namespace Impulse {
 
@@ -33,7 +33,7 @@ namespace Impulse {
                     this->prevSize = inputSize;
                 }
 
-                void createLayer(T_Size size, std::string type) {
+                void createLayer(T_Size size, T_String type) {
                     if (type == TYPE_LOGISTIC) {
                         this->network->addLayer(new LogisticLayer(size, this->prevSize));
                     } else if (type == TYPE_RELU) {
@@ -46,7 +46,7 @@ namespace Impulse {
                     return this->network;
                 }
 
-                static Builder fromJSON(std::string path) {
+                static Builder fromJSON(T_String path) {
                     std::ifstream fileStream(path);
                     json jsonFile;
                     fileStream >> jsonFile;
@@ -67,11 +67,8 @@ namespace Impulse {
                     return builder;
                 }
             };
-
         }
-
     }
-
 }
 
-#endif //IMPULSE_VECTORIZED_BUILDER_H
+#endif //BUILDER_H

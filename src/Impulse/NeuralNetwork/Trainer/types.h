@@ -1,5 +1,5 @@
-#ifndef IMPULSE_VECTORIZED_TRAINER_TYPES_H
-#define IMPULSE_VECTORIZED_TRAINER_TYPES_H
+#ifndef TRAINER_TYPES_H
+#define TRAINER_TYPES_H
 
 #include "../Math/types.h"
 

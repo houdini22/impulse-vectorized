@@ -1,5 +1,5 @@
-#ifndef NETWORKSERIALIZER2_H
-#define NETWORKSERIALIZER2_H
+#ifndef NETWORK_SERIALIZER_H
+#define NETWORK_SERIALIZER_H
 
 #include <fstream>
 #include <string>
@@ -25,7 +25,7 @@ namespace Impulse {
                 this->network = net;
             }
 
-            void toJSON(std::string path) {
+            void toJSON(T_String path) {
                 json result;
 
                 result["inputSize"] = this->network->getInputSize();
@@ -44,9 +44,7 @@ namespace Impulse {
                 out.close();
             }
         };
-
     }
-
 }
 
 #endif
