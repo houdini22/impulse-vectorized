@@ -4,7 +4,7 @@
 #include <string>
 #include "Abstract.h"
 #include "../Math/common.h"
-#include "../../types.h"
+#include "../../common.h"
 
 using Impulse::NeuralNetwork::Math::T_Matrix;
 using Impulse::T_Size;

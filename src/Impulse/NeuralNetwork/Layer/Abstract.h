@@ -4,7 +4,7 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
 #include "../Math/common.h"
-#include "../../types.h"
+#include "../../common.h"
 
 using Impulse::NeuralNetwork::Math::T_Matrix;
 using Impulse::NeuralNetwork::Math::T_Vector;

@@ -41,7 +41,7 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Math/common.h
         src/Impulse/NeuralNetwork/Math/Fmincg.cpp
         src/Impulse/NeuralNetwork/Math/Fmincg.h
-        src/Impulse/types.h
+        src/Impulse/common.h
         src/Impulse/NeuralNetwork/Trainer/common.h
         src/Impulse/NeuralNetwork/Trainer/CojungateGradientTrainer.cpp
         src/Impulse/NeuralNetwork/Trainer/CojungateGradientTrainer.h

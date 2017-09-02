@@ -22,6 +22,8 @@
 #include "../Network.h"
 #include "common.h"
 
+using Impulse::NeuralNetwork::Trainer::StepFunction;
+
 namespace Impulse {
 
     namespace NeuralNetwork {
@@ -35,8 +37,11 @@ namespace Impulse {
                 ~Fmincg(void) {}
 
                 T_Vector minimize(
-                        Trainer::StepFunction stepFunction,
-                        T_Vector theta, T_Size length, bool verbose);
+                        StepFunction stepFunction,
+                        T_Vector theta,
+                        T_Size length,
+                        bool verbose
+                );
             };
         }
     }

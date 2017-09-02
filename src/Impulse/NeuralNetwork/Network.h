@@ -5,11 +5,12 @@
 #include <iostream>
 #include "Layer/Abstract.h"
 #include "Math/common.h"
-#include "../types.h"
+#include "../common.h"
 
 using Impulse::NeuralNetwork::Math::T_Matrix;
 using Impulse::NeuralNetwork::Math::T_Vector;
 using Impulse::NeuralNetwork::Math::T_RawVector;
+using Impulse::NeuralNetwork::Math::rawToVector;
 using Impulse::T_Size;
 using AbstractLayer = Impulse::NeuralNetwork::Layer::Abstract;
 
@@ -83,7 +84,7 @@ namespace Impulse {
             T_Vector getRolledTheta() {
                 T_RawVector tmp;
 
-                for (long i = 0; i < this->layers.size(); i++) {
+                for (T_Size i = 0; i < this->getSize(); i++) {
                     auto layer = this->layers.at(i);
                     tmp.reserve(
                             (unsigned long) (layer->W.cols() * layer->W.rows()) + (layer->b.cols() * layer->b.rows()));
@@ -101,14 +102,14 @@ namespace Impulse {
                     }
                 }
 
-                T_Vector result = Eigen::Map<T_Vector, Eigen::Unaligned>(tmp.data(), tmp.size());
+                T_Vector result = rawToVector(tmp);
                 return result;
             }
 
             T_Vector getRolledGradient() {
                 T_RawVector tmp;
 
-                for (unsigned long i = 0; i < this->layers.size(); i++) {
+                for (T_Size i = 0; i < this->getSize(); i++) {
                     auto layer = this->layers.at(i);
 
                     for (T_Size j = 0; j < layer->gW.rows(); j++) {
@@ -124,14 +125,14 @@ namespace Impulse {
                     }
                 }
 
-                T_Vector result = Eigen::Map<T_Vector, Eigen::Unaligned>(tmp.data(), tmp.size());
+                T_Vector result = rawToVector(tmp);
                 return result;
             }
 
             void setRolledTheta(T_Vector theta) {
                 unsigned long t = 0;
 
-                for (unsigned long i = 0; i < this->layers.size(); i++) {
+                for (T_Size i = 0; i < this->getSize(); i++) {
                     auto layer = this->layers.at(i);
                     for (T_Size j = 0; j < layer->W.rows(); j++) {
                         for (T_Size k = 0; k < layer->W.cols(); k++) {

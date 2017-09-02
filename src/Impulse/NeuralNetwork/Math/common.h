@@ -14,6 +14,7 @@ namespace Impulse {
             typedef Eigen::MatrixXd T_Matrix;
             typedef Eigen::VectorXd T_Vector;
             typedef std::vector<double> T_RawVector;
+            typedef Eigen::Index T_Index;
 
             T_RawVector vectorToRaw(T_Vector &vec);
             T_Vector rawToVector(T_RawVector &vec);

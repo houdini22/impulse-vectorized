@@ -5,7 +5,7 @@
 #include "../Network.h"
 #include "../Math/common.h"
 #include "common.h"
-#include "../../types.h"
+#include "../../common.h"
 #include "../../../Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
 
 using Impulse::NeuralNetwork::Math::T_Vector;

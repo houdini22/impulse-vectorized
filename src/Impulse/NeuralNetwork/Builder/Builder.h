@@ -6,7 +6,7 @@
 #include "../Layer/Logistic.h"
 #include "../Layer/Relu.h"
 #include "../../../Vendor/json.hpp"
-#include "../../types.h"
+#include "../../common.h"
 
 using Impulse::NeuralNetwork::Network;
 using Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC;
