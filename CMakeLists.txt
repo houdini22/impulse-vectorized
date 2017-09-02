@@ -36,7 +36,6 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Layer/Abstract.h
         src/Impulse/NeuralNetwork/Trainer/AbstractTrainer.h
         src/Impulse/NeuralNetwork/Trainer/AbstractTrainer.cpp
-        src/Impulse/NeuralNetwork/Trainer/BatchGradientDescentTrainer.h
         src/Impulse/NeuralNetwork/Math/Matrix.h
         src/Impulse/NeuralNetwork/Math/Vector.h
         src/Impulse/NeuralNetwork/Math/Minimizer/Fmincg.cpp

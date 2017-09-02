@@ -52,6 +52,7 @@ namespace Impulse {
 
                     Matrix delta = sigma * (i == 0 ? X : this->layers.at(i - 1)->A).transpose().conjugate();
                     layer->gW = delta.array() / m;
+                    layer->gb = sigma.rowwise().sum() / m;
 
                     if (i > 0) {
                         auto prevLayer = this->layers.at(i - 1);
@@ -95,6 +96,12 @@ namespace Impulse {
                             tmp.push_back(layer->W(j, k));
                         }
                     }
+
+                    for (unsigned int j = 0; j < layer->b.rows(); j++) {
+                        for (unsigned int k = 0; k < layer->b.cols(); k++) {
+                            tmp.push_back(layer->b(j, k));
+                        }
+                    }
                 }
 
                 Vector result = Eigen::Map<Vector, Eigen::Unaligned>(tmp.data(), tmp.size());
@@ -112,6 +119,12 @@ namespace Impulse {
                             tmp.push_back(layer->gW(j, k));
                         }
                     }
+
+                    for (unsigned int j = 0; j < layer->gb.rows(); j++) {
+                        for (unsigned int k = 0; k < layer->gb.cols(); k++) {
+                            tmp.push_back(layer->gb(j, k));
+                        }
+                    }
                 }
 
                 Vector result = Eigen::Map<Vector, Eigen::Unaligned>(tmp.data(), tmp.size());
@@ -126,6 +139,11 @@ namespace Impulse {
                     for (unsigned int j = 0; j < layer->W.rows(); j++) {
                         for (unsigned int k = 0; k < layer->W.cols(); k++) {
                             layer->W(j, k) = theta(t++);
+                        }
+                    }
+                    for (unsigned int j = 0; j < layer->b.rows(); j++) {
+                        for (unsigned int k = 0; k < layer->b.cols(); k++) {
+                            layer->b(j, k) = theta(t++);
                         }
                     }
                 }

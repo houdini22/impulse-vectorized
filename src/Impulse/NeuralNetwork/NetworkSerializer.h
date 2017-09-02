@@ -24,7 +24,7 @@ namespace Impulse {
             }
 
             void toJSON(std::string path) {
-                /*json result;
+                json result;
 
                 result["inputSize"] = this->network->getInputSize();
                 result["layers"] = {};
@@ -33,11 +33,13 @@ namespace Impulse {
                     result["layers"][i] = json::array({this->network->getLayer(i)->getSize(), this->network->getLayer(i)->getType()});
                 }
 
-                result["weights"] = this->network->getRolledTheta();
+                Vector weights = this->network->getRolledTheta();
+
+                result["weights"] = std::vector<double>(weights.data(), weights.data() + weights.rows() * weights.cols());
 
                 std::ofstream out(path);
                 out << result.dump();
-                out.close();*/
+                out.close();
             }
         };
 
