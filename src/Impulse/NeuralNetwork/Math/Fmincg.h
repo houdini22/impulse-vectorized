@@ -20,7 +20,7 @@
 #include "../Trainer/AbstractTrainer.h"
 #include "../Trainer/CojungateGradientTrainer.h"
 #include "../Network.h"
-#include "Matrix.h"
+#include "types.h"
 
 namespace Impulse {
 
@@ -35,11 +35,9 @@ namespace Impulse {
 
             class Fmincg {
             public:
-                Fmincg(void) {
-                }
+                Fmincg(void) {}
 
-                ~Fmincg(void) {
-                }
+                ~Fmincg(void) {}
 
                 Vector minimize(
                         Trainer::StepFunction stepFunction,

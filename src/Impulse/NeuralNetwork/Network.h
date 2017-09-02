@@ -4,7 +4,7 @@
 #include <vector>
 #include <iostream>
 #include "Layer/Abstract.h"
-#include "Math/Matrix.h"
+#include "Math/types.h"
 #include "../types.h"
 
 using Impulse::NeuralNetwork::Math::T_Matrix;

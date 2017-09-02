@@ -1,7 +1,7 @@
 #ifndef IMPULSE_VECTORIZED_TRAINER_TYPES_H
 #define IMPULSE_VECTORIZED_TRAINER_TYPES_H
 
-#include "../Math/Matrix.h"
+#include "../Math/types.h"
 
 using Impulse::NeuralNetwork::Math::T_Vector;
 

@@ -3,7 +3,7 @@
 
 #include <math.h>
 #include "../Network.h"
-#include "../Math/Matrix.h"
+#include "../Math/types.h"
 #include "../Trainer/types.h"
 #include "../../types.h"
 #include "../../../Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"

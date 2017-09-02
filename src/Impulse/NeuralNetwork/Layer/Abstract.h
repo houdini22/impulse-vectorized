@@ -3,7 +3,7 @@
 
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
-#include "../Math/Matrix.h"
+#include "../Math/types.h"
 #include "../../types.h"
 
 using Impulse::NeuralNetwork::Math::T_Matrix;
