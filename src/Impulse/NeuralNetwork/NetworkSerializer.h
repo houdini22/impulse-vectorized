@@ -33,8 +33,9 @@ namespace Impulse {
                 result["inputSize"] = this->network->getInputSize();
 
                 result["layers"] = {};
-                for(T_Size i = 0; i < this->network->getSize(); i++) {
-                    result["layers"][i] = json::array({this->network->getLayer(i)->getSize(), this->network->getLayer(i)->getType()});
+                for (T_Size i = 0; i < this->network->getSize(); i++) {
+                    result["layers"][i] = json::array(
+                            {this->network->getLayer(i)->getSize(), this->network->getLayer(i)->getType()});
                 }
 
                 T_Vector theta = this->network->getRolledTheta();

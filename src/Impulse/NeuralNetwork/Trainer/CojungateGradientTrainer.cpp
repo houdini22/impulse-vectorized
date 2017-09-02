@@ -17,16 +17,19 @@ namespace Impulse {
                 T_Vector theta = network->getRolledTheta();
                 double regularization = this->regularization;
 
-                network->backward(dataSet.getInput(), dataSet.getOutput(), network->forward(dataSet.getInput()), this->regularization);
+                network->backward(dataSet.getInput(), dataSet.getOutput(), network->forward(dataSet.getInput()),
+                                  this->regularization);
 
                 StepFunction callback(
                         [this, &dataSet, &regularization](T_Vector input) {
                             this->network->setRolledTheta(input);
-                            this->network->backward(dataSet.getInput(), dataSet.getOutput(), this->network->forward(dataSet.getInput()), regularization);
+                            this->network->backward(dataSet.getInput(), dataSet.getOutput(),
+                                                    this->network->forward(dataSet.getInput()), regularization);
                             return this->cost(dataSet);
                         });
 
-                this->network->setRolledTheta(minimizer.minimize(callback, theta, this->learningIterations, this->verbose));
+                this->network->setRolledTheta(
+                        minimizer.minimize(callback, theta, this->learningIterations, this->verbose));
             }
         }
     }

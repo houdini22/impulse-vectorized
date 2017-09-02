@@ -43,11 +43,11 @@ namespace Impulse {
                 T_Matrix Y = dataSet.getOutput();
 
                 T_Matrix errors = (Y.array() * A.unaryExpr([](const double x) { return log(x); }).array())
-                                         +
-                                         (Y.unaryExpr([](const double x) { return 1.0 - x; }).array()
-                                          *
-                                          A.unaryExpr([](const double x) { return log(1.0 - x); }).array()
-                                         );
+                                  +
+                                  (Y.unaryExpr([](const double x) { return 1.0 - x; }).array()
+                                   *
+                                   A.unaryExpr([](const double x) { return log(1.0 - x); }).array()
+                                  );
 
                 double regularization = 0.0;
                 for (T_Size i = 0; i < this->network->getSize(); i++) {

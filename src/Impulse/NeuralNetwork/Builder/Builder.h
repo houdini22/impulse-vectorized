@@ -8,13 +8,10 @@
 #include "../../../Vendor/json.hpp"
 #include "../../common.h"
 
+using namespace Impulse::NeuralNetwork::Layer;
+using namespace Impulse::NeuralNetwork::Math;
 using Impulse::NeuralNetwork::Network;
-using Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC;
-using Impulse::NeuralNetwork::Layer::TYPE_RELU;
-using LogisticLayer = Impulse::NeuralNetwork::Layer::Logistic;
-using ReluLayer = Impulse::NeuralNetwork::Layer::Relu;
 using Impulse::T_Size;
-using Impulse::NeuralNetwork::Math::rawToVector;
 
 using json = nlohmann::json;
 
@@ -35,10 +32,10 @@ namespace Impulse {
                 }
 
                 void createLayer(T_Size size, T_String type) {
-                    if (type == TYPE_LOGISTIC) {
-                        this->network->addLayer(new LogisticLayer(size, this->prevSize));
-                    } else if (type == TYPE_RELU) {
-                        this->network->addLayer(new ReluLayer(size, this->prevSize));
+                    if (type == Layer::TYPE_LOGISTIC) {
+                        this->network->addLayer(new Layer::Logistic(size, this->prevSize));
+                    } else if (type == Layer::TYPE_RELU) {
+                        this->network->addLayer(new Layer::Relu(size, this->prevSize));
                     }
                     this->prevSize = size;
                 }
@@ -62,7 +59,7 @@ namespace Impulse {
                     }
 
                     T_RawVector theta = jsonFile["weights"];
-                    builder.getNetwork()->setRolledTheta(rawToVector(theta));
+                    builder.getNetwork()->setRolledTheta(Math::rawToVector(theta));
 
                     return builder;
                 }
