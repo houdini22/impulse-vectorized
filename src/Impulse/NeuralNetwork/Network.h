@@ -57,7 +57,7 @@ namespace Impulse {
                         auto prevLayer = this->layers.at(i - 1);
 
                         Matrix tmp1 = layer->W.transpose() * sigma;
-                        Matrix tmp2 = prevLayer->derivative(prevLayer->A);
+                        Matrix tmp2 = prevLayer->derivative();
 
                         sigma = tmp1.array() * tmp2.array();
                     }

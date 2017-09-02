@@ -32,8 +32,8 @@ namespace Impulse {
                     });
                 }
 
-                Matrix derivative(Matrix input) {
-                    return input.unaryExpr([](const double x) {
+                Matrix derivative() {
+                    return this->A.unaryExpr([](const double x) {
                         if (x < 0.0) {
                             return 0.0;
                         }
@@ -41,7 +41,7 @@ namespace Impulse {
                     });
                 }
 
-                std::string getType() {
+                const std::string getType() {
                     return TYPE_RELU;
                 }
             };

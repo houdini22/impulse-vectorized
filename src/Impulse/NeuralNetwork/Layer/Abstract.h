@@ -23,7 +23,8 @@ namespace Impulse {
                 Vector b; // bias
                 Matrix A; // output of the layer after activation
                 Matrix Z; // output of the layer before activation
-                Matrix gW;
+                Matrix gW; // gradient for weights
+                Vector gb; // gradient for biases
 
                 Abstract(unsigned int size, unsigned int prevSize) {
                     this->size = size;
@@ -61,11 +62,11 @@ namespace Impulse {
                  * Calculates derivative. It depends on activation function.
                  * @return
                  */
-                virtual Matrix derivative(Matrix input) = 0;
+                virtual Matrix derivative() = 0;
 
                 void updateParameters(double learningRate) {
-                    /*this->W -= learningRate * this->wGradient;
-                    this->b -= learningRate * this->bGradient;*/
+                    this->W -= learningRate * this->gW;
+                    this->b -= learningRate * this->gb;
                 }
 
                 /**
@@ -80,7 +81,7 @@ namespace Impulse {
                  * Getter for layer type.
                  * @return
                  */
-                virtual std::string getType() = 0;
+                virtual const std::string getType() = 0;
             };
         }
 

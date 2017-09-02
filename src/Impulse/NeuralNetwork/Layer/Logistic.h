@@ -29,11 +29,11 @@ namespace Impulse {
                     });
                 }
 
-                Matrix derivative(Matrix input) {
-                    return input.array() * (1.0 - input.array());
+                Matrix derivative() {
+                    return this->A.array() * (1.0 - this->A.array());
                 }
 
-                std::string getType() {
+                const std::string getType() {
                     return TYPE_LOGISTIC;
                 }
             };
