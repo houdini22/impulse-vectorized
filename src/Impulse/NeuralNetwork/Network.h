@@ -10,6 +10,7 @@
 using Impulse::NeuralNetwork::Math::T_Matrix;
 using Impulse::NeuralNetwork::Math::T_Vector;
 using Impulse::T_Size;
+using AbstractLayer = Impulse::NeuralNetwork::Layer::Abstract;
 
 namespace Impulse {
 
@@ -53,7 +54,7 @@ namespace Impulse {
                     auto layer = this->layers.at(i);
 
                     T_Matrix delta = sigma * (i == 0 ? X : this->layers.at(i - 1)->A).transpose().conjugate();
-                    layer->gW = delta.array() / m;
+                    layer->gW = delta.array() / m + (regularization / m * layer->W.array());
                     layer->gb = sigma.rowwise().sum() / m;
 
                     if (i > 0) {
@@ -75,7 +76,7 @@ namespace Impulse {
                 return this->size;
             }
 
-            Impulse::NeuralNetwork::Layer::Abstract *getLayer(T_Size key) {
+            AbstractLayer *getLayer(T_Size key) {
                 return this->layers.at(key);
             }
 

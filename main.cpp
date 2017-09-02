@@ -56,8 +56,8 @@ void test_logistic() {
 
     Impulse::NeuralNetwork::Trainer::ConjugateGradientTrainer trainer(net);
     trainer.setLearningIterations(400);
-    trainer.setLearningRate(0.001);
     trainer.setVerboseStep(1);
+    //trainer.setRegularization(0.001);
 
     Impulse::NeuralNetwork::Trainer::CostGradientResult cost = trainer.cost(dataset);
     std::cout << "Cost: " << cost.getError() << std::endl;

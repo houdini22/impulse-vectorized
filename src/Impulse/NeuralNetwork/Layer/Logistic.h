@@ -25,8 +25,8 @@ namespace Impulse {
 
                 }
 
-                T_Matrix activation(T_Matrix input) {
-                    return input.unaryExpr([](const double x) {
+                T_Matrix activation() {
+                    return this->Z.unaryExpr([](const double x) {
                         return 1.0 / (1.0 + exp(-x));
                     });
                 }

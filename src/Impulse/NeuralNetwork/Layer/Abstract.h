@@ -49,7 +49,7 @@ namespace Impulse {
                  */
                 T_Matrix forward(T_Matrix input) {
                     this->Z = (this->W * input).colwise() + this->b;
-                    this->A = this->activation(this->Z);
+                    this->A = this->activation();
                     return this->A;
                 }
 
@@ -58,7 +58,7 @@ namespace Impulse {
                  * @param input
                  * @return
                  */
-                virtual T_Matrix activation(T_Matrix input) = 0;
+                virtual T_Matrix activation() = 0;
 
                 /**
                  * Calculates derivative. It depends on activation function.

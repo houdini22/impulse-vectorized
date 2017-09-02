@@ -1,5 +1,4 @@
 #include "AbstractTrainer.h"
-#include "../Math/Matrix.h"
 
 using Impulse::NeuralNetwork::Math::T_Matrix;
 using Impulse::NeuralNetwork::Network;
@@ -22,7 +21,7 @@ namespace Impulse {
                 this->regularization = value;
             }
 
-            void AbstractTrainer::setLearningIterations(unsigned int value) {
+            void AbstractTrainer::setLearningIterations(T_Size value) {
                 this->learningIterations = value;
             }
 
@@ -39,7 +38,7 @@ namespace Impulse {
             }
 
             Impulse::NeuralNetwork::Trainer::CostGradientResult AbstractTrainer::cost(Impulse::SlicedDataset &dataSet) {
-                unsigned int m = dataSet.output.getSize();
+                T_Size m = dataSet.output.getSize();
                 T_Matrix A = this->network->forward(dataSet.getInput());
                 T_Matrix Y = dataSet.getOutput();
 
@@ -51,7 +50,7 @@ namespace Impulse {
                                          );
 
                 double regularization = 0.0;
-                for (unsigned int i = 0; i < this->network->getSize(); i++) {
+                for (T_Size i = 0; i < this->network->getSize(); i++) {
                     regularization += this->network->getLayer(i)->W.unaryExpr([](const double x) {
                         return pow(x, 2.0);
                     }).sum();

@@ -4,10 +4,12 @@
 #include <math.h>
 #include "../Network.h"
 #include "../Math/Matrix.h"
+#include "../../types.h"
 #include "../../../Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
 
 using Vector = Impulse::NeuralNetwork::Math::T_Vector;
 using Impulse::NeuralNetwork::Network;
+using Impulse::T_Size;
 
 namespace Impulse {
 
