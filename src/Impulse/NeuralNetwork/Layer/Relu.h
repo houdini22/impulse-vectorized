@@ -3,7 +3,7 @@
 
 #include <string>
 #include "Abstract.h"
-#include "../Math/types.h"
+#include "../Math/common.h"
 #include "../../types.h"
 
 using Impulse::NeuralNetwork::Math::T_Matrix;

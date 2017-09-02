@@ -3,7 +3,7 @@
 
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
-#include "../Math/types.h"
+#include "../Math/common.h"
 #include "../../types.h"
 
 using Impulse::NeuralNetwork::Math::T_Matrix;
@@ -35,7 +35,7 @@ namespace Impulse {
                     // initialize weights
                     this->W.resize(this->size, this->prevSize);
                     this->W.setRandom();
-                    this->W = this->W.array() * sqrt(2.0 / this->prevSize);
+                    this->W = this->W * sqrt(2.0 / this->prevSize);
 
                     // initialize bias
                     this->b.resize(this->size);
@@ -49,8 +49,7 @@ namespace Impulse {
                  */
                 T_Matrix forward(T_Matrix input) {
                     this->Z = (this->W * input).colwise() + this->b;
-                    this->A = this->activation();
-                    return this->A;
+                    return this->A = this->activation();
                 }
 
                 /**

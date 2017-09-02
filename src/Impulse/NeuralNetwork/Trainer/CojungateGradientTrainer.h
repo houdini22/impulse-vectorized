@@ -4,7 +4,7 @@
 #include "AbstractTrainer.h"
 #include "../Math/Fmincg.h"
 #include "../Network.h"
-#include "../Math/types.h"
+#include "../Math/common.h"
 
 using Impulse::NeuralNetwork::Math::T_Matrix;
 using Impulse::NeuralNetwork::Math::T_Vector;

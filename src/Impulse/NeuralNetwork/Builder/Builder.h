@@ -14,6 +14,7 @@ using Impulse::NeuralNetwork::Layer::TYPE_RELU;
 using LogisticLayer = Impulse::NeuralNetwork::Layer::Logistic;
 using ReluLayer = Impulse::NeuralNetwork::Layer::Relu;
 using Impulse::T_Size;
+using Impulse::NeuralNetwork::Math::rawToVector;
 
 using json = nlohmann::json;
 
@@ -60,9 +61,8 @@ namespace Impulse {
                         builder.createLayer(it.value()[0], it.value()[1]);
                     }
 
-                    std::vector<double> theta = jsonFile["weights"];
-
-                    builder.getNetwork()->setRolledTheta(Eigen::Map<Eigen::VectorXd, Eigen::Unaligned>(theta.data(), theta.size()));
+                    T_RawVector theta = jsonFile["weights"];
+                    builder.getNetwork()->setRolledTheta(rawToVector(theta));
 
                     return builder;
                 }

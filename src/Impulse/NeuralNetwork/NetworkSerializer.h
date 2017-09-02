@@ -11,6 +11,8 @@
 using json = nlohmann::json;
 
 using Impulse::NeuralNetwork::Math::T_Vector;
+using Impulse::NeuralNetwork::Math::vectorToRaw;
+using Impulse::T_Size;
 
 namespace Impulse {
 
@@ -29,15 +31,14 @@ namespace Impulse {
                 json result;
 
                 result["inputSize"] = this->network->getInputSize();
-                result["layers"] = {};
 
-                for(unsigned int i = 0; i < this->network->getSize(); i++) {
+                result["layers"] = {};
+                for(T_Size i = 0; i < this->network->getSize(); i++) {
                     result["layers"][i] = json::array({this->network->getLayer(i)->getSize(), this->network->getLayer(i)->getType()});
                 }
 
-                T_Vector weights = this->network->getRolledTheta();
-
-                result["weights"] = std::vector<double>(weights.data(), weights.data() + weights.rows() * weights.cols());
+                T_Vector theta = this->network->getRolledTheta();
+                result["weights"] = Math::vectorToRaw(theta);
 
                 std::ofstream out(path);
                 out << result.dump();

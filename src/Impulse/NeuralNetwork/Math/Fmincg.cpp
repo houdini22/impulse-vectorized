@@ -82,7 +82,7 @@ namespace Impulse {
 
             Vector Fmincg::minimize(
                     StepFunction stepFunction,
-                    Vector theta, unsigned int length, bool verbose) {
+                    Vector theta, T_Size length, bool verbose) {
                 // input will be the pointer to our current active parameter set
                 Vector input(theta);
                 Vector X0(input);

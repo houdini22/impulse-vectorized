@@ -20,7 +20,7 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
 
-#include "src/Impulse/NeuralNetwork/Math/types.h"
+#include "src/Impulse/NeuralNetwork/Math/common.h"
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetBuilder/CSVBuilder.h"
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset.h"
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"

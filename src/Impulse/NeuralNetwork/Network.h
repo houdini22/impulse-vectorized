@@ -4,11 +4,12 @@
 #include <vector>
 #include <iostream>
 #include "Layer/Abstract.h"
-#include "Math/types.h"
+#include "Math/common.h"
 #include "../types.h"
 
 using Impulse::NeuralNetwork::Math::T_Matrix;
 using Impulse::NeuralNetwork::Math::T_Vector;
+using Impulse::NeuralNetwork::Math::T_RawVector;
 using Impulse::T_Size;
 using AbstractLayer = Impulse::NeuralNetwork::Layer::Abstract;
 
@@ -80,7 +81,7 @@ namespace Impulse {
             }
 
             T_Vector getRolledTheta() {
-                std::vector<double> tmp;
+                T_RawVector tmp;
 
                 for (long i = 0; i < this->layers.size(); i++) {
                     auto layer = this->layers.at(i);
@@ -105,7 +106,7 @@ namespace Impulse {
             }
 
             T_Vector getRolledGradient() {
-                std::vector<double> tmp;
+                T_RawVector tmp;
 
                 for (unsigned long i = 0; i < this->layers.size(); i++) {
                     auto layer = this->layers.at(i);

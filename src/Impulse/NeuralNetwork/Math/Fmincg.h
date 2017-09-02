@@ -20,16 +20,11 @@
 #include "../Trainer/AbstractTrainer.h"
 #include "../Trainer/CojungateGradientTrainer.h"
 #include "../Network.h"
-#include "types.h"
+#include "common.h"
 
 namespace Impulse {
 
     namespace NeuralNetwork {
-
-        namespace Trainer {
-
-            struct CostGradientResult;
-        }
 
         namespace Math {
 
@@ -39,9 +34,9 @@ namespace Impulse {
 
                 ~Fmincg(void) {}
 
-                Vector minimize(
+                T_Vector minimize(
                         Trainer::StepFunction stepFunction,
-                        Vector theta, unsigned int length, bool verbose);
+                        T_Vector theta, T_Size length, bool verbose);
             };
         }
     }

@@ -3,6 +3,7 @@
 
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
+#include <vector>
 
 namespace Impulse {
 
@@ -12,6 +13,10 @@ namespace Impulse {
 
             typedef Eigen::MatrixXd T_Matrix;
             typedef Eigen::VectorXd T_Vector;
+            typedef std::vector<double> T_RawVector;
+
+            T_RawVector vectorToRaw(T_Vector &vec);
+            T_Vector rawToVector(T_RawVector &vec);
         }
     }
 }

@@ -1,7 +1,7 @@
 #ifndef TRAINER_TYPES_H
 #define TRAINER_TYPES_H
 
-#include "../Math/types.h"
+#include "../Math/common.h"
 
 using Impulse::NeuralNetwork::Math::T_Vector;
 

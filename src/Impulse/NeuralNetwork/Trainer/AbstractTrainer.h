@@ -3,12 +3,12 @@
 
 #include <math.h>
 #include "../Network.h"
-#include "../Math/types.h"
-#include "../Trainer/types.h"
+#include "../Math/common.h"
+#include "common.h"
 #include "../../types.h"
 #include "../../../Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
 
-using Vector = Impulse::NeuralNetwork::Math::T_Vector;
+using Impulse::NeuralNetwork::Math::T_Vector;
 using Impulse::NeuralNetwork::Network;
 using Impulse::T_Size;
 

@@ -14,13 +14,13 @@ namespace Impulse {
             void ConjugateGradientTrainer::train(Impulse::SlicedDataset &dataSet) {
                 Fmincg minimizer;
                 Network *network = this->network;
-                Vector theta = network->getRolledTheta();
+                T_Vector theta = network->getRolledTheta();
                 double regularization = this->regularization;
 
                 network->backward(dataSet.getInput(), dataSet.getOutput(), network->forward(dataSet.getInput()), this->regularization);
 
                 StepFunction callback(
-                        [this, &dataSet, &regularization](Vector input) {
+                        [this, &dataSet, &regularization](T_Vector input) {
                             this->network->setRolledTheta(input);
                             this->network->backward(dataSet.getInput(), dataSet.getOutput(), this->network->forward(dataSet.getInput()), regularization);
                             return this->cost(dataSet);

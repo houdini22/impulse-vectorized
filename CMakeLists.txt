@@ -38,14 +38,14 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Layer/Abstract.h
         src/Impulse/NeuralNetwork/Trainer/AbstractTrainer.h
         src/Impulse/NeuralNetwork/Trainer/AbstractTrainer.cpp
-        src/Impulse/NeuralNetwork/Math/types.h
+        src/Impulse/NeuralNetwork/Math/common.h
         src/Impulse/NeuralNetwork/Math/Fmincg.cpp
         src/Impulse/NeuralNetwork/Math/Fmincg.h
         src/Impulse/types.h
-        src/Impulse/NeuralNetwork/Trainer/types.h
+        src/Impulse/NeuralNetwork/Trainer/common.h
         src/Impulse/NeuralNetwork/Trainer/CojungateGradientTrainer.cpp
         src/Impulse/NeuralNetwork/Trainer/CojungateGradientTrainer.h
-)
+        src/Impulse/NeuralNetwork/Math/common.cpp)
 
 find_package(Boost 1.57.0 COMPONENTS system filesystem REQUIRED)
 if(BOOST_FOUND)
