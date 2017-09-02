@@ -37,10 +37,9 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Trainer/AbstractTrainer.h
         src/Impulse/NeuralNetwork/Trainer/AbstractTrainer.cpp
         src/Impulse/NeuralNetwork/Math/Matrix.h
-        src/Impulse/NeuralNetwork/Math/Vector.h
         src/Impulse/NeuralNetwork/Math/Minimizer/Fmincg.cpp
         src/Impulse/NeuralNetwork/Math/Minimizer/Fmincg.h
-    )
+        src/Impulse/types.h)
 
 find_package(Boost 1.57.0 COMPONENTS system filesystem REQUIRED)
 if(BOOST_FOUND)

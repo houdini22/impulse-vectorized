@@ -10,6 +10,8 @@
 
 using json = nlohmann::json;
 
+using Impulse::NeuralNetwork::Math::T_Vector;
+
 namespace Impulse {
 
     namespace NeuralNetwork {
@@ -33,7 +35,7 @@ namespace Impulse {
                     result["layers"][i] = json::array({this->network->getLayer(i)->getSize(), this->network->getLayer(i)->getType()});
                 }
 
-                Vector weights = this->network->getRolledTheta();
+                T_Vector weights = this->network->getRolledTheta();
 
                 result["weights"] = std::vector<double>(weights.data(), weights.data() + weights.rows() * weights.cols());
 

@@ -6,8 +6,16 @@
 #include "../Layer/Logistic.h"
 #include "../Layer/Relu.h"
 #include "../../../Vendor/json.hpp"
+#include "../../types.h"
 
 using json = nlohmann::json;
+
+using Impulse::NeuralNetwork::Network;
+using Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC;
+using Impulse::NeuralNetwork::Layer::TYPE_RELU;
+using LogisticLayer = Impulse::NeuralNetwork::Layer::Logistic;
+using ReluLayer = Impulse::NeuralNetwork::Layer::Relu;
+using Impulse::T_Size;
 
 namespace Impulse {
 
@@ -17,24 +25,24 @@ namespace Impulse {
 
             class Builder {
             protected:
-                Impulse::NeuralNetwork::Network *network;
-                unsigned int prevSize;
+                Network *network;
+                T_Size prevSize;
             public:
-                Builder(unsigned int inputSize) {
-                    this->network = new Impulse::NeuralNetwork::Network(inputSize);
+                Builder(T_Size inputSize) {
+                    this->network = new Network(inputSize);
                     this->prevSize = inputSize;
                 }
 
-                void createLayer(unsigned int size, std::string type) {
-                    if (type == Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC) {
-                        this->network->addLayer(new Impulse::NeuralNetwork::Layer::Logistic(size, this->prevSize));
-                    } else if (type == Impulse::NeuralNetwork::Layer::TYPE_RELU) {
-                        this->network->addLayer(new Impulse::NeuralNetwork::Layer::Relu(size, this->prevSize));
+                void createLayer(T_Size size, std::string type) {
+                    if (type == TYPE_LOGISTIC) {
+                        this->network->addLayer(new LogisticLayer(size, this->prevSize));
+                    } else if (type == TYPE_RELU) {
+                        this->network->addLayer(new ReluLayer(size, this->prevSize));
                     }
                     this->prevSize = size;
                 }
 
-                Impulse::NeuralNetwork::Network *getNetwork() {
+                Network *getNetwork() {
                     return this->network;
                 }
 
@@ -44,10 +52,10 @@ namespace Impulse {
                     fileStream >> jsonFile;
                     fileStream.close();
 
-                    Builder builder((unsigned int) jsonFile["inputSize"]);
+                    Builder builder((T_Size) jsonFile["inputSize"]);
 
                     json savedLayers = jsonFile["layers"];
-                    unsigned int i = 0;
+                    T_Size i = 0;
                     for (auto it = savedLayers.begin(); it != savedLayers.end(); ++it) {
                         builder.createLayer(it.value()[0], it.value()[1]);
                     }

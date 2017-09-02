@@ -7,6 +7,7 @@
 #include "../../../Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
 
 using Vector = Impulse::NeuralNetwork::Math::T_Vector;
+using Impulse::NeuralNetwork::Network;
 
 namespace Impulse {
 
@@ -27,20 +28,20 @@ namespace Impulse {
 
             class AbstractTrainer {
             protected:
-                Impulse::NeuralNetwork::Network *network;
+                Network *network;
                 double regularization = 0.0;
-                unsigned int learningIterations = 1000;
+                T_Size learningIterations = 1000;
                 double learningRate = 0.1;
                 bool verbose = true;
                 int verboseStep = 100;
             public:
-                AbstractTrainer(Impulse::NeuralNetwork::Network *net);
+                AbstractTrainer(Network *net);
 
-                Impulse::NeuralNetwork::Network *getNetwork();
+                Network *getNetwork();
 
                 void setRegularization(double value);
 
-                void setLearningIterations(unsigned int value);
+                void setLearningIterations(T_Size value);
 
                 void setLearningRate(double value);
 
@@ -48,7 +49,7 @@ namespace Impulse {
 
                 void setVerboseStep(int value);
 
-                Impulse::NeuralNetwork::Trainer::CostGradientResult cost(Impulse::SlicedDataset &dataSet);
+                CostGradientResult cost(Impulse::SlicedDataset &dataSet);
 
                 virtual void train(Impulse::SlicedDataset &dataSet) = 0;
             };

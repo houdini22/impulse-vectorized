@@ -4,9 +4,11 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
 #include "../Math/Matrix.h"
+#include "../../types.h"
 
-using Matrix = Impulse::NeuralNetwork::Math::T_Matrix;
-using Vector = Impulse::NeuralNetwork::Math::T_Vector;
+using Impulse::NeuralNetwork::Math::T_Matrix;
+using Impulse::NeuralNetwork::Math::T_Vector;
+using Impulse::T_Size;
 
 namespace Impulse {
 
@@ -16,17 +18,17 @@ namespace Impulse {
 
             class Abstract {
             protected:
-                unsigned int size; // number of neurons
-                unsigned int prevSize = 0; // number of prev layer size (input)
+                T_Size size;        // number of neurons
+                T_Size prevSize;    // number of prev layer size (input)
             public:
-                Matrix W; // weights
-                Vector b; // bias
-                Matrix A; // output of the layer after activation
-                Matrix Z; // output of the layer before activation
-                Matrix gW; // gradient for weights
-                Vector gb; // gradient for biases
+                T_Matrix W;         // weights
+                T_Vector b;         // bias
+                T_Matrix A;         // output of the layer after activation
+                T_Matrix Z;         // output of the layer before activation
+                T_Matrix gW;        // gradient for weights
+                T_Vector gb;        // gradient for biases
 
-                Abstract(unsigned int size, unsigned int prevSize) {
+                Abstract(T_Size size, T_Size prevSize) {
                     this->size = size;
                     this->prevSize = prevSize;
 
@@ -45,7 +47,7 @@ namespace Impulse {
                  * @param input
                  * @return
                  */
-                Matrix forward(Matrix input) {
+                T_Matrix forward(T_Matrix input) {
                     this->Z = (this->W * input).colwise() + this->b;
                     this->A = this->activation(this->Z);
                     return this->A;
@@ -56,24 +58,19 @@ namespace Impulse {
                  * @param input
                  * @return
                  */
-                virtual Matrix activation(Matrix input) = 0;
+                virtual T_Matrix activation(T_Matrix input) = 0;
 
                 /**
                  * Calculates derivative. It depends on activation function.
                  * @return
                  */
-                virtual Matrix derivative() = 0;
-
-                void updateParameters(double learningRate) {
-                    this->W -= learningRate * this->gW;
-                    this->b -= learningRate * this->gb;
-                }
+                virtual T_Matrix derivative() = 0;
 
                 /**
                  * Getter for layer size.
                  * @return
                  */
-                unsigned int getSize() {
+                T_Size getSize() {
                     return this->size;
                 }
 

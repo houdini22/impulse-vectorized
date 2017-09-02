@@ -1,7 +1,8 @@
 #include "AbstractTrainer.h"
 #include "../Math/Matrix.h"
 
-using Matrix = Impulse::NeuralNetwork::Math::T_Matrix;
+using Impulse::NeuralNetwork::Math::T_Matrix;
+using Impulse::NeuralNetwork::Network;
 
 namespace Impulse {
 
@@ -9,11 +10,11 @@ namespace Impulse {
 
         namespace Trainer {
 
-            AbstractTrainer::AbstractTrainer(Impulse::NeuralNetwork::Network *net) {
+            AbstractTrainer::AbstractTrainer(Network *net) {
                 this->network = net;
             }
 
-            Impulse::NeuralNetwork::Network *AbstractTrainer::getNetwork() {
+            Network *AbstractTrainer::getNetwork() {
                 return this->network;
             }
 
@@ -39,10 +40,10 @@ namespace Impulse {
 
             Impulse::NeuralNetwork::Trainer::CostGradientResult AbstractTrainer::cost(Impulse::SlicedDataset &dataSet) {
                 unsigned int m = dataSet.output.getSize();
-                Matrix A = this->network->forward(dataSet.getInput());
-                Matrix Y = dataSet.getOutput();
+                T_Matrix A = this->network->forward(dataSet.getInput());
+                T_Matrix Y = dataSet.getOutput();
 
-                Matrix errors = (Y.array() * A.unaryExpr([](const double x) { return log(x); }).array())
+                T_Matrix errors = (Y.array() * A.unaryExpr([](const double x) { return log(x); }).array())
                                          +
                                          (Y.unaryExpr([](const double x) { return 1.0 - x; }).array()
                                           *

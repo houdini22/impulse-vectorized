@@ -4,8 +4,10 @@
 #include <string>
 #include "Abstract.h"
 #include "../Math/Matrix.h"
+#include "../../types.h"
 
-using Matrix = Impulse::NeuralNetwork::Math::T_Matrix;
+using Impulse::NeuralNetwork::Math::T_Matrix;
+using Impulse::T_Size;
 
 namespace Impulse {
 
@@ -19,11 +21,11 @@ namespace Impulse {
             protected:
             public:
 
-                Relu(unsigned int size, unsigned int prevSize) : Abstract(size, prevSize) {
+                Relu(T_Size size, T_Size prevSize) : Abstract(size, prevSize) {
 
                 }
 
-                Matrix activation(Matrix input) {
+                T_Matrix activation(T_Matrix input) {
                     return input.unaryExpr([](const double x) {
                         if (x < 0.0) {
                             return 0.0;
@@ -32,7 +34,7 @@ namespace Impulse {
                     });
                 }
 
-                Matrix derivative() {
+                T_Matrix derivative() {
                     return this->A.unaryExpr([](const double x) {
                         if (x < 0.0) {
                             return 0.0;

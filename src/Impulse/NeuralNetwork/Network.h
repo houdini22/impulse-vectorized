@@ -5,24 +5,26 @@
 #include <iostream>
 #include "Layer/Abstract.h"
 #include "Math/Matrix.h"
+#include "../types.h"
 
-using Matrix = Impulse::NeuralNetwork::Math::T_Matrix;
-using Vector = Impulse::NeuralNetwork::Math::T_Vector;
+using Impulse::NeuralNetwork::Math::T_Matrix;
+using Impulse::NeuralNetwork::Math::T_Vector;
+using Impulse::T_Size;
 
 namespace Impulse {
 
     namespace NeuralNetwork {
 
-        typedef std::vector<Impulse::NeuralNetwork::Layer::Abstract *> LayerContainer;
+        typedef std::vector<Impulse::NeuralNetwork::Layer::Abstract *> LayersContainer;
         typedef std::vector<double> RolledTheta;
 
         class Network {
         protected:
-            unsigned int size = 0;
-            unsigned int inputSize = 0;
-            LayerContainer layers;
+            T_Size size = 0;
+            T_Size inputSize = 0;
+            LayersContainer layers;
         public:
-            Network(unsigned int inputSize) {
+            Network(T_Size inputSize) {
                 this->inputSize = inputSize;
             }
 
@@ -31,59 +33,53 @@ namespace Impulse {
                 this->layers.push_back(layer);
             }
 
-            Matrix forward(Matrix input) {
-                Matrix output = input;
+            T_Matrix forward(T_Matrix input) {
+                T_Matrix output = input;
 
-                for (LayerContainer::iterator it = this->layers.begin(); it != this->layers.end(); ++it) {
+                for (LayersContainer::iterator it = this->layers.begin(); it != this->layers.end(); ++it) {
                     output = (*it)->forward(output);
                 }
 
                 return output;
             }
 
-            void backward(Matrix X, Matrix Y, Matrix predictions, double regularization) {
+            void backward(T_Matrix X, T_Matrix Y, T_Matrix predictions, double regularization) {
                 long m = X.cols();
-                unsigned int size = this->getSize();
+                T_Size size = this->getSize();
 
-                Matrix sigma = predictions.array() - Y.array();
+                T_Matrix sigma = predictions.array() - Y.array();
 
                 for (long i = this->layers.size() - 1; i >= 0; i--) {
                     auto layer = this->layers.at(i);
 
-                    Matrix delta = sigma * (i == 0 ? X : this->layers.at(i - 1)->A).transpose().conjugate();
+                    T_Matrix delta = sigma * (i == 0 ? X : this->layers.at(i - 1)->A).transpose().conjugate();
                     layer->gW = delta.array() / m;
                     layer->gb = sigma.rowwise().sum() / m;
 
                     if (i > 0) {
                         auto prevLayer = this->layers.at(i - 1);
 
-                        Matrix tmp1 = layer->W.transpose() * sigma;
-                        Matrix tmp2 = prevLayer->derivative();
+                        T_Matrix tmp1 = layer->W.transpose() * sigma;
+                        T_Matrix tmp2 = prevLayer->derivative();
 
                         sigma = tmp1.array() * tmp2.array();
                     }
                 }
             }
 
-            void updateParameters(double learningRate) {
-                for (unsigned int layer = 0; layer < this->getSize(); layer++) {
-                    this->layers.at(layer)->updateParameters(learningRate);
-                }
-            }
-
-            unsigned int getInputSize() {
+            T_Size getInputSize() {
                 return this->inputSize;
             }
 
-            unsigned int getSize() {
+            T_Size getSize() {
                 return this->size;
             }
 
-            Impulse::NeuralNetwork::Layer::Abstract *getLayer(unsigned int key) {
+            Impulse::NeuralNetwork::Layer::Abstract *getLayer(T_Size key) {
                 return this->layers.at(key);
             }
 
-            Vector getRolledTheta() {
+            T_Vector getRolledTheta() {
                 std::vector<double> tmp;
 
                 for (long i = 0; i < this->layers.size(); i++) {
@@ -91,58 +87,58 @@ namespace Impulse {
                     tmp.reserve(
                             (unsigned long) (layer->W.cols() * layer->W.rows()) + (layer->b.cols() * layer->b.rows()));
 
-                    for (unsigned int j = 0; j < layer->W.rows(); j++) {
-                        for (unsigned int k = 0; k < layer->W.cols(); k++) {
+                    for (T_Size j = 0; j < layer->W.rows(); j++) {
+                        for (T_Size k = 0; k < layer->W.cols(); k++) {
                             tmp.push_back(layer->W(j, k));
                         }
                     }
 
-                    for (unsigned int j = 0; j < layer->b.rows(); j++) {
-                        for (unsigned int k = 0; k < layer->b.cols(); k++) {
+                    for (T_Size j = 0; j < layer->b.rows(); j++) {
+                        for (T_Size k = 0; k < layer->b.cols(); k++) {
                             tmp.push_back(layer->b(j, k));
                         }
                     }
                 }
 
-                Vector result = Eigen::Map<Vector, Eigen::Unaligned>(tmp.data(), tmp.size());
+                T_Vector result = Eigen::Map<T_Vector, Eigen::Unaligned>(tmp.data(), tmp.size());
                 return result;
             }
 
-            Vector getRolledGradient() {
+            T_Vector getRolledGradient() {
                 std::vector<double> tmp;
 
                 for (unsigned long i = 0; i < this->layers.size(); i++) {
                     auto layer = this->layers.at(i);
 
-                    for (unsigned int j = 0; j < layer->gW.rows(); j++) {
-                        for (unsigned int k = 0; k < layer->gW.cols(); k++) {
+                    for (T_Size j = 0; j < layer->gW.rows(); j++) {
+                        for (T_Size k = 0; k < layer->gW.cols(); k++) {
                             tmp.push_back(layer->gW(j, k));
                         }
                     }
 
-                    for (unsigned int j = 0; j < layer->gb.rows(); j++) {
-                        for (unsigned int k = 0; k < layer->gb.cols(); k++) {
+                    for (T_Size j = 0; j < layer->gb.rows(); j++) {
+                        for (T_Size k = 0; k < layer->gb.cols(); k++) {
                             tmp.push_back(layer->gb(j, k));
                         }
                     }
                 }
 
-                Vector result = Eigen::Map<Vector, Eigen::Unaligned>(tmp.data(), tmp.size());
+                T_Vector result = Eigen::Map<T_Vector, Eigen::Unaligned>(tmp.data(), tmp.size());
                 return result;
             }
 
-            void setRolledTheta(Vector theta) {
+            void setRolledTheta(T_Vector theta) {
                 unsigned long t = 0;
 
                 for (unsigned long i = 0; i < this->layers.size(); i++) {
                     auto layer = this->layers.at(i);
-                    for (unsigned int j = 0; j < layer->W.rows(); j++) {
-                        for (unsigned int k = 0; k < layer->W.cols(); k++) {
+                    for (T_Size j = 0; j < layer->W.rows(); j++) {
+                        for (T_Size k = 0; k < layer->W.cols(); k++) {
                             layer->W(j, k) = theta(t++);
                         }
                     }
-                    for (unsigned int j = 0; j < layer->b.rows(); j++) {
-                        for (unsigned int k = 0; k < layer->b.cols(); k++) {
+                    for (T_Size j = 0; j < layer->b.rows(); j++) {
+                        for (T_Size k = 0; k < layer->b.cols(); k++) {
                             layer->b(j, k) = theta(t++);
                         }
                     }
