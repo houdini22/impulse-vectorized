@@ -4,6 +4,7 @@
 #include <math.h>
 #include "../Network.h"
 #include "../Math/Matrix.h"
+#include "../Trainer/types.h"
 #include "../../types.h"
 #include "../../../Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
 
@@ -16,17 +17,6 @@ namespace Impulse {
     namespace NeuralNetwork {
 
         namespace Trainer {
-
-            struct CostGradientResult {
-                double error;
-                Vector gradient;
-                double getError() {
-                    return this->error;
-                }
-                Vector getGradient() {
-                    return this->gradient;
-                }
-            };
 
             class AbstractTrainer {
             protected:

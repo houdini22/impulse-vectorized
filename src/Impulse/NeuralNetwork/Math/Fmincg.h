@@ -1,4 +1,5 @@
-#pragma once
+#ifndef FMINCG_H
+#define FMINCG_H
 
 // number of extrapolation runs, set to a higher value for smaller ravine landscapes
 #define EXT 3.0
@@ -16,32 +17,36 @@
 #include <functional>
 #include <eigen3/Eigen/Core>
 
-#include "../../Trainer/AbstractTrainer.h"
-#include "../../Network.h"
-#include "../Matrix.h"
+#include "../Trainer/AbstractTrainer.h"
+#include "../Trainer/CojungateGradientTrainer.h"
+#include "../Network.h"
+#include "Matrix.h"
 
 namespace Impulse {
+
     namespace NeuralNetwork {
+
         namespace Trainer {
+
             struct CostGradientResult;
         }
+
         namespace Math {
-            namespace Minimizer {
-                class Fmincg {
-                public:
-                    Fmincg(void) {
-                    }
 
-                    ~Fmincg(void) {
-                    }
+            class Fmincg {
+            public:
+                Fmincg(void) {
+                }
 
-                    Vector minimize(
-                            std::function<Impulse::NeuralNetwork::Trainer::CostGradientResult(
-                                    Vector)> costFunction,
-                            Vector theta, unsigned int length, bool verbose);
-                };
+                ~Fmincg(void) {
+                }
 
-            }
+                Vector minimize(
+                        Trainer::StepFunction stepFunction,
+                        Vector theta, unsigned int length, bool verbose);
+            };
         }
     }
 }
+
+#endif /* FMINCG_H */

@@ -14,11 +14,7 @@ namespace Impulse {
             typedef Eigen::VectorXd T_Vector;
 
         }
-
     }
-
 }
 
-
 #endif /* MATRIX_H */
-
