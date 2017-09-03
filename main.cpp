@@ -24,7 +24,7 @@
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetBuilder/CSVBuilder.h"
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset.h"
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
-#include "src/Impulse/NeuralNetwork/Builder/Builder.h"
+#include "src/Impulse/NeuralNetwork/Builder.h"
 #include "src/Impulse/NeuralNetwork/NetworkSerializer.h"
 #include "src/Impulse/NeuralNetwork/Trainer/CojungateGradientTrainer.h"
 
@@ -45,7 +45,7 @@ void test_logistic() {
     dataset.input = datasetInput;
     dataset.output = datasetOutput;
 
-    Impulse::NeuralNetwork::Builder::Builder builder(400);
+    Impulse::NeuralNetwork::Builder builder(400);
     builder.createLayer(100, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
     builder.createLayer(20, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
     builder.createLayer(10, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
@@ -87,7 +87,7 @@ void test_xor() {
 
     Impulse::SlicedDataset slicedDataset = slicer.slice();
 
-    Impulse::NeuralNetwork::Builder::Builder builder(2);
+    Impulse::NeuralNetwork::Builder builder(2);
     builder.createLayer(2, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
     builder.createLayer(1, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
 
@@ -118,7 +118,7 @@ void test_xor() {
 }
 
 void test_xor_load() {
-    Impulse::NeuralNetwork::Builder::Builder builder = Impulse::NeuralNetwork::Builder::Builder::fromJSON("/home/hud/CLionProjects/impulse-vectorized/saved/xor.json");
+    Impulse::NeuralNetwork::Builder builder = Impulse::NeuralNetwork::Builder::fromJSON("/home/hud/CLionProjects/impulse-vectorized/saved/xor.json");
     Impulse::NeuralNetwork::Network * net = builder.getNetwork();
 
     Impulse::DatasetSample sample2({1, 1});
@@ -127,7 +127,7 @@ void test_xor_load() {
 }
 
 void test_logistic_load() {
-    Impulse::NeuralNetwork::Builder::Builder builder = Impulse::NeuralNetwork::Builder::Builder::fromJSON("/home/hud/CLionProjects/impulse-vectorized/saved/logistic.json");
+    Impulse::NeuralNetwork::Builder builder = Impulse::NeuralNetwork::Builder::fromJSON("/home/hud/CLionProjects/impulse-vectorized/saved/logistic.json");
     Impulse::NeuralNetwork::Network * net = builder.getNetwork();
 
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(

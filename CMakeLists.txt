@@ -30,7 +30,7 @@ set(SOURCE_FILES
         src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetSample.h
         src/Vendor/json.hpp
         main.cpp
-        src/Impulse/NeuralNetwork/Builder/Builder.h
+        src/Impulse/NeuralNetwork/Builder.h
         src/Impulse/NeuralNetwork/Network.h
         src/Impulse/NeuralNetwork/NetworkSerializer.h
         src/Impulse/NeuralNetwork/Layer/Logistic.h
@@ -45,7 +45,7 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Trainer/common.h
         src/Impulse/NeuralNetwork/Trainer/CojungateGradientTrainer.cpp
         src/Impulse/NeuralNetwork/Trainer/CojungateGradientTrainer.h
-        src/Impulse/NeuralNetwork/Math/common.cpp)
+        src/Impulse/NeuralNetwork/Math/common.cpp src/Impulse/NeuralNetwork/Builder.cpp)
 
 find_package(Boost 1.57.0 COMPONENTS system filesystem REQUIRED)
 if(BOOST_FOUND)
