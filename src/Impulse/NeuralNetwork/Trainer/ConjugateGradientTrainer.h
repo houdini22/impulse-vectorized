@@ -8,6 +8,7 @@
 
 using Impulse::NeuralNetwork::Math::T_Matrix;
 using Impulse::NeuralNetwork::Math::T_Vector;
+using Impulse::NeuralNetwork::Network;
 
 namespace Impulse {
 

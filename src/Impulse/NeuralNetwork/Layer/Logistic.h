@@ -20,24 +20,13 @@ namespace Impulse {
             class Logistic : public Abstract {
             protected:
             public:
+                Logistic(T_Size size, T_Size prevSize) : Abstract(size, prevSize) {};
 
-                Logistic(T_Size size, T_Size prevSize) : Abstract(size, prevSize) {
+                T_Matrix activation();
 
-                }
+                T_Matrix derivative();
 
-                T_Matrix activation() {
-                    return this->Z.unaryExpr([](const double x) {
-                        return 1.0 / (1.0 + exp(-x));
-                    });
-                }
-
-                T_Matrix derivative() {
-                    return this->A.array() * (1.0 - this->A.array());
-                }
-
-                const T_String getType() {
-                    return TYPE_LOGISTIC;
-                }
+                const T_String getType();
             };
         }
     }

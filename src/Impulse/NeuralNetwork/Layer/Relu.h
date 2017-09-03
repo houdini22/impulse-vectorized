@@ -21,31 +21,13 @@ namespace Impulse {
             protected:
             public:
 
-                Relu(T_Size size, T_Size prevSize) : Abstract(size, prevSize) {
+                Relu(T_Size size, T_Size prevSize) : Abstract(size, prevSize) {}
 
-                }
+                T_Matrix activation();
 
-                T_Matrix activation() {
-                    return this->Z.unaryExpr([](const double x) {
-                        if (x < 0.0) {
-                            return 0.0;
-                        }
-                        return x;
-                    });
-                }
+                T_Matrix derivative();
 
-                T_Matrix derivative() {
-                    return this->A.unaryExpr([](const double x) {
-                        if (x < 0.0) {
-                            return 0.0;
-                        }
-                        return 1.0;
-                    });
-                }
-
-                const T_String getType() {
-                    return TYPE_RELU;
-                }
+                const T_String getType();
             };
         }
     }

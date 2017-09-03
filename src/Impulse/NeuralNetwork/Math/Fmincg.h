@@ -15,13 +15,21 @@
 #define RATIO 100.0
 
 #include <functional>
+#include <algorithm>
+#include <iostream>
+#include <ctime>
+#include <chrono>
+#include <functional>
 #include <eigen3/Eigen/Core>
 
+#include "../Trainer/ConjugateGradientTrainer.h"
 #include "../Trainer/AbstractTrainer.h"
-#include "../Trainer/CojungateGradientTrainer.h"
+#include "../Trainer/ConjugateGradientTrainer.h"
 #include "../Network.h"
 #include "common.h"
 
+using namespace std::chrono;
+using Impulse::NeuralNetwork::Math::T_Vector;
 using Impulse::NeuralNetwork::Trainer::StepFunction;
 
 namespace Impulse {
@@ -32,9 +40,9 @@ namespace Impulse {
 
             class Fmincg {
             public:
-                Fmincg(void) {}
+                Fmincg() {}
 
-                ~Fmincg(void) {}
+                ~Fmincg() {}
 
                 T_Vector minimize(
                         StepFunction stepFunction,

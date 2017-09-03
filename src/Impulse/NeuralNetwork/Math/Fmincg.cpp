@@ -1,18 +1,4 @@
-#include <functional>
-#include <math.h>
-#include <float.h>
-#include <stdio.h>
-#include <algorithm>
-#include <iostream>
-#include <ctime>
-#include <chrono>
-#include <ctime>
-
 #include "Fmincg.h"
-#include "../Trainer/CojungateGradientTrainer.h"
-
-using Vector = Impulse::NeuralNetwork::Math::T_Vector;
-using namespace std::chrono;
 
 /*
  * Minimize a continuous differentialble multivariate function. Starting point <br/>
@@ -72,26 +58,27 @@ using namespace std::chrono;
  * 2) adjust types
  */
 
-using Impulse::NeuralNetwork::Trainer::StepFunction;
-
 namespace Impulse {
 
     namespace NeuralNetwork {
 
         namespace Math {
 
-            Vector Fmincg::minimize(
+            T_Vector Fmincg::minimize(
                     StepFunction stepFunction,
-                    Vector theta, T_Size length, bool verbose) {
+                    T_Vector theta,
+                    T_Size length,
+                    bool verbose
+            ) {
                 // input will be the pointer to our current active parameter set
-                Vector input(theta);
-                Vector X0(input);
+                T_Vector input(theta);
+                T_Vector X0(input);
                 // search directions
-                Vector s(input.size());
+                T_Vector s(input.size());
                 // gradients
-                Vector df0(input.size());
-                Vector df1(input.size());
-                Vector df2(input.size());
+                T_Vector df0(input.size());
+                T_Vector df1(input.size());
+                T_Vector df2(input.size());
 
                 // define some integers for bookkeeping and then start
                 int M = 0;

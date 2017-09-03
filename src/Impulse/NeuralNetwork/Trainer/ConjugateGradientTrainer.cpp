@@ -1,8 +1,5 @@
-#include "CojungateGradientTrainer.h"
+#include "ConjugateGradientTrainer.h"
 
-using Impulse::NeuralNetwork::Math::T_Matrix;
-using Impulse::NeuralNetwork::Math::T_Vector;
-using Impulse::NeuralNetwork::Network;
 using Impulse::NeuralNetwork::Math::Fmincg;
 
 namespace Impulse {

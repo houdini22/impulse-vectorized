@@ -1,5 +1,5 @@
-#ifndef IMPULSE_TYPES_H
-#define IMPULSE_TYPES_H
+#ifndef IMPULSE_COMMON_H
+#define IMPULSE_COMMON_H
 
 namespace Impulse {
 
@@ -7,4 +7,4 @@ namespace Impulse {
     typedef std::string T_String;
 }
 
-#endif //IMPULSE_TYPES_H
+#endif //IMPULSE_COMMON_H

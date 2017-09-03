@@ -9,6 +9,7 @@
 #include "../../../Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
 
 using Impulse::NeuralNetwork::Math::T_Vector;
+using Impulse::NeuralNetwork::Math::T_Matrix;
 using Impulse::NeuralNetwork::Network;
 using Impulse::T_Size;
 

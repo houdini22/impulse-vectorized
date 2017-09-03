@@ -28,29 +28,19 @@ namespace Impulse {
                 T_Matrix gW;        // gradient for weights
                 T_Vector gb;        // gradient for biases
 
-                Abstract(T_Size size, T_Size prevSize) {
-                    this->size = size;
-                    this->prevSize = prevSize;
-
-                    // initialize weights
-                    this->W.resize(this->size, this->prevSize);
-                    this->W.setRandom();
-                    this->W = this->W * sqrt(2.0 / this->prevSize);
-
-                    // initialize bias
-                    this->b.resize(this->size);
-                    this->b.setZero();
-                }
+                /**
+                 * Constructor.
+                 * @param size
+                 * @param prevSize
+                 */
+                Abstract(T_Size size, T_Size prevSize);
 
                 /**
                  * Forward propagation.
                  * @param input
                  * @return
                  */
-                T_Matrix forward(T_Matrix input) {
-                    this->Z = (this->W * input).colwise() + this->b;
-                    return this->A = this->activation();
-                }
+                T_Matrix forward(T_Matrix input);
 
                 /**
                  * Calculates activated values.
@@ -66,18 +56,16 @@ namespace Impulse {
                 virtual T_Matrix derivative() = 0;
 
                 /**
-                 * Getter for layer size.
-                 * @return
-                 */
-                T_Size getSize() {
-                    return this->size;
-                }
-
-                /**
                  * Getter for layer type.
                  * @return
                  */
                 virtual const T_String getType() = 0;
+
+                /**
+                 * Getter for layer size.
+                 * @return
+                 */
+                T_Size getSize();
             };
         }
     }

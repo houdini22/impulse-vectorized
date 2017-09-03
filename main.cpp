@@ -8,7 +8,6 @@
 
 #include <iostream>
 #include <cstdlib>
-#include <iostream>
 #include <sstream>
 #include <fstream>
 #include <string>
@@ -25,11 +24,11 @@
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset.h"
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
 #include "src/Impulse/NeuralNetwork/Builder.h"
-#include "src/Impulse/NeuralNetwork/NetworkSerializer.h"
-#include "src/Impulse/NeuralNetwork/Trainer/CojungateGradientTrainer.h"
+#include "src/Impulse/NeuralNetwork/Serializer.h"
+#include "src/Impulse/NeuralNetwork/Trainer/ConjugateGradientTrainer.h"
 
 using namespace std::chrono;
-using Impulse::NeuralNetwork::Math::T_Matrix;
+using namespace Impulse::NeuralNetwork;
 
 void test_logistic() {
     // create dataset
@@ -45,21 +44,21 @@ void test_logistic() {
     dataset.input = datasetInput;
     dataset.output = datasetOutput;
 
-    Impulse::NeuralNetwork::Builder builder(400);
-    builder.createLayer(100, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
-    builder.createLayer(20, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
-    builder.createLayer(10, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
+    Builder builder(400);
+    builder.createLayer(100, Layer::TYPE_LOGISTIC);
+    builder.createLayer(20, Layer::TYPE_LOGISTIC);
+    builder.createLayer(10, Layer::TYPE_LOGISTIC);
 
-    Impulse::NeuralNetwork::Network *net = builder.getNetwork();
+    Network *net = builder.getNetwork();
 
     //std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 
-    Impulse::NeuralNetwork::Trainer::ConjugateGradientTrainer trainer(net);
+    Trainer::ConjugateGradientTrainer trainer(net);
     trainer.setLearningIterations(400);
     trainer.setVerboseStep(1);
     //trainer.setRegularization(0.001);
 
-    Impulse::NeuralNetwork::Trainer::CostGradientResult cost = trainer.cost(dataset);
+    Trainer::CostGradientResult cost = trainer.cost(dataset);
     std::cout << "Cost: " << cost.getError() << std::endl;
 
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
@@ -70,7 +69,7 @@ void test_logistic() {
 
     std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 
-    Impulse::NeuralNetwork::NetworkSerializer serializer(net);
+    Serializer serializer(net);
     serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/logistic.json");
 }
 
@@ -87,22 +86,22 @@ void test_xor() {
 
     Impulse::SlicedDataset slicedDataset = slicer.slice();
 
-    Impulse::NeuralNetwork::Builder builder(2);
-    builder.createLayer(2, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
-    builder.createLayer(1, Impulse::NeuralNetwork::Layer::TYPE_LOGISTIC);
+    Builder builder(2);
+    builder.createLayer(2, Layer::TYPE_LOGISTIC);
+    builder.createLayer(1, Layer::TYPE_LOGISTIC);
 
-    Impulse::NeuralNetwork::Network *net = builder.getNetwork();
+    Network *net = builder.getNetwork();
 
     Impulse::DatasetSample sample({0, 1});
-    T_Matrix inputVector = sample.exportToEigen();
+    Math::T_Matrix inputVector = sample.exportToEigen();
     std::cout << "Forward: " << net->forward(inputVector) << std::endl;
 
-    Impulse::NeuralNetwork::Trainer::ConjugateGradientTrainer trainer(net);
+    Trainer::ConjugateGradientTrainer trainer(net);
     trainer.setLearningIterations(400);
     trainer.setLearningRate(20);
     trainer.setVerboseStep(100);
 
-    Impulse::NeuralNetwork::Trainer::CostGradientResult cost = trainer.cost(slicedDataset);
+    Trainer::CostGradientResult cost = trainer.cost(slicedDataset);
     std::cout << "Cost: " << cost.getError() << std::endl;
 
     trainer.train(slicedDataset);
@@ -110,25 +109,25 @@ void test_xor() {
     std::cout << "Forward: " << net->forward(inputVector) << std::endl;
 
     Impulse::DatasetSample sample2({1, 1});
-    T_Matrix inputVector2 = sample2.exportToEigen();
+    Math::T_Matrix inputVector2 = sample2.exportToEigen();
     std::cout << "Forward: " << net->forward(inputVector2) << std::endl;
 
-    Impulse::NeuralNetwork::NetworkSerializer serializer(net);
+    Serializer serializer(net);
     serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/xor.json");
 }
 
 void test_xor_load() {
-    Impulse::NeuralNetwork::Builder builder = Impulse::NeuralNetwork::Builder::fromJSON("/home/hud/CLionProjects/impulse-vectorized/saved/xor.json");
-    Impulse::NeuralNetwork::Network * net = builder.getNetwork();
+    Builder builder = Builder::fromJSON("/home/hud/CLionProjects/impulse-vectorized/saved/xor.json");
+    Network * net = builder.getNetwork();
 
     Impulse::DatasetSample sample2({1, 1});
-    T_Matrix inputVector2 = sample2.exportToEigen();
+    Math::T_Matrix inputVector2 = sample2.exportToEigen();
     std::cout << "Saved Forward: " << net->forward(inputVector2) << std::endl;
 }
 
 void test_logistic_load() {
-    Impulse::NeuralNetwork::Builder builder = Impulse::NeuralNetwork::Builder::fromJSON("/home/hud/CLionProjects/impulse-vectorized/saved/logistic.json");
-    Impulse::NeuralNetwork::Network * net = builder.getNetwork();
+    Builder builder = Builder::fromJSON("/home/hud/CLionProjects/impulse-vectorized/saved/logistic.json");
+    Network * net = builder.getNetwork();
 
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
             "/home/hud/CLionProjects/impulse-new/data/ex4data1_x.csv");
@@ -147,9 +146,9 @@ void test_logistic_load() {
     auto duration = duration_cast<microseconds>( t2 - t1 ).count();
     std::cout << "Forward time: " << duration << std::endl;
 
-    Impulse::NeuralNetwork::Trainer::ConjugateGradientTrainer trainer(net);
+    Trainer::ConjugateGradientTrainer trainer(net);
 
-    Impulse::NeuralNetwork::Trainer::CostGradientResult cost = trainer.cost(dataset);
+    Trainer::CostGradientResult cost = trainer.cost(dataset);
     std::cout << "Cost: " << cost.getError() << std::endl;
 }
 

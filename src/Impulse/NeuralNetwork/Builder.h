@@ -25,8 +25,11 @@ namespace Impulse {
             T_Size prevSize;
         public:
             Builder(T_Size inputSize);
+
             void createLayer(T_Size size, T_String type);
+
             Network *getNetwork();
+
             static Builder fromJSON(T_String path);
         };
     }

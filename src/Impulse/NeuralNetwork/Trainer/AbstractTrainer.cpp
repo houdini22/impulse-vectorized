@@ -1,8 +1,5 @@
 #include "AbstractTrainer.h"
 
-using Impulse::NeuralNetwork::Math::T_Matrix;
-using Impulse::NeuralNetwork::Network;
-
 namespace Impulse {
 
     namespace NeuralNetwork {
