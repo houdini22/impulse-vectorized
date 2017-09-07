@@ -14,6 +14,8 @@ namespace Impulse {
                 this->network->addLayer(new Layer::Logistic(size, this->prevSize));
             } else if (type == Layer::TYPE_RELU) {
                 this->network->addLayer(new Layer::Relu(size, this->prevSize));
+            } else if (type == Layer::TYPE_SOFTMAX) {
+                this->network->addLayer(new Layer::Softmax(size, this->prevSize));
             }
             this->prevSize = size;
         }

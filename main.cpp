@@ -56,7 +56,7 @@ void test_logistic() {
     Trainer::ConjugateGradientTrainer trainer(net);
     trainer.setLearningIterations(400);
     trainer.setVerboseStep(1);
-    //trainer.setRegularization(0.001);
+    trainer.setRegularization(0.0);
 
     Trainer::CostGradientResult cost = trainer.cost(dataset);
     std::cout << "Cost: " << cost.getError() << std::endl;
@@ -71,6 +71,49 @@ void test_logistic() {
 
     Serializer serializer(net);
     serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/logistic.json");
+}
+
+void test_softmax() {
+    // create dataset
+    Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
+            "/home/hud/CLionProjects/impulse-vectorized/data/ex4data1_x.csv");
+    Impulse::Dataset datasetInput = datasetBuilder1.build();
+
+    Impulse::DatasetBuilder::CSVBuilder datasetBuilder2(
+            "/home/hud/CLionProjects/impulse-vectorized/data/ex4data1_y.csv");
+    Impulse::Dataset datasetOutput = datasetBuilder2.build();
+
+    Impulse::SlicedDataset dataset;
+    dataset.input = datasetInput;
+    dataset.output = datasetOutput;
+
+    Builder builder(400);
+    builder.createLayer(100, Layer::TYPE_LOGISTIC);
+    builder.createLayer(20, Layer::TYPE_LOGISTIC);
+    builder.createLayer(10, Layer::TYPE_SOFTMAX);
+
+    Network *net = builder.getNetwork();
+
+    Trainer::ConjugateGradientTrainer trainer(net);
+    trainer.setLearningIterations(400);
+    trainer.setVerboseStep(1);
+    trainer.setRegularization(0.0);
+
+    Trainer::CostGradientResult cost = trainer.cost(dataset);
+    std::cout << "Cost: " << cost.getError() << std::endl;
+
+    std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+    trainer.train(dataset);
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    auto duration = duration_cast<seconds>( t2 - t1 ).count();
+    std::cout << "Time: " << duration << std::endl;
+
+    std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+
+    Serializer serializer(net);
+    serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/softmax.json");
 }
 
 void test_xor() {
@@ -153,7 +196,8 @@ void test_logistic_load() {
 }
 
 int main() {
-    test_logistic();
+    //test_logistic();
+    test_softmax();
     //test_logistic_load();
     //test_xor();
     //test_xor_load();

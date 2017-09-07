@@ -39,21 +39,23 @@ namespace Impulse {
                 T_Matrix A = this->network->forward(dataSet.getInput());
                 T_Matrix Y = dataSet.getOutput();
 
-                T_Matrix errors = (Y.array() * A.unaryExpr([](const double x) { return log(x); }).array())
+                /*T_Matrix errors = (Y.array() * A.unaryExpr([](const double x) { return log(x); }).array())
                                   +
                                   (Y.unaryExpr([](const double x) { return 1.0 - x; }).array()
                                    *
                                    A.unaryExpr([](const double x) { return log(1.0 - x); }).array()
-                                  );
+                                  );*/
 
-                double regularization = 0.0;
+                T_Matrix errors = (Y.array() * A.unaryExpr([](const double x) { return log(x); }).array());
+
+                double p = 0.0;
                 for (T_Size i = 0; i < this->network->getSize(); i++) {
-                    regularization += this->network->getLayer(i)->W.unaryExpr([](const double x) {
+                    p += this->network->getLayer(i)->W.unaryExpr([](const double x) {
                         return pow(x, 2.0);
                     }).sum();
                 }
 
-                double error = (-1.0) / (double) m * errors.sum() + (this->regularization / 2 * regularization);
+                double error = (-1.0 / (double) m) * errors.sum() + ((this->regularization * p) / (2.0 * (double) m));
 
                 Impulse::NeuralNetwork::Trainer::CostGradientResult result;
                 result.error = error;

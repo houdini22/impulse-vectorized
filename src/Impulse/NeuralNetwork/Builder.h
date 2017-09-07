@@ -5,6 +5,7 @@
 #include "Network.h"
 #include "Layer/Logistic.h"
 #include "Layer/Relu.h"
+#include "Layer/Softmax.h"
 #include "../../Vendor/json.hpp"
 #include "../common.h"
 
