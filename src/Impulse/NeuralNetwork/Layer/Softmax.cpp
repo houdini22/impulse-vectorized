@@ -1,5 +1,4 @@
 #include "Softmax.h"
-#include <iostream>
 
 namespace Impulse {
 

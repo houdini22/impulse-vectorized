@@ -30,7 +30,7 @@
 using namespace std::chrono;
 using namespace Impulse::NeuralNetwork;
 
-void test_logistic() {
+Impulse::SlicedDataset getDataset() {
     // create dataset
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
             "/home/hud/CLionProjects/impulse-new/data/ex4data1_x.csv");
@@ -43,6 +43,12 @@ void test_logistic() {
     Impulse::SlicedDataset dataset;
     dataset.input = datasetInput;
     dataset.output = datasetOutput;
+
+    return dataset;
+}
+
+void test_logistic() {
+    Impulse::SlicedDataset dataset = getDataset();
 
     Builder builder(400);
     builder.createLayer(100, Layer::TYPE_LOGISTIC);
@@ -67,25 +73,14 @@ void test_logistic() {
     auto duration = duration_cast<seconds>( t2 - t1 ).count();
     std::cout << "Time: " << duration << std::endl;
 
-    std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+    std::cout << "Forward:" << std::endl << net->forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
     Serializer serializer(net);
     serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/logistic.json");
 }
 
 void test_softmax() {
-    // create dataset
-    Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
-            "/home/hud/CLionProjects/impulse-vectorized/data/ex4data1_x.csv");
-    Impulse::Dataset datasetInput = datasetBuilder1.build();
-
-    Impulse::DatasetBuilder::CSVBuilder datasetBuilder2(
-            "/home/hud/CLionProjects/impulse-vectorized/data/ex4data1_y.csv");
-    Impulse::Dataset datasetOutput = datasetBuilder2.build();
-
-    Impulse::SlicedDataset dataset;
-    dataset.input = datasetInput;
-    dataset.output = datasetOutput;
+    Impulse::SlicedDataset dataset = getDataset();
 
     Builder builder(400);
     builder.createLayer(100, Layer::TYPE_LOGISTIC);
@@ -102,7 +97,7 @@ void test_softmax() {
     Trainer::CostGradientResult cost = trainer.cost(dataset);
     std::cout << "Cost: " << cost.getError() << std::endl;
 
-    std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+    std::cout << "Forward:" << std::endl << net->forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
     trainer.train(dataset);
@@ -110,7 +105,7 @@ void test_softmax() {
     auto duration = duration_cast<seconds>( t2 - t1 ).count();
     std::cout << "Time: " << duration << std::endl;
 
-    std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+    std::cout << "Forward:" << std::endl << net->forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
     Serializer serializer(net);
     serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/softmax.json");
@@ -130,7 +125,7 @@ void test_xor() {
     Impulse::SlicedDataset slicedDataset = slicer.slice();
 
     Builder builder(2);
-    builder.createLayer(2, Layer::TYPE_LOGISTIC);
+    builder.createLayer(3, Layer::TYPE_LOGISTIC);
     builder.createLayer(1, Layer::TYPE_LOGISTIC);
 
     Network *net = builder.getNetwork();
@@ -140,9 +135,7 @@ void test_xor() {
     std::cout << "Forward: " << net->forward(inputVector) << std::endl;
 
     Trainer::ConjugateGradientTrainer trainer(net);
-    trainer.setLearningIterations(400);
-    trainer.setLearningRate(20);
-    trainer.setVerboseStep(100);
+    trainer.setLearningIterations(100);
 
     Trainer::CostGradientResult cost = trainer.cost(slicedDataset);
     std::cout << "Cost: " << cost.getError() << std::endl;
@@ -159,32 +152,14 @@ void test_xor() {
     serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/xor.json");
 }
 
-void test_xor_load() {
-    Builder builder = Builder::fromJSON("/home/hud/CLionProjects/impulse-vectorized/saved/xor.json");
-    Network * net = builder.getNetwork();
-
-    Impulse::DatasetSample sample2({1, 1});
-    Math::T_Matrix inputVector2 = sample2.exportToEigen();
-    std::cout << "Saved Forward: " << net->forward(inputVector2) << std::endl;
-}
-
 void test_logistic_load() {
     Builder builder = Builder::fromJSON("/home/hud/CLionProjects/impulse-vectorized/saved/logistic.json");
     Network * net = builder.getNetwork();
 
-    Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
-            "/home/hud/CLionProjects/impulse-new/data/ex4data1_x.csv");
-    Impulse::Dataset datasetInput = datasetBuilder1.build();
-    Impulse::DatasetBuilder::CSVBuilder datasetBuilder2(
-            "/home/hud/CLionProjects/impulse-new/data/ex4data1_y.csv");
-    Impulse::Dataset datasetOutput = datasetBuilder2.build();
-
-    Impulse::SlicedDataset dataset;
-    dataset.input = datasetInput;
-    dataset.output = datasetOutput;
+    Impulse::SlicedDataset dataset = getDataset();
 
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
-    std::cout << "Saved Forward: " << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+    std::cout << "Saved Forward: " << std::endl << net->forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>( t2 - t1 ).count();
     std::cout << "Forward time: " << duration << std::endl;
@@ -196,10 +171,9 @@ void test_logistic_load() {
 }
 
 int main() {
-    test_logistic();
-    //test_softmax();
+    //test_logistic();
+    test_softmax();
     //test_logistic_load();
     //test_xor();
-    //test_xor_load();
     return 0;
 }
