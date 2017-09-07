@@ -196,8 +196,8 @@ void test_logistic_load() {
 }
 
 int main() {
-    //test_logistic();
-    test_softmax();
+    test_logistic();
+    //test_softmax();
     //test_logistic_load();
     //test_xor();
     //test_xor_load();

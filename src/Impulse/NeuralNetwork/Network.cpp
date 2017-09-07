@@ -124,5 +124,9 @@ namespace Impulse {
                 }
             }
         }
+
+        double Network::loss(T_Matrix output, T_Matrix predictions) {
+            return this->layers.at(this->getSize() - 1)->loss(output, predictions);
+        }
     }
 }

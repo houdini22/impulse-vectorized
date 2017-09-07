@@ -24,6 +24,11 @@ namespace Impulse {
             const T_String Softmax::getType() {
                 return TYPE_SOFTMAX;
             }
+
+            double Softmax::loss(T_Matrix output, T_Matrix predictions) {
+                T_Matrix loss = (output.array() * predictions.unaryExpr([](const double x) { return log(x); }).array());
+                return loss.sum();
+            }
         }
     }
 }

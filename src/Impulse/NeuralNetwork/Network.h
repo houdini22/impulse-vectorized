@@ -45,6 +45,8 @@ namespace Impulse {
             T_Vector getRolledGradient();
 
             void setRolledTheta(T_Vector theta);
+
+            double loss(T_Matrix output, T_Matrix predictions);
         };
     }
 }

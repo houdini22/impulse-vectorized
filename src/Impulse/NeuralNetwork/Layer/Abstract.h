@@ -66,6 +66,14 @@ namespace Impulse {
                  * @return
                  */
                 T_Size getSize();
+
+                /**
+                 * Loss for the last, classifier layer.
+                 * @param output
+                 * @param predictions
+                 * @return
+                 */
+                virtual double loss(T_Matrix output, T_Matrix predictions) = 0;
             };
         }
     }

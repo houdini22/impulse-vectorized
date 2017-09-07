@@ -28,6 +28,8 @@ namespace Impulse {
                 T_Matrix derivative();
 
                 const T_String getType();
+
+                double loss(T_Matrix output, T_Matrix predictions);
             };
         }
     }

@@ -27,6 +27,11 @@ namespace Impulse {
             const T_String Relu::getType() {
                 return TYPE_RELU;
             }
+
+            double Relu::loss(T_Matrix output, T_Matrix predictions) {
+                // TODO
+                return 0.0;
+            }
         }
     }
 }
