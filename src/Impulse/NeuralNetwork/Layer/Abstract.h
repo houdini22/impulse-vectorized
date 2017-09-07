@@ -4,11 +4,11 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
 #include "../Math/common.h"
-#include "../../common.h"
+#include "../common.h"
 
 using Impulse::NeuralNetwork::Math::T_Matrix;
 using Impulse::NeuralNetwork::Math::T_Vector;
-using Impulse::T_Size;
+using Impulse::NeuralNetwork::T_Size;
 
 namespace Impulse {
 

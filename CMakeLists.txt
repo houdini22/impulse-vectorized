@@ -41,7 +41,7 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Math/common.h
         src/Impulse/NeuralNetwork/Math/Fmincg.cpp
         src/Impulse/NeuralNetwork/Math/Fmincg.h
-        src/Impulse/common.h
+        src/Impulse/NeuralNetwork/common.h
         src/Impulse/NeuralNetwork/Trainer/common.h
         src/Impulse/NeuralNetwork/Trainer/ConjugateGradientTrainer.cpp
         src/Impulse/NeuralNetwork/Trainer/ConjugateGradientTrainer.h
@@ -54,7 +54,7 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Layer/Relu.cpp
         src/Impulse/NeuralNetwork/Layer/Softmax.h
         src/Impulse/NeuralNetwork/Layer/Softmax.cpp
-        )
+        src/Impulse/NeuralNetwork/include.h)
 
 find_package(Boost 1.57.0 COMPONENTS system filesystem REQUIRED)
 if(BOOST_FOUND)

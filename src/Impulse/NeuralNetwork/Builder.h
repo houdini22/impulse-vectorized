@@ -7,12 +7,12 @@
 #include "Layer/Relu.h"
 #include "Layer/Softmax.h"
 #include "../../Vendor/json.hpp"
-#include "../common.h"
+#include "common.h"
 
 using namespace Impulse::NeuralNetwork::Layer;
 using namespace Impulse::NeuralNetwork::Math;
 using Impulse::NeuralNetwork::Network;
-using Impulse::T_Size;
+using Impulse::NeuralNetwork::T_Size;
 
 using json = nlohmann::json;
 

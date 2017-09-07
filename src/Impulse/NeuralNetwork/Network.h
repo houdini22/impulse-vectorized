@@ -5,13 +5,13 @@
 #include <iostream>
 #include "Layer/Abstract.h"
 #include "Math/common.h"
-#include "../common.h"
+#include "common.h"
 
 using Impulse::NeuralNetwork::Math::T_Matrix;
 using Impulse::NeuralNetwork::Math::T_Vector;
 using Impulse::NeuralNetwork::Math::T_RawVector;
 using Impulse::NeuralNetwork::Math::rawToVector;
-using Impulse::T_Size;
+using Impulse::NeuralNetwork::T_Size;
 using AbstractLayer = Impulse::NeuralNetwork::Layer::Abstract;
 
 namespace Impulse {

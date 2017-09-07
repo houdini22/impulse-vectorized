@@ -12,7 +12,7 @@ using json = nlohmann::json;
 
 using Impulse::NeuralNetwork::Math::T_Vector;
 using Impulse::NeuralNetwork::Math::vectorToRaw;
-using Impulse::T_Size;
+using Impulse::NeuralNetwork::T_Size;
 
 namespace Impulse {
 

@@ -19,13 +19,11 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
 
-#include "src/Impulse/NeuralNetwork/Math/common.h"
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetBuilder/CSVBuilder.h"
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset.h"
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
-#include "src/Impulse/NeuralNetwork/Builder.h"
-#include "src/Impulse/NeuralNetwork/Serializer.h"
-#include "src/Impulse/NeuralNetwork/Trainer/ConjugateGradientTrainer.h"
+
+#include "src/Impulse/NeuralNetwork/include.h"
 
 using namespace std::chrono;
 using namespace Impulse::NeuralNetwork;
