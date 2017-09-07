@@ -1,4 +1,4 @@
-#include "Fmincg.h"
+#include "../include.h"
 
 /*
  * Minimize a continuous differentialble multivariate function. Starting point <br/>
@@ -64,21 +64,21 @@ namespace Impulse {
 
         namespace Math {
 
-            T_Vector Fmincg::minimize(
-                    StepFunction stepFunction,
-                    T_Vector theta,
+            Math::T_Vector Fmincg::minimize(
+                    Trainer::StepFunction stepFunction,
+                    Math::T_Vector theta,
                     T_Size length,
                     bool verbose
             ) {
                 // input will be the pointer to our current active parameter set
-                T_Vector input(theta);
-                T_Vector X0(input);
+                Math::T_Vector input(theta);
+                Math::T_Vector X0(input);
                 // search directions
-                T_Vector s(input.size());
+                Math::T_Vector s(input.size());
                 // gradients
-                T_Vector df0(input.size());
-                T_Vector df1(input.size());
-                T_Vector df2(input.size());
+                Math::T_Vector df0(input.size());
+                Math::T_Vector df1(input.size());
+                Math::T_Vector df2(input.size());
 
                 // define some integers for bookkeeping and then start
                 int M = 0;

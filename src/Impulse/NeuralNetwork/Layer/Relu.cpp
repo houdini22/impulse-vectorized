@@ -1,4 +1,4 @@
-#include "Relu.h"
+#include "../include.h"
 
 namespace Impulse {
 
@@ -6,7 +6,7 @@ namespace Impulse {
 
         namespace Layer {
 
-            T_Matrix Relu::activation() {
+            Math::T_Matrix Relu::activation() {
                 return this->Z.unaryExpr([](const double x) {
                     if (x < 0.0) {
                         return 0.0;
@@ -15,7 +15,7 @@ namespace Impulse {
                 });
             }
 
-            T_Matrix Relu::derivative() {
+            Math::T_Matrix Relu::derivative() {
                 return this->A.unaryExpr([](const double x) {
                     if (x < 0.0) {
                         return 0.0;
@@ -28,7 +28,7 @@ namespace Impulse {
                 return TYPE_RELU;
             }
 
-            double Relu::loss(T_Matrix output, T_Matrix predictions) {
+            double Relu::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
                 // TODO
                 return 0.0;
             }

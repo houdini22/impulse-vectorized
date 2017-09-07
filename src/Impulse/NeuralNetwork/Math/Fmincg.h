@@ -14,23 +14,10 @@
 // maximum allowed slope ratio
 #define RATIO 100.0
 
-#include <functional>
-#include <algorithm>
-#include <iostream>
-#include <ctime>
-#include <chrono>
-#include <functional>
-#include <eigen3/Eigen/Core>
-
-#include "../Trainer/ConjugateGradientTrainer.h"
-#include "../Trainer/AbstractTrainer.h"
-#include "../Trainer/ConjugateGradientTrainer.h"
-#include "../Network.h"
-#include "common.h"
+#include "../include.h"
 
 using namespace std::chrono;
-using Impulse::NeuralNetwork::Math::T_Vector;
-using Impulse::NeuralNetwork::Trainer::StepFunction;
+using namespace Impulse::NeuralNetwork;
 
 namespace Impulse {
 
@@ -44,9 +31,9 @@ namespace Impulse {
 
                 ~Fmincg() {}
 
-                T_Vector minimize(
-                        StepFunction stepFunction,
-                        T_Vector theta,
+                Math::T_Vector minimize(
+                        Trainer::StepFunction stepFunction,
+                        Math::T_Vector theta,
                         T_Size length,
                         bool verbose
                 );

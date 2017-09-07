@@ -1,18 +1,9 @@
 #ifndef NETWORK_SERIALIZER_H
 #define NETWORK_SERIALIZER_H
 
-#include <fstream>
-#include <string>
-#include <iostream>
+#include "include.h"
 
-#include "Network.h"
-#include "../../Vendor/json.hpp"
-
-using json = nlohmann::json;
-
-using Impulse::NeuralNetwork::Math::T_Vector;
-using Impulse::NeuralNetwork::Math::vectorToRaw;
-using Impulse::NeuralNetwork::T_Size;
+using namespace Impulse::NeuralNetwork;
 
 namespace Impulse {
 

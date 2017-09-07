@@ -1,24 +1,15 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
-#include <vector>
-#include <iostream>
-#include "Layer/Abstract.h"
-#include "Math/common.h"
-#include "common.h"
+#include "include.h"
 
-using Impulse::NeuralNetwork::Math::T_Matrix;
-using Impulse::NeuralNetwork::Math::T_Vector;
-using Impulse::NeuralNetwork::Math::T_RawVector;
-using Impulse::NeuralNetwork::Math::rawToVector;
-using Impulse::NeuralNetwork::T_Size;
-using AbstractLayer = Impulse::NeuralNetwork::Layer::Abstract;
+using namespace Impulse::NeuralNetwork;
 
 namespace Impulse {
 
     namespace NeuralNetwork {
 
-        typedef std::vector<AbstractLayer *> LayersContainer;
+        typedef std::vector<Layer::Abstract *> LayersContainer;
 
         class Network {
         protected:
@@ -28,25 +19,25 @@ namespace Impulse {
         public:
             Network(T_Size inputSize);
 
-            void addLayer(AbstractLayer *layer);
+            void addLayer(Layer::Abstract *layer);
 
-            T_Matrix forward(T_Matrix input);
+            Math::T_Matrix forward(Math::T_Matrix input);
 
-            void backward(T_Matrix X, T_Matrix Y, T_Matrix predictions, double regularization);
+            void backward(Math::T_Matrix X, Math::T_Matrix Y, Math::T_Matrix predictions, double regularization);
 
             T_Size getInputSize();
 
             T_Size getSize();
 
-            AbstractLayer *getLayer(T_Size key);
+            Layer::Abstract *getLayer(T_Size key);
 
-            T_Vector getRolledTheta();
+            Math::T_Vector getRolledTheta();
 
-            T_Vector getRolledGradient();
+            Math::T_Vector getRolledGradient();
 
-            void setRolledTheta(T_Vector theta);
+            void setRolledTheta(Math::T_Vector theta);
 
-            double loss(T_Matrix output, T_Matrix predictions);
+            double loss(Math::T_Matrix output, Math::T_Matrix predictions);
         };
     }
 }

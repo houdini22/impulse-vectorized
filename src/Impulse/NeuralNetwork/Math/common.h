@@ -1,9 +1,7 @@
 #ifndef MATH_TYPES_H
 #define MATH_TYPES_H
 
-#include <eigen3/Eigen/Core>
-#include <eigen3/Eigen/Dense>
-#include <vector>
+#include "../include.h"
 
 namespace Impulse {
 
@@ -15,9 +13,9 @@ namespace Impulse {
             typedef Eigen::VectorXd T_Vector;
             typedef std::vector<double> T_RawVector;
 
-            T_RawVector vectorToRaw(T_Vector &vec);
+            Math::T_RawVector vectorToRaw(Math::T_Vector &vec);
 
-            T_Vector rawToVector(T_RawVector &vec);
+            Math::T_Vector rawToVector(Math::T_RawVector &vec);
         }
     }
 }

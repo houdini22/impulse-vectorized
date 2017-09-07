@@ -1,4 +1,4 @@
-#include "AbstractTrainer.h"
+#include "../include.h"
 
 namespace Impulse {
 
@@ -36,8 +36,8 @@ namespace Impulse {
 
             Impulse::NeuralNetwork::Trainer::CostGradientResult AbstractTrainer::cost(Impulse::SlicedDataset &dataSet) {
                 T_Size m = dataSet.output.getSize();
-                T_Matrix A = this->network->forward(dataSet.getInput());
-                T_Matrix Y = dataSet.getOutput();
+                Math::T_Matrix A = this->network->forward(dataSet.getInput());
+                Math::T_Matrix Y = dataSet.getOutput();
 
                 double loss = this->network->loss(Y, A);
 

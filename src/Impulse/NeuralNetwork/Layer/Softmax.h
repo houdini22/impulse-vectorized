@@ -1,13 +1,9 @@
 #ifndef SOFTMAX_LAYER_H
 #define SOFTMAX_LAYER_H
 
-#include <string>
-#include "Abstract.h"
-#include "../Math/common.h"
-#include "../common.h"
+#include "../include.h"
 
-using Impulse::NeuralNetwork::Math::T_Matrix;
-using Impulse::NeuralNetwork::T_Size;
+using namespace Impulse::NeuralNetwork;
 
 namespace Impulse {
 
@@ -23,13 +19,13 @@ namespace Impulse {
 
                 Softmax(T_Size size, T_Size prevSize) : Abstract(size, prevSize) {}
 
-                T_Matrix activation();
+                Math::T_Matrix activation();
 
-                T_Matrix derivative();
+                Math::T_Matrix derivative();
 
                 const T_String getType();
 
-                double loss(T_Matrix output, T_Matrix predictions);
+                double loss(Math::T_Matrix output, Math::T_Matrix predictions);
             };
         }
     }

@@ -1,4 +1,4 @@
-#include "Abstract.h"
+#include "../include.h"
 
 namespace Impulse {
 
@@ -20,7 +20,7 @@ namespace Impulse {
                 this->b.setZero();
             }
 
-            T_Matrix Abstract::forward(T_Matrix input) {
+            Math::T_Matrix Abstract::forward(Math::T_Matrix input) {
                 this->Z = (this->W * input).colwise() + this->b;
                 return this->A = this->activation();
             }

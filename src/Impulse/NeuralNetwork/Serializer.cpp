@@ -1,4 +1,4 @@
-#include "Serializer.h"
+#include "include.h"
 
 namespace Impulse {
 
@@ -9,17 +9,17 @@ namespace Impulse {
         }
 
         void Serializer::toJSON(T_String path) {
-            json result;
+            nlohmann::json result;
 
             result["inputSize"] = this->network->getInputSize();
 
             result["layers"] = {};
             for (T_Size i = 0; i < this->network->getSize(); i++) {
-                result["layers"][i] = json::array(
+                result["layers"][i] = nlohmann::json::array(
                         {this->network->getLayer(i)->getSize(), this->network->getLayer(i)->getType()});
             }
 
-            T_Vector theta = this->network->getRolledTheta();
+            Math::T_Vector theta = this->network->getRolledTheta();
             result["weights"] = Math::vectorToRaw(theta);
 
             std::ofstream out(path);

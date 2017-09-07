@@ -1,9 +1,9 @@
 #ifndef TRAINER_TYPES_H
 #define TRAINER_TYPES_H
 
-#include "../Math/common.h"
+#include "../include.h"
 
-using Impulse::NeuralNetwork::Math::T_Vector;
+using namespace Impulse::NeuralNetwork;
 
 namespace Impulse {
 
@@ -13,19 +13,19 @@ namespace Impulse {
 
             struct CostGradientResult {
                 double error;
-                T_Vector gradient;
+                Math::T_Vector gradient;
 
                 double &getError() {
                     return this->error;
                 }
 
-                T_Vector &getGradient() {
+                Math::T_Vector &getGradient() {
                     return this->gradient;
                 }
             };
 
             typedef std::function<CostGradientResult(
-                    T_Vector)> StepFunction;
+                    Math::T_Vector)> StepFunction;
         }
     }
 }

@@ -1,14 +1,9 @@
 #ifndef ABSTRACT_LAYER_H
 #define ABSTRACT_LAYER_H
 
-#include <eigen3/Eigen/Core>
-#include <eigen3/Eigen/Dense>
-#include "../Math/common.h"
-#include "../common.h"
+#include "../include.h"
 
-using Impulse::NeuralNetwork::Math::T_Matrix;
-using Impulse::NeuralNetwork::Math::T_Vector;
-using Impulse::NeuralNetwork::T_Size;
+using namespace Impulse::NeuralNetwork;
 
 namespace Impulse {
 
@@ -21,12 +16,12 @@ namespace Impulse {
                 T_Size size;        // number of neurons
                 T_Size prevSize;    // number of prev layer size (input)
             public:
-                T_Matrix W;         // weights
-                T_Vector b;         // bias
-                T_Matrix A;         // output of the layer after activation
-                T_Matrix Z;         // output of the layer before activation
-                T_Matrix gW;        // gradient for weights
-                T_Vector gb;        // gradient for biases
+                Math::T_Matrix W;         // weights
+                Math::T_Vector b;         // bias
+                Math::T_Matrix A;         // output of the layer after activation
+                Math::T_Matrix Z;         // output of the layer before activation
+                Math::T_Matrix gW;        // gradient for weights
+                Math::T_Vector gb;        // gradient for biases
 
                 /**
                  * Constructor.
@@ -40,20 +35,20 @@ namespace Impulse {
                  * @param input
                  * @return
                  */
-                T_Matrix forward(T_Matrix input);
+                Math::T_Matrix forward(Math::T_Matrix input);
 
                 /**
                  * Calculates activated values.
                  * @param input
                  * @return
                  */
-                virtual T_Matrix activation() = 0;
+                virtual Math::T_Matrix activation() = 0;
 
                 /**
                  * Calculates derivative. It depends on activation function.
                  * @return
                  */
-                virtual T_Matrix derivative() = 0;
+                virtual Math::T_Matrix derivative() = 0;
 
                 /**
                  * Getter for layer type.
@@ -73,7 +68,7 @@ namespace Impulse {
                  * @param predictions
                  * @return
                  */
-                virtual double loss(T_Matrix output, T_Matrix predictions) = 0;
+                virtual double loss(Math::T_Matrix output, Math::T_Matrix predictions) = 0;
             };
         }
     }

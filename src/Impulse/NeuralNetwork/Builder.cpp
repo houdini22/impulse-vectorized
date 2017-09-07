@@ -1,4 +1,4 @@
-#include "Builder.h"
+#include "include.h"
 
 namespace Impulse {
 
@@ -26,19 +26,19 @@ namespace Impulse {
 
         Builder Builder::fromJSON(T_String path) {
             std::ifstream fileStream(path);
-            json jsonFile;
+            nlohmann::json jsonFile;
 
             fileStream >> jsonFile;
             fileStream.close();
 
             Builder builder((T_Size) jsonFile["inputSize"]);
 
-            json savedLayers = jsonFile["layers"];
+            nlohmann::json savedLayers = jsonFile["layers"];
             for (auto it = savedLayers.begin(); it != savedLayers.end(); ++it) {
                 builder.createLayer(it.value()[0], it.value()[1]);
             }
 
-            T_RawVector theta = jsonFile["weights"];
+            Math::T_RawVector theta = jsonFile["weights"];
             builder.getNetwork()->setRolledTheta(Math::rawToVector(theta));
 
             return builder;

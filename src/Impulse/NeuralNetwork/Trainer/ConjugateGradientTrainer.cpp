@@ -1,6 +1,6 @@
-#include "ConjugateGradientTrainer.h"
+#include "../include.h"
 
-using Impulse::NeuralNetwork::Math::Fmincg;
+using namespace Impulse::NeuralNetwork;
 
 namespace Impulse {
 
@@ -9,16 +9,16 @@ namespace Impulse {
         namespace Trainer {
 
             void ConjugateGradientTrainer::train(Impulse::SlicedDataset &dataSet) {
-                Fmincg minimizer;
+                Math::Fmincg minimizer;
                 Network *network = this->network;
-                T_Vector theta = network->getRolledTheta();
+                Math::T_Vector theta = network->getRolledTheta();
                 double regularization = this->regularization;
 
                 network->backward(dataSet.getInput(), dataSet.getOutput(), network->forward(dataSet.getInput()),
                                   this->regularization);
 
-                StepFunction callback(
-                        [this, &dataSet, &regularization](T_Vector input) {
+                Trainer::StepFunction callback(
+                        [this, &dataSet, &regularization](Math::T_Vector input) {
                             this->network->setRolledTheta(input);
                             this->network->backward(dataSet.getInput(), dataSet.getOutput(),
                                                     this->network->forward(dataSet.getInput()), regularization);

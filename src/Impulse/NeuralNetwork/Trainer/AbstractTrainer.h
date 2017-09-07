@@ -1,17 +1,10 @@
 #ifndef ABSTRACT_TRAINER_H
 #define ABSTRACT_TRAINER_H
 
-#include <math.h>
-#include "../Network.h"
-#include "../Math/common.h"
-#include "common.h"
-#include "../common.h"
-#include "../../../Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
+#include "../include.h"
 
-using Impulse::NeuralNetwork::Math::T_Vector;
-using Impulse::NeuralNetwork::Math::T_Matrix;
+using namespace Impulse::NeuralNetwork;
 using Impulse::NeuralNetwork::Network;
-using Impulse::NeuralNetwork::T_Size;
 
 namespace Impulse {
 

@@ -1,14 +1,9 @@
 #ifndef COJUNGATE_GTADIENT_TRAINER
 #define COJUNGATE_GTADIENT_TRAINER
 
-#include "AbstractTrainer.h"
-#include "../Math/Fmincg.h"
-#include "../Network.h"
-#include "../Math/common.h"
+#include "../include.h"
 
-using Impulse::NeuralNetwork::Math::T_Matrix;
-using Impulse::NeuralNetwork::Math::T_Vector;
-using Impulse::NeuralNetwork::Network;
+using namespace Impulse::NeuralNetwork;
 
 namespace Impulse {
 

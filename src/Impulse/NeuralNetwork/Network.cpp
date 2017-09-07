@@ -1,4 +1,4 @@
-#include "Network.h"
+#include "include.h"
 
 namespace Impulse {
 
@@ -8,13 +8,13 @@ namespace Impulse {
             this->inputSize = inputSize;
         }
 
-        void Network::addLayer(AbstractLayer *layer) {
+        void Network::addLayer(Layer::Abstract *layer) {
             this->size++;
             this->layers.push_back(layer);
         }
 
-        T_Matrix Network::forward(T_Matrix input) {
-            T_Matrix output = input;
+        Math::T_Matrix Network::forward(Math::T_Matrix input) {
+            Math::T_Matrix output = input;
 
             for (LayersContainer::iterator it = this->layers.begin(); it != this->layers.end(); ++it) {
                 output = (*it)->forward(output);
@@ -23,24 +23,24 @@ namespace Impulse {
             return output;
         }
 
-        void Network::backward(T_Matrix X, T_Matrix Y, T_Matrix predictions, double regularization) {
+        void Network::backward(Math::T_Matrix X, Math::T_Matrix Y, Math::T_Matrix predictions, double regularization) {
             long m = X.cols();
             T_Size size = this->getSize();
 
-            T_Matrix sigma = predictions.array() - Y.array();
+            Math::T_Matrix sigma = predictions.array() - Y.array();
 
             for (long i = this->layers.size() - 1; i >= 0; i--) {
                 auto layer = this->layers.at(i);
 
-                T_Matrix delta = sigma * (i == 0 ? X : this->layers.at(i - 1)->A).transpose().conjugate();
+                Math::T_Matrix delta = sigma * (i == 0 ? X : this->layers.at(i - 1)->A).transpose().conjugate();
                 layer->gW = delta.array() / m + (regularization / m * layer->W.array());
                 layer->gb = sigma.rowwise().sum() / m;
 
                 if (i > 0) {
                     auto prevLayer = this->layers.at(i - 1);
 
-                    T_Matrix tmp1 = layer->W.transpose() * sigma;
-                    T_Matrix tmp2 = prevLayer->derivative();
+                    Math::T_Matrix tmp1 = layer->W.transpose() * sigma;
+                    Math::T_Matrix tmp2 = prevLayer->derivative();
 
                     sigma = tmp1.array() * tmp2.array();
                 }
@@ -55,12 +55,12 @@ namespace Impulse {
             return this->size;
         }
 
-        AbstractLayer *Network::getLayer(T_Size key) {
+        Layer::Abstract *Network::getLayer(T_Size key) {
             return this->layers.at(key);
         }
 
-        T_Vector Network::getRolledTheta() {
-            T_RawVector tmp;
+        Math::T_Vector Network::getRolledTheta() {
+            Math::T_RawVector tmp;
 
             for (T_Size i = 0; i < this->getSize(); i++) {
                 auto layer = this->layers.at(i);
@@ -80,12 +80,12 @@ namespace Impulse {
                 }
             }
 
-            T_Vector result = rawToVector(tmp);
+            Math::T_Vector result = Math::rawToVector(tmp);
             return result;
         }
 
-        T_Vector Network::getRolledGradient() {
-            T_RawVector tmp;
+        Math::T_Vector Network::getRolledGradient() {
+            Math::T_RawVector tmp;
 
             for (T_Size i = 0; i < this->getSize(); i++) {
                 auto layer = this->layers.at(i);
@@ -103,11 +103,11 @@ namespace Impulse {
                 }
             }
 
-            T_Vector result = rawToVector(tmp);
+            Math::T_Vector result = Math::rawToVector(tmp);
             return result;
         }
 
-        void Network::setRolledTheta(T_Vector theta) {
+        void Network::setRolledTheta(Math::T_Vector theta) {
             unsigned long t = 0;
 
             for (T_Size i = 0; i < this->getSize(); i++) {
@@ -125,7 +125,7 @@ namespace Impulse {
             }
         }
 
-        double Network::loss(T_Matrix output, T_Matrix predictions) {
+        double Network::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
             return this->layers.at(this->getSize() - 1)->loss(output, predictions);
         }
     }
