@@ -17,7 +17,7 @@ namespace Impulse {
             protected:
             public:
 
-                Relu(T_Size size, T_Size prevSize) : Abstract(size, prevSize) {}
+                Relu(T_Size size, T_Size prevSize);
 
                 Math::T_Matrix activation();
 

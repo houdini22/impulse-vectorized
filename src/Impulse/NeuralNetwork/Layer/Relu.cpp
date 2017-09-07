@@ -6,6 +6,8 @@ namespace Impulse {
 
         namespace Layer {
 
+            Relu::Relu(T_Size size, T_Size prevSize) : Abstract(size, prevSize) {}
+
             Math::T_Matrix Relu::activation() {
                 return this->Z.unaryExpr([](const double x) {
                     if (x < 0.0) {

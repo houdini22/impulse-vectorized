@@ -20,19 +20,14 @@
 #include "common.h"
 #include "Math/common.h"
 #include "Trainer/common.h"
-
 #include "Layer/Abstract.h"
-
 #include "Network.h"
 #include "Builder.h"
 #include "Serializer.h"
-
 #include "Layer/Softmax.h"
 #include "Layer/Relu.h"
 #include "Layer/Logistic.h"
-
 #include "Math/Fmincg.h"
-
 #include "Trainer/AbstractTrainer.h"
 #include "Trainer/ConjugateGradientTrainer.h"
 

@@ -17,7 +17,7 @@ namespace Impulse {
             protected:
             public:
 
-                Softmax(T_Size size, T_Size prevSize) : Abstract(size, prevSize) {}
+                Softmax(T_Size size, T_Size prevSize);
 
                 Math::T_Matrix activation();
 

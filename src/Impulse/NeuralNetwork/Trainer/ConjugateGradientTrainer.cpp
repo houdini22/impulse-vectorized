@@ -8,6 +8,8 @@ namespace Impulse {
 
         namespace Trainer {
 
+            ConjugateGradientTrainer::ConjugateGradientTrainer(Network *net) : AbstractTrainer(net) {}
+
             void ConjugateGradientTrainer::train(Impulse::SlicedDataset &dataSet) {
                 Math::Fmincg minimizer;
                 Network *network = this->network;
