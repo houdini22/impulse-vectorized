@@ -1,5 +1,5 @@
-#ifndef NETWORK_H
-#define NETWORK_H
+#ifndef IMPULSE_NEURALNETWORK_NETWORK_H
+#define IMPULSE_NEURALNETWORK_NETWORK_H
 
 #include "include.h"
 
@@ -42,4 +42,4 @@ namespace Impulse {
     }
 }
 
-#endif //NETWORK_H
+#endif //IMPULSE_NEURALNETWORK_NETWORK_H

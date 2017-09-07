@@ -1,5 +1,5 @@
-#ifndef SOFTMAX_LAYER_H
-#define SOFTMAX_LAYER_H
+#ifndef IMPULSE_NEURALNETWORK_LAYER_SOFTMAX_H
+#define IMPULSE_NEURALNETWORK_LAYER_SOFTMAX_H
 
 #include "../include.h"
 
@@ -31,4 +31,4 @@ namespace Impulse {
     }
 }
 
-#endif //SOFTMAX_LAYER_H
+#endif //IMPULSE_NEURALNETWORK_LAYER_SOFTMAX_H

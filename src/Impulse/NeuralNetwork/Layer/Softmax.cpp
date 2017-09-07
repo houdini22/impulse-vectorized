@@ -25,7 +25,8 @@ namespace Impulse {
             }
 
             double Softmax::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
-                Math::T_Matrix loss = (output.array() * predictions.unaryExpr([](const double x) { return log(x); }).array());
+                Math::T_Matrix loss = (output.array() *
+                                       predictions.unaryExpr([](const double x) { return log(x); }).array());
                 return loss.sum();
             }
         }

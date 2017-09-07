@@ -1,5 +1,5 @@
-#ifndef MATH_TYPES_H
-#define MATH_TYPES_H
+#ifndef IMPULSE_NEURALNETWORK_MATH_COMMON_H
+#define IMPULSE_NEURALNETWORK_MATH_COMMON_H
 
 #include "../include.h"
 
@@ -20,4 +20,4 @@ namespace Impulse {
     }
 }
 
-#endif /* MATH_TYPES_H */
+#endif //IMPULSE_NEURALNETWORK_MATH_COMMON_H

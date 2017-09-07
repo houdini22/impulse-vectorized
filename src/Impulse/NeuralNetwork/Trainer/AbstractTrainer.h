@@ -1,10 +1,9 @@
-#ifndef ABSTRACT_TRAINER_H
-#define ABSTRACT_TRAINER_H
+#ifndef IMPULSE_NEURALNETWORK_TRAINER_ABSTRACT_H
+#define IMPULSE_NEURALNETWORK_TRAINER_ABSTRACT_H
 
 #include "../include.h"
 
 using namespace Impulse::NeuralNetwork;
-using Impulse::NeuralNetwork::Network;
 
 namespace Impulse {
 
@@ -43,4 +42,4 @@ namespace Impulse {
     }
 }
 
-#endif //ABSTRACT_TRAINER_H
+#endif //IMPULSE_NEURALNETWORK_TRAINER_ABSTRACT_H

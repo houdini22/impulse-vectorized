@@ -1,5 +1,5 @@
-#ifndef ABSTRACT_LAYER_H
-#define ABSTRACT_LAYER_H
+#ifndef IMPULSE_NEURALNETWORK_LAYER_ABSTRACT_H
+#define IMPULSE_NEURALNETWORK_LAYER_ABSTRACT_H
 
 #include "../include.h"
 
@@ -74,4 +74,4 @@ namespace Impulse {
     }
 }
 
-#endif //ABSTRACT_LAYER_H
+#endif //IMPULSE_NEURALNETWORK_LAYER_ABSTRACT_H

@@ -1,10 +1,9 @@
-#ifndef BUILDER_H
-#define BUILDER_H
+#ifndef IMPULSE_NEURALNETWORK_BUILDER_H
+#define IMPULSE_NEURALNETWORK_BUILDER_H
 
 #include "include.h"
 
 using namespace Impulse::NeuralNetwork;
-using Impulse::NeuralNetwork::Network;
 
 namespace Impulse {
 
@@ -26,4 +25,4 @@ namespace Impulse {
     }
 }
 
-#endif //BUILDER_H
+#endif //IMPULSE_NEURALNETWORK_BUILDER_H

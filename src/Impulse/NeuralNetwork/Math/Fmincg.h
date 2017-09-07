@@ -1,5 +1,5 @@
-#ifndef FMINCG_H
-#define FMINCG_H
+#ifndef IMPULSE_NEURALNETWORK_MATH_FMINCG_H
+#define IMPULSE_NEURALNETWORK_MATH_FMINCG_H
 
 // number of extrapolation runs, set to a higher value for smaller ravine landscapes
 #define EXT 3.0
@@ -42,4 +42,4 @@ namespace Impulse {
     }
 }
 
-#endif /* FMINCG_H */
+#endif //IMPULSE_NEURALNETWORK_MATH_FMINCG_H

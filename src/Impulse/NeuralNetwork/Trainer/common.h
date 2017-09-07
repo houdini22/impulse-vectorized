@@ -1,5 +1,5 @@
-#ifndef TRAINER_TYPES_H
-#define TRAINER_TYPES_H
+#ifndef IMPULSE_NEURALNETWORK_TRAINER_COMMON_H
+#define IMPULSE_NEURALNETWORK_TRAINER_COMMON_H
 
 #include "../include.h"
 
@@ -30,4 +30,4 @@ namespace Impulse {
     }
 }
 
-#endif //IMPULSE_VECTORIZED_TYPES_H
+#endif //IMPULSE_NEURALNETWORK_TRAINER_COMMON_H

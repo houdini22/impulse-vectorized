@@ -140,7 +140,7 @@ namespace Impulse {
                                 // numerical errorForSample possible - ok!
                                 z2 = (sqrt(B * B - A * d2 * z3 * z3) - B) / A;
                             }
-                            if (isnan(z2) || !finite(z2)) {
+                            if (std::isnan(z2) || !finite(z2)) {
                                 // if we had a numerical problem then bisect
                                 z2 = z3 / 2.0;
                             }
@@ -172,7 +172,7 @@ namespace Impulse {
                         double B = 3 * (f3 - f2) - z3 * (d3 + 2 * d2);
                         double z2 = -d2 * z3 * z3 / (B + sqrt(B * B - A * d2 * z3 * z3));
                         // num prob or wrong sign?
-                        if (isnan(z2) || !finite(z2) || z2 < 0)
+                        if (std::isnan(z2) || !finite(z2) || z2 < 0)
                             // if we have no upper limit
                             if (limit < -0.5) {
                                 // the extrapolate the maximum amount

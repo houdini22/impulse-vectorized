@@ -1,5 +1,5 @@
-#ifndef NETWORK_SERIALIZER_H
-#define NETWORK_SERIALIZER_H
+#ifndef IMPULSE_NEURALNETWORK_SERIALIZER_H
+#define IMPULSE_NEURALNETWORK_SERIALIZER_H
 
 #include "include.h"
 
@@ -20,4 +20,4 @@ namespace Impulse {
     }
 }
 
-#endif
+#endif //IMPULSE_NEURALNETWORK_SERIALIZER_H

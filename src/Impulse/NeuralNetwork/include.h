@@ -12,7 +12,7 @@
 #include <ctime>
 #include <chrono>
 #include <functional>
-#include <math.h>
+#include <cmath>
 #include <fstream>
 
 #include "../../Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"

@@ -1,5 +1,5 @@
-#ifndef RELU_LAYER_H
-#define RELU_LAYER_H
+#ifndef IMPULSE_NEURALNETWORK_LAYER_RELU_H
+#define IMPULSE_NEURALNETWORK_LAYER_RELU_H
 
 #include "../include.h"
 
@@ -31,4 +31,4 @@ namespace Impulse {
     }
 }
 
-#endif //RELU_LAYER_H
+#endif //IMPULSE_NEURALNETWORK_LAYER_RELU_H

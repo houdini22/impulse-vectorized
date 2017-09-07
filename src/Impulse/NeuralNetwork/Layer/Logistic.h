@@ -1,5 +1,5 @@
-#ifndef LOGISTIC_LAYER_H
-#define LOGISTIC_LAYER_H
+#ifndef IMPULSE_NEURALNETWORK_LAYER_LOGISTIC_H
+#define IMPULSE_NEURALNETWORK_LAYER_LOGISTIC_H
 
 #include "../include.h"
 
@@ -30,4 +30,4 @@ namespace Impulse {
     }
 }
 
-#endif //LOGISTIC_LAYER_H
+#endif //IMPULSE_NEURALNETWORK_LAYER_LOGISTIC_H

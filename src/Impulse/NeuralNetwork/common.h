@@ -1,5 +1,7 @@
-#ifndef IMPULSE_COMMON_H
-#define IMPULSE_COMMON_H
+#ifndef IMPULSE_NEURALNETWORK_COMMON_H
+#define IMPULSE_NEURALNETWORK_COMMON_H
+
+#include "include.h"
 
 namespace Impulse {
 
@@ -10,4 +12,4 @@ namespace Impulse {
     }
 }
 
-#endif //IMPULSE_COMMON_H
+#endif //IMPULSE_NEURALNETWORK_
