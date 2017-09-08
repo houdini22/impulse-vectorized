@@ -9,7 +9,7 @@ namespace Impulse {
 
     namespace NeuralNetwork {
 
-        typedef std::vector<Layer::Abstract *> LayersContainer;
+        typedef std::vector<Layer::LayerPointer> LayersContainer;
 
         class Network {
         protected:
@@ -19,7 +19,7 @@ namespace Impulse {
         public:
             Network(T_Size inputSize);
 
-            void addLayer(Layer::Abstract *layer);
+            void addLayer(Layer::LayerPointer layer);
 
             Math::T_Matrix forward(Math::T_Matrix input);
 

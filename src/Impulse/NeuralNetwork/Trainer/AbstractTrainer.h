@@ -13,16 +13,14 @@ namespace Impulse {
 
             class AbstractTrainer {
             protected:
-                Network *network;
+                Network network;
                 double regularization = 0.0;
                 T_Size learningIterations = 1000;
                 double learningRate = 0.1;
                 bool verbose = true;
                 int verboseStep = 100;
             public:
-                AbstractTrainer(Network *net);
-
-                Network *getNetwork();
+                AbstractTrainer(Network &net);
 
                 void setRegularization(double value);
 

@@ -6,13 +6,7 @@ namespace Impulse {
 
         namespace Trainer {
 
-            AbstractTrainer::AbstractTrainer(Network *net) {
-                this->network = net;
-            }
-
-            Network *AbstractTrainer::getNetwork() {
-                return this->network;
-            }
+            AbstractTrainer::AbstractTrainer(Network &net) : network(net) {}
 
             void AbstractTrainer::setRegularization(double value) {
                 this->regularization = value;
@@ -36,14 +30,14 @@ namespace Impulse {
 
             Impulse::NeuralNetwork::Trainer::CostGradientResult AbstractTrainer::cost(Impulse::SlicedDataset &dataSet) {
                 T_Size m = dataSet.output.getSize();
-                Math::T_Matrix A = this->network->forward(dataSet.getInput());
+                Math::T_Matrix A = this->network.forward(dataSet.getInput());
                 Math::T_Matrix Y = dataSet.getOutput();
 
-                double loss = this->network->loss(Y, A);
+                double loss = this->network.loss(Y, A);
 
                 double p = 0.0;
-                for (T_Size i = 0; i < this->network->getSize(); i++) {
-                    p += this->network->getLayer(i)->W.unaryExpr([](const double x) {
+                for (T_Size i = 0; i < this->network.getSize(); i++) {
+                    p += this->network.getLayer(i)->W.unaryExpr([](const double x) {
                         return pow(x, 2.0);
                     }).sum();
                 }
@@ -52,7 +46,7 @@ namespace Impulse {
 
                 Impulse::NeuralNetwork::Trainer::CostGradientResult result;
                 result.error = error;
-                result.gradient = this->network->getRolledGradient();
+                result.gradient = this->network.getRolledGradient();
 
                 return result;
             }

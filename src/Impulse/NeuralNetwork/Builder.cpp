@@ -4,23 +4,22 @@ namespace Impulse {
 
     namespace NeuralNetwork {
 
-        Builder::Builder(T_Size inputSize) {
-            this->network = new Network(inputSize);
+        Builder::Builder(T_Size inputSize) : network(Network(inputSize)) {
             this->prevSize = inputSize;
         }
 
         void Builder::createLayer(T_Size size, T_String type) {
             if (type == Layer::TYPE_LOGISTIC) {
-                this->network->addLayer(new Layer::Logistic(size, this->prevSize));
+                this->network.addLayer(Layer::LayerPointer(new Layer::Logistic(size, this->prevSize)));
             } else if (type == Layer::TYPE_RELU) {
-                this->network->addLayer(new Layer::Relu(size, this->prevSize));
+                this->network.addLayer(Layer::LayerPointer(new Layer::Relu(size, this->prevSize)));
             } else if (type == Layer::TYPE_SOFTMAX) {
-                this->network->addLayer(new Layer::Softmax(size, this->prevSize));
+                this->network.addLayer(Layer::LayerPointer(new Layer::Softmax(size, this->prevSize)));
             }
             this->prevSize = size;
         }
 
-        Network *Builder::getNetwork() {
+        Network &Builder::getNetwork() {
             return this->network;
         }
 
@@ -39,7 +38,7 @@ namespace Impulse {
             }
 
             Math::T_RawVector theta = jsonFile["weights"];
-            builder.getNetwork()->setRolledTheta(Math::rawToVector(theta));
+            builder.getNetwork().setRolledTheta(Math::rawToVector(theta));
 
             return builder;
         }

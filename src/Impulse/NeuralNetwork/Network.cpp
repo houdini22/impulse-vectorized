@@ -8,7 +8,7 @@ namespace Impulse {
             this->inputSize = inputSize;
         }
 
-        void Network::addLayer(Layer::Abstract *layer) {
+        void Network::addLayer(Layer::LayerPointer layer) {
             this->size++;
             this->layers.push_back(layer);
         }
@@ -56,14 +56,14 @@ namespace Impulse {
         }
 
         Layer::Abstract *Network::getLayer(T_Size key) {
-            return this->layers.at(key);
+            return this->layers.at(key).get();
         }
 
         Math::T_Vector Network::getRolledTheta() {
             Math::T_RawVector tmp;
 
             for (T_Size i = 0; i < this->getSize(); i++) {
-                auto layer = this->layers.at(i);
+                auto layer = this->getLayer(i);
                 tmp.reserve(
                         (unsigned long) (layer->W.cols() * layer->W.rows()) + (layer->b.cols() * layer->b.rows()));
 

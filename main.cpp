@@ -53,9 +53,9 @@ void test_logistic() {
     builder.createLayer(20, Layer::TYPE_LOGISTIC);
     builder.createLayer(10, Layer::TYPE_LOGISTIC);
 
-    Network *net = builder.getNetwork();
+    Network net = builder.getNetwork();
 
-    //std::cout << "Forward:" << std::endl << net->forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+    //std::cout << "Forward:" << std::endl << net.forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 
     Trainer::ConjugateGradientTrainer trainer(net);
     trainer.setLearningIterations(400);
@@ -71,7 +71,7 @@ void test_logistic() {
     auto duration = duration_cast<seconds>( t2 - t1 ).count();
     std::cout << "Time: " << duration << std::endl;
 
-    std::cout << "Forward:" << std::endl << net->forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
+    std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
     Serializer serializer(net);
     serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/logistic.json");
@@ -85,7 +85,7 @@ void test_softmax() {
     builder.createLayer(20, Layer::TYPE_LOGISTIC);
     builder.createLayer(10, Layer::TYPE_SOFTMAX);
 
-    Network *net = builder.getNetwork();
+    Network net = builder.getNetwork();
 
     Trainer::ConjugateGradientTrainer trainer(net);
     trainer.setLearningIterations(400);
@@ -95,7 +95,7 @@ void test_softmax() {
     Trainer::CostGradientResult cost = trainer.cost(dataset);
     std::cout << "Cost: " << cost.getError() << std::endl;
 
-    std::cout << "Forward:" << std::endl << net->forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
+    std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
     trainer.train(dataset);
@@ -103,7 +103,7 @@ void test_softmax() {
     auto duration = duration_cast<seconds>( t2 - t1 ).count();
     std::cout << "Time: " << duration << std::endl;
 
-    std::cout << "Forward:" << std::endl << net->forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
+    std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
     Serializer serializer(net);
     serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/softmax.json");
@@ -126,11 +126,11 @@ void test_xor() {
     builder.createLayer(3, Layer::TYPE_LOGISTIC);
     builder.createLayer(1, Layer::TYPE_LOGISTIC);
 
-    Network *net = builder.getNetwork();
+    Network net = builder.getNetwork();
 
     Impulse::DatasetSample sample({0, 1});
     Math::T_Matrix inputVector = sample.exportToEigen();
-    std::cout << "Forward: " << net->forward(inputVector) << std::endl;
+    std::cout << "Forward: " << net.forward(inputVector) << std::endl;
 
     Trainer::ConjugateGradientTrainer trainer(net);
     trainer.setLearningIterations(100);
@@ -140,11 +140,11 @@ void test_xor() {
 
     trainer.train(slicedDataset);
 
-    std::cout << "Forward: " << net->forward(inputVector) << std::endl;
+    std::cout << "Forward: " << net.forward(inputVector) << std::endl;
 
     Impulse::DatasetSample sample2({1, 1});
     Math::T_Matrix inputVector2 = sample2.exportToEigen();
-    std::cout << "Forward: " << net->forward(inputVector2) << std::endl;
+    std::cout << "Forward: " << net.forward(inputVector2) << std::endl;
 
     Serializer serializer(net);
     serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/xor.json");
@@ -152,12 +152,12 @@ void test_xor() {
 
 void test_logistic_load() {
     Builder builder = Builder::fromJSON("/home/hud/CLionProjects/impulse-vectorized/saved/logistic.json");
-    Network * net = builder.getNetwork();
+    Network net = builder.getNetwork();
 
     Impulse::SlicedDataset dataset = getDataset();
 
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
-    std::cout << "Saved Forward: " << std::endl << net->forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
+    std::cout << "Saved Forward: " << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>( t2 - t1 ).count();
     std::cout << "Forward time: " << duration << std::endl;
