@@ -31,6 +31,14 @@ namespace Impulse {
 
                 ~Fmincg() {}
 
+                /**
+                 * Minimizes multivariate function.
+                 * @param stepFunction
+                 * @param theta
+                 * @param length
+                 * @param verbose
+                 * @return
+                 */
                 Math::T_Vector minimize(
                         Trainer::StepFunction stepFunction,
                         Math::T_Vector theta,

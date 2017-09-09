@@ -28,8 +28,8 @@ set(SOURCE_FILES
         src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset.h
         src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetSample.cpp
         src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetSample.h
-        src/Vendor/json.hpp
         main.cpp
+        src/Vendor/json/src/json.hpp
         src/Impulse/NeuralNetwork/Builder.h
         src/Impulse/NeuralNetwork/Network.h
         src/Impulse/NeuralNetwork/Serializer.h

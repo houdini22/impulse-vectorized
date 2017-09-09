@@ -71,6 +71,9 @@ namespace Impulse {
                 virtual double loss(Math::T_Matrix output, Math::T_Matrix predictions) = 0;
             };
 
+            /**
+             * Layer pointer.
+             */
             typedef std::shared_ptr<Layer::Abstract> LayerPointer;
         }
     }

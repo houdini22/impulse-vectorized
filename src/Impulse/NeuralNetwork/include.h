@@ -3,7 +3,7 @@
 
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
-#include "../../Vendor/json.hpp"
+#include "../../Vendor/json/src/json.hpp"
 #include <string>
 #include <vector>
 #include <functional>
