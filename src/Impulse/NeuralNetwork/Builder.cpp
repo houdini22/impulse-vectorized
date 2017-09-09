@@ -15,6 +15,8 @@ namespace Impulse {
                 this->network.addLayer(Layer::LayerPointer(new Layer::Relu(size, this->prevSize)));
             } else if (type == Layer::TYPE_SOFTMAX) {
                 this->network.addLayer(Layer::LayerPointer(new Layer::Softmax(size, this->prevSize)));
+            } else if (type == Layer::TYPE_PURELIN) {
+                this->network.addLayer(Layer::LayerPointer(new Layer::Purelin(size, this->prevSize)));
             }
             this->prevSize = size;
         }

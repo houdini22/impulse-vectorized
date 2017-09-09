@@ -83,9 +83,12 @@ namespace Impulse {
             this->openFile();
 
             std::string line;
+            int i = 1;
             while (std::getline(this->fileHandle, line)) {
                 std::vector<std::string> fields = this->parseLine(line);
                 this->dataset.addSample(this->createSample(fields));
+                std::cout << "Loaded sample: " << i << std::endl;
+                i++;
             }
 
             this->closeFile();

@@ -34,6 +34,7 @@ namespace Impulse {
                 Math::T_Matrix Y = dataSet.getOutput();
 
                 double loss = this->network.loss(Y, A);
+                double error = this->network.error(m);
 
                 double p = 0.0;
                 for (T_Size i = 0; i < this->network.getSize(); i++) {
@@ -42,10 +43,10 @@ namespace Impulse {
                     }).sum();
                 }
 
-                double error = (-1.0 / (double) m) * loss + ((this->regularization * p) / (2.0 * (double) m));
+                double cost = error * loss + ((this->regularization * p) / (2.0 * (double) m));
 
                 Impulse::NeuralNetwork::Trainer::CostGradientResult result;
-                result.error = error;
+                result.cost = cost;
                 result.gradient = this->network.getRolledGradient();
 
                 return result;

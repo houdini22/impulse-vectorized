@@ -1,5 +1,5 @@
-#ifndef IMPULSE_NEURALNETWORK_LAYER_LOGISTIC_H
-#define IMPULSE_NEURALNETWORK_LAYER_LOGISTIC_H
+#ifndef IMPULSE_NEURALNETWORK_LAYER_PURELIN_H
+#define IMPULSE_NEURALNETWORK_LAYER_PURELIN_H
 
 #include "../include.h"
 
@@ -11,12 +11,12 @@ namespace Impulse {
 
         namespace Layer {
 
-            const T_String TYPE_LOGISTIC = "logistic";
+            const T_String TYPE_PURELIN = "purelin";
 
-            class Logistic : public Abstract {
+            class Purelin : public Abstract {
             protected:
             public:
-                Logistic(T_Size size, T_Size prevSize);
+                Purelin(T_Size size, T_Size prevSize);
 
                 Math::T_Matrix activation();
 
@@ -32,4 +32,4 @@ namespace Impulse {
     }
 }
 
-#endif //IMPULSE_NEURALNETWORK_LAYER_LOGISTIC_H
+#endif //IMPULSE_NEURALNETWORK_LAYER_PURELIN_H

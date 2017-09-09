@@ -128,5 +128,9 @@ namespace Impulse {
         double Network::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
             return this->layers.at(this->getSize() - 1)->loss(output, predictions);
         }
+
+        double Network::error(T_Size m) {
+            return this->layers.at(this->getSize() - 1)->error(m);
+        }
     }
 }

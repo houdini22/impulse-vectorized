@@ -63,12 +63,12 @@ void test_logistic() {
     trainer.setRegularization(0.0);
 
     Trainer::CostGradientResult cost = trainer.cost(dataset);
-    std::cout << "Cost: " << cost.getError() << std::endl;
+    std::cout << "Cost: " << cost.getCost() << std::endl;
 
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
     trainer.train(dataset);
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    auto duration = duration_cast<seconds>( t2 - t1 ).count();
+    auto duration = duration_cast<seconds>(t2 - t1).count();
     std::cout << "Time: " << duration << std::endl;
 
     std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
@@ -93,14 +93,14 @@ void test_softmax() {
     trainer.setRegularization(0.0);
 
     Trainer::CostGradientResult cost = trainer.cost(dataset);
-    std::cout << "Cost: " << cost.getError() << std::endl;
+    std::cout << "Cost: " << cost.getCost() << std::endl;
 
     std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
     trainer.train(dataset);
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    auto duration = duration_cast<seconds>( t2 - t1 ).count();
+    auto duration = duration_cast<seconds>(t2 - t1).count();
     std::cout << "Time: " << duration << std::endl;
 
     std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
@@ -136,7 +136,7 @@ void test_xor() {
     trainer.setLearningIterations(100);
 
     Trainer::CostGradientResult cost = trainer.cost(slicedDataset);
-    std::cout << "Cost: " << cost.getError() << std::endl;
+    std::cout << "Cost: " << cost.getCost() << std::endl;
 
     trainer.train(slicedDataset);
 
@@ -157,21 +157,82 @@ void test_logistic_load() {
     Impulse::SlicedDataset dataset = getDataset();
 
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
-    std::cout << "Saved Forward: " << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
+    std::cout << "Saved Forward: " << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen())
+              << std::endl;
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>( t2 - t1 ).count();
+    auto duration = duration_cast<microseconds>(t2 - t1).count();
     std::cout << "Forward time: " << duration << std::endl;
 
     Trainer::ConjugateGradientTrainer trainer(net);
 
     Trainer::CostGradientResult cost = trainer.cost(dataset);
-    std::cout << "Cost: " << cost.getError() << std::endl;
+    std::cout << "Cost: " << cost.getCost() << std::endl;
+}
+
+void test_linear() {
+    Impulse::DatasetBuilder::CSVBuilder datasetBuilder(
+            "/home/hud/CLionProjects/impulse-vectorized/data/linear.csv");
+    Impulse::Dataset dataset = datasetBuilder.build();
+
+    Impulse::DatasetModifier::DatasetSlicer slicer(&dataset);
+
+    slicer.addInputColumn(0);
+    slicer.addInputColumn(1);
+    slicer.addOutputColumn(2);
+
+    Impulse::SlicedDataset slicedDataset = slicer.slice();
+
+    Builder builder(2);
+    builder.createLayer(3, Layer::TYPE_PURELIN);
+    builder.createLayer(1, Layer::TYPE_PURELIN);
+
+    Network net = builder.getNetwork();
+
+    Impulse::DatasetSample sample({2, 2});
+    Math::T_Matrix inputVector = sample.exportToEigen();
+    std::cout << "Forward: " << net.forward(inputVector) << std::endl;
+
+    Trainer::ConjugateGradientTrainer trainer(net);
+    trainer.setLearningIterations(100);
+
+    Trainer::CostGradientResult cost = trainer.cost(slicedDataset);
+    std::cout << "Cost: " << cost.getCost() << std::endl;
+
+    trainer.train(slicedDataset);
+
+    std::cout << "Forward: " << net.forward(inputVector) << std::endl;
+
+    Impulse::DatasetSample sample2({2, 2});
+    Math::T_Matrix inputVector2 = sample2.exportToEigen();
+    std::cout << "Forward: " << net.forward(inputVector2) << std::endl;
+
+    Serializer serializer(net);
+    serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/linear.json");
+}
+
+void face() {
+    // create dataset
+    Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
+            "/media/hud/INTENSO/ML/facedb/exported/X.csv");
+    Impulse::Dataset datasetInput = datasetBuilder1.build();
+
+    Impulse::DatasetBuilder::CSVBuilder datasetBuilder2(
+            "/media/hud/INTENSO/ML/facedb/exported/Y.csv");
+    Impulse::Dataset datasetOutput = datasetBuilder2.build();
+
+    Impulse::SlicedDataset dataset;
+    dataset.input = datasetInput;
+    dataset.output = datasetOutput;
+
+
 }
 
 int main() {
     //test_logistic();
-    test_softmax();
+    //test_softmax();
+    test_linear();
     //test_logistic_load();
     //test_xor();
+    //face();
     return 0;
 }

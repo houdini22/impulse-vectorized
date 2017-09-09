@@ -32,6 +32,10 @@ namespace Impulse {
                         );
                 return loss.sum();
             }
+
+            double Logistic::error(T_Size m) {
+                return (-1.0 / (double) m);
+            }
         }
     }
 }

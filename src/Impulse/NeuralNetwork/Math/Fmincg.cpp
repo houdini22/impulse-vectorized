@@ -86,7 +86,7 @@ namespace Impulse {
                 int red = 1; // starting point
                 int ls_failed = 0; // no previous line search has failed
                 Impulse::NeuralNetwork::Trainer::CostGradientResult evaluateCost = stepFunction(input);
-                double f1 = evaluateCost.getError();
+                double f1 = evaluateCost.getCost();
                 df1 = evaluateCost.getGradient();
                 i = i + (length < 0 ? 1 : 0);
                 // search direction is steepest
@@ -106,7 +106,7 @@ namespace Impulse {
                     // fill our new line searched parameters
                     input = input + (s * z1);
                     Impulse::NeuralNetwork::Trainer::CostGradientResult evaluateCost2 = stepFunction(input);
-                    double f2 = evaluateCost2.getError();
+                    double f2 = evaluateCost2.getCost();
                     df2 = evaluateCost2.getGradient();
                     i = i + (length < 0 ? 1 : 0); // count epochs
                     double d2 = df2.dot(s);
@@ -150,7 +150,7 @@ namespace Impulse {
                             z1 = z1 + z2;
                             input = input + (s * z2);
                             Impulse::NeuralNetwork::Trainer::CostGradientResult evaluateCost3 = stepFunction(input);
-                            f2 = evaluateCost3.getError();
+                            f2 = evaluateCost3.getCost();
                             df2 = evaluateCost3.getGradient();
                             M = M - 1;
                             i = i + (length < 0 ? 1 : 0); // count epochs
@@ -201,7 +201,7 @@ namespace Impulse {
                         // update current estimates
                         input = input + (s * z2);
                         Impulse::NeuralNetwork::Trainer::CostGradientResult evaluateCost3 = stepFunction(input);
-                        f2 = evaluateCost3.getError();
+                        f2 = evaluateCost3.getCost();
                         df2 = evaluateCost3.getGradient();
                         M = M - 1;
                         i = i + (length < 0 ? 1 : 0); // count epochs?!

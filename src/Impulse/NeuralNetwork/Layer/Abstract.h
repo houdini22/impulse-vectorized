@@ -69,6 +69,13 @@ namespace Impulse {
                  * @return
                  */
                 virtual double loss(Math::T_Matrix output, Math::T_Matrix predictions) = 0;
+
+                /**
+                 * Error term for network.
+                 * @param m
+                 * @return
+                 */
+                virtual double error(T_Size m) = 0;
             };
 
             /**

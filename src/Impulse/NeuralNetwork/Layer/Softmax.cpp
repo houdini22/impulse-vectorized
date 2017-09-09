@@ -31,6 +31,10 @@ namespace Impulse {
                                        predictions.unaryExpr([](const double x) { return log(x); }).array());
                 return loss.sum();
             }
+
+            double Softmax::error(T_Size m) {
+                return (-1.0 / (double) m);
+            }
         }
     }
 }

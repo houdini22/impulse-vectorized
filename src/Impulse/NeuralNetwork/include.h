@@ -27,6 +27,7 @@
 #include "Layer/Softmax.h"
 #include "Layer/Relu.h"
 #include "Layer/Logistic.h"
+#include "Layer/Purelin.h"
 #include "Math/Fmincg.h"
 #include "Trainer/AbstractTrainer.h"
 #include "Trainer/ConjugateGradientTrainer.h"

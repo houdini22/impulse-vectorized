@@ -34,6 +34,10 @@ namespace Impulse {
                 // TODO
                 return 0.0;
             }
+
+            double Relu::error(T_Size m) {
+                return 0.0; // TODO
+            }
         }
     }
 }

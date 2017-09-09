@@ -38,6 +38,8 @@ namespace Impulse {
             void setRolledTheta(Math::T_Vector theta);
 
             double loss(Math::T_Matrix output, Math::T_Matrix predictions);
+
+            double error(T_Size m);
         };
     }
 }

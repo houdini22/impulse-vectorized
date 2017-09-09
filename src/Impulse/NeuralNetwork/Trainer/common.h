@@ -12,11 +12,11 @@ namespace Impulse {
         namespace Trainer {
 
             struct CostGradientResult {
-                double error;
+                double cost;
                 Math::T_Vector gradient;
 
-                double &getError() {
-                    return this->error;
+                double &getCost() {
+                    return this->cost;
                 }
 
                 Math::T_Vector &getGradient() {
