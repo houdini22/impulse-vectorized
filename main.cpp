@@ -19,14 +19,21 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
 
+#include "opencv2/objdetect/objdetect.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetBuilder/CSVBuilder.h"
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset.h"
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
 
 #include "src/Impulse/NeuralNetwork/include.h"
+#include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/Modifier/Callback.h"
+#include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/Modifier/MinMaxScaling.h"
 
 using namespace std::chrono;
 using namespace Impulse::NeuralNetwork;
+using namespace cv;
 
 Impulse::SlicedDataset getDataset() {
     // create dataset
@@ -213,26 +220,131 @@ void test_linear() {
 void face() {
     // create dataset
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
-            "/media/hud/INTENSO/ML/facedb/exported/X.csv");
+            "/media/hud/INTENSO/ML/facedb/exported_all_scale_0_5/X.csv");
     Impulse::Dataset datasetInput = datasetBuilder1.build();
 
+    std::cout << "X loaded." << std::endl;
+
+    Impulse::DatasetModifier::Modifier::MinMaxScaling mod(&datasetInput);
+    mod.apply();
+
+    std::cout << "X modified." << std::endl;
+
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder2(
-            "/media/hud/INTENSO/ML/facedb/exported/Y.csv");
+            "/media/hud/INTENSO/ML/facedb/exported_all_scale_0_5/Y.csv");
     Impulse::Dataset datasetOutput = datasetBuilder2.build();
+
+    std::cout << "Y loaded." << std::endl;
 
     Impulse::SlicedDataset dataset;
     dataset.input = datasetInput;
     dataset.output = datasetOutput;
 
+    Builder builder(dataset.input.getColumnsSize());
+    builder.createLayer(300, Layer::TYPE_LOGISTIC);
+    builder.createLayer(300, Layer::TYPE_LOGISTIC);
+    builder.createLayer(300, Layer::TYPE_LOGISTIC);
+    builder.createLayer(300, Layer::TYPE_LOGISTIC);
+    builder.createLayer(300, Layer::TYPE_LOGISTIC);
+    builder.createLayer(300, Layer::TYPE_LOGISTIC);
+    builder.createLayer(4, Layer::TYPE_PURELIN);
 
+    Network net = builder.getNetwork();
+
+    //std::cout << "Forward:" << std::endl << net.forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+
+    Trainer::ConjugateGradientTrainer trainer(net);
+    trainer.setLearningIterations(200);
+    trainer.setVerboseStep(1);
+    trainer.setRegularization(0.0);
+
+    Trainer::CostGradientResult cost = trainer.cost(dataset);
+    std::cout << "Cost: " << cost.getCost() << std::endl;
+
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+    trainer.train(dataset);
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    auto duration = duration_cast<seconds>(t2 - t1).count();
+    std::cout << "Time: " << duration << std::endl;
+
+    std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
+
+    Serializer serializer(net);
+    serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/face3_2.json");
+}
+
+void videoFace() {
+
+    Builder builder = Builder::fromJSON("/home/hud/CLionProjects/impulse-vectorized/saved/face3_2.json");
+    Network net = builder.getNetwork();
+
+    VideoCapture cap(0); // capture from default camera
+    Mat frame;
+
+    namedWindow("Face view",
+                CV_WINDOW_AUTOSIZE |
+                CV_WINDOW_FREERATIO |
+                CV_GUI_EXPANDED);
+
+    // Loop to capture frames
+    while (cap.read(frame)) {
+        Mat resized, grayed;
+        resize(frame, resized, Size(384 / 2, 286 / 2));
+        cvtColor(resized, grayed, CV_RGB2GRAY);
+        std::vector<double> vec;
+
+        for (int y = 0; y < grayed.rows; y++) {
+            for (int x = 0; x < grayed.cols; x++) {
+                auto pixelValue = (double) grayed.at<uchar>(y, x);
+                vec.push_back(pixelValue);
+            }
+        }
+
+        double min = 256.0;
+        double max = -1.0;
+
+        for (unsigned long i = 0; i < vec.size(); i++) {
+            double value = vec.at(i);
+            if (value < min) {
+                min = value;
+            } else if (value > max) {
+                max = value;
+            }
+        }
+
+        Math::T_Matrix input(vec.size(), 1);
+
+        for (unsigned long i = 0; i < vec.size(); i++) {
+            double value = vec.at(i);
+            double newValue = (value - min) / (max - min);
+            input(i, 0) = newValue;
+        }
+
+        Math::T_Matrix prediction = net.forward(input);
+
+        circle(grayed, Point((int) prediction(0, 0), (int) prediction(1, 0)), 5, Scalar(255, 0, 0));
+        circle(grayed, Point((int) prediction(2, 0), (int) prediction(3, 0)), 5, Scalar(255, 0, 0));
+
+        imshow("Face view", grayed);
+
+        if (waitKey(30) >= 0) // spacebar
+            break;
+    }
+}
+
+void test_conv() {
+    Builder builder(20, 20, 1);
+    //builder.createLayer(300, Layer::TYPE_LOGISTIC);
 }
 
 int main() {
     //test_logistic();
     //test_softmax();
-    test_linear();
+    //test_linear();
     //test_logistic_load();
     //test_xor();
     //face();
+    //videoFace();
+    test_conv();
     return 0;
 }

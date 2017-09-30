@@ -99,9 +99,12 @@ if(LAPACK_FOUND)
     link_directories(LAPACK_LIBRARIES)
 endif()]]
 
+find_package(OpenCV REQUIRED)
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -m64 -lboost_system -lboost_filesystem -flto -march=native -funroll-loops -mavx -msse4.2 -fopenmp")
 
 add_executable(impulse_vectorized ${SOURCE_FILES})
 
 target_link_libraries(impulse_vectorized ${Boost_LIBRARIES})
 #target_link_libraries(impulse_vectorized ${BLAS_LIBRARIES})
+target_link_libraries(impulse_vectorized ${OpenCV_LIBS})
