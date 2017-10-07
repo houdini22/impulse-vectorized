@@ -27,9 +27,9 @@ namespace Impulse {
 
             class Fmincg {
             public:
-                Fmincg() {}
+                Fmincg() = default;
 
-                ~Fmincg() {}
+                ~Fmincg() = default;
 
                 /**
                  * Minimizes multivariate function.

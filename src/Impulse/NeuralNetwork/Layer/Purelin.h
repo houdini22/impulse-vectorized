@@ -18,15 +18,15 @@ namespace Impulse {
             public:
                 Purelin(T_Size size, T_Size prevSize);
 
-                Math::T_Matrix activation();
+                Math::T_Matrix activation() override;
 
-                Math::T_Matrix derivative();
+                Math::T_Matrix derivative() override;
 
-                const T_String getType();
+                const T_String getType() override;
 
-                double loss(Math::T_Matrix output, Math::T_Matrix predictions);
+                double loss(Math::T_Matrix output, Math::T_Matrix predictions) override;
 
-                double error(T_Size m);
+                double error(T_Size m) override;
             };
         }
     }

@@ -14,7 +14,7 @@ namespace Impulse {
             Network network;
             T_Size prevSize;
         public:
-            Builder(T_Size inputSize);
+            explicit Builder(T_Size inputSize);
 
             void createLayer(T_Size size, T_String type);
 

@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "../include.h"
 
 /*
@@ -71,7 +73,7 @@ namespace Impulse {
                     bool verbose
             ) {
                 // input will be the pointer to our current active parameter set
-                Math::T_Vector input(theta);
+                Math::T_Vector input(std::move(theta));
                 Math::T_Vector X0(input);
                 // search directions
                 Math::T_Vector s(input.size());
@@ -117,7 +119,7 @@ namespace Impulse {
                     if (length > 0) {
                         M = MAX;
                     } else {
-                        M = std::min(MAX, (int) -length - i);
+                        M = std::min(MAX, static_cast<int>(-length) - i);
                     }
                     // initialize quanteties
                     int success = 0;

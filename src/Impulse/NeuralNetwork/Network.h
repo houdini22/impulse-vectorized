@@ -17,7 +17,7 @@ namespace Impulse {
             T_Size inputSize = 0;
             LayersContainer layers;
         public:
-            Network(T_Size inputSize);
+            explicit Network(T_Size inputSize);
 
             void addLayer(Layer::LayerPointer layer);
 

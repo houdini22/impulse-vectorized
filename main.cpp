@@ -38,11 +38,11 @@ using namespace cv;
 Impulse::SlicedDataset getDataset() {
     // create dataset
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
-            "/home/hud/CLionProjects/impulse-new/data/ex4data1_x.csv");
+            "/home/hud/projekty/impulse-vectorized/data/ex4data1_x.csv");
     Impulse::Dataset datasetInput = datasetBuilder1.build();
 
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder2(
-            "/home/hud/CLionProjects/impulse-new/data/ex4data1_y.csv");
+            "/home/hud/projekty/impulse-vectorized/data/ex4data1_y.csv");
     Impulse::Dataset datasetOutput = datasetBuilder2.build();
 
     Impulse::SlicedDataset dataset;
@@ -81,7 +81,7 @@ void test_logistic() {
     std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
     Serializer serializer(net);
-    serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/logistic.json");
+    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/logistic.json");
 }
 
 void test_softmax() {
@@ -113,12 +113,12 @@ void test_softmax() {
     std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
     Serializer serializer(net);
-    serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/softmax.json");
+    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");
 }
 
 void test_xor() {
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder(
-            "/home/hud/CLionProjects/impulse-vectorized/data/xor.csv");
+            "/home/hud/projekty/impulse-vectorized/data/xor.csv");
     Impulse::Dataset dataset = datasetBuilder.build();
 
     Impulse::DatasetModifier::DatasetSlicer slicer(&dataset);
@@ -154,11 +154,11 @@ void test_xor() {
     std::cout << "Forward: " << net.forward(inputVector2) << std::endl;
 
     Serializer serializer(net);
-    serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/xor.json");
+    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/xor.json");
 }
 
 void test_logistic_load() {
-    Builder builder = Builder::fromJSON("/home/hud/CLionProjects/impulse-vectorized/saved/logistic.json");
+    Builder builder = Builder::fromJSON("/home/hud/projekty/impulse-vectorized/saved/logistic.json");
     Network net = builder.getNetwork();
 
     Impulse::SlicedDataset dataset = getDataset();
@@ -178,7 +178,7 @@ void test_logistic_load() {
 
 void test_linear() {
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder(
-            "/home/hud/CLionProjects/impulse-vectorized/data/linear.csv");
+            "/home/hud/projekty/impulse-vectorized/data/linear.csv");
     Impulse::Dataset dataset = datasetBuilder.build();
 
     Impulse::DatasetModifier::DatasetSlicer slicer(&dataset);
@@ -214,7 +214,7 @@ void test_linear() {
     std::cout << "Forward: " << net.forward(inputVector2) << std::endl;
 
     Serializer serializer(net);
-    serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/linear.json");
+    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/linear.json");
 }
 
 void face() {
@@ -270,12 +270,12 @@ void face() {
     std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
     Serializer serializer(net);
-    serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/face3_2.json");
+    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/face3_2.json");
 }
 
 void videoFace() {
 
-    Builder builder = Builder::fromJSON("/home/hud/CLionProjects/impulse-vectorized/saved/face3_2.json");
+    Builder builder = Builder::fromJSON("/home/hud/projekty/impulse-vectorized/saved/face3_2.json");
     Network net = builder.getNetwork();
 
     VideoCapture cap(0); // capture from default camera
@@ -332,19 +332,13 @@ void videoFace() {
     }
 }
 
-void test_conv() {
-    Builder builder(20, 20, 1);
-    //builder.createLayer(300, Layer::TYPE_LOGISTIC);
-}
-
 int main() {
     //test_logistic();
-    //test_softmax();
+    test_softmax();
     //test_linear();
     //test_logistic_load();
     //test_xor();
     //face();
     //videoFace();
-    test_conv();
     return 0;
 }

@@ -13,7 +13,7 @@ namespace Impulse {
         protected:
             Impulse::NeuralNetwork::Network network;
         public:
-            Serializer(Impulse::NeuralNetwork::Network &net);
+            explicit Serializer(Impulse::NeuralNetwork::Network &net);
 
             void toJSON(T_String path);
         };

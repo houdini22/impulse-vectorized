@@ -24,7 +24,7 @@ namespace Impulse {
                  * Constructor.
                  * @param net
                  */
-                AbstractTrainer(Network &net);
+                explicit AbstractTrainer(Network &net);
 
                 /**
                  * Sets regularization (lamdba) parameters.

@@ -16,8 +16,8 @@ namespace Impulse {
         Math::T_Matrix Network::forward(Math::T_Matrix input) {
             Math::T_Matrix output = input;
 
-            for (LayersContainer::iterator it = this->layers.begin(); it != this->layers.end(); ++it) {
-                output = (*it)->forward(output);
+            for (auto &layer : this->layers) {
+                output = layer->forward(output);
             }
 
             return output;
@@ -30,14 +30,14 @@ namespace Impulse {
             Math::T_Matrix sigma = predictions.array() - Y.array();
 
             for (long i = this->layers.size() - 1; i >= 0; i--) {
-                auto layer = this->layers.at(i);
+                auto layer = this->layers.at(static_cast<unsigned long>(i));
 
-                Math::T_Matrix delta = sigma * (i == 0 ? X : this->layers.at(i - 1)->A).transpose().conjugate();
+                Math::T_Matrix delta = sigma * (i == 0 ? X : this->layers.at(static_cast<unsigned long>(i - 1))->A).transpose().conjugate();
                 layer->gW = delta.array() / m + (regularization / m * layer->W.array());
                 layer->gb = sigma.rowwise().sum() / m;
 
                 if (i > 0) {
-                    auto prevLayer = this->layers.at(i - 1);
+                    auto prevLayer = this->layers.at(static_cast<unsigned long>(i - 1));
 
                     Math::T_Matrix tmp1 = layer->W.transpose() * sigma;
                     Math::T_Matrix tmp2 = prevLayer->derivative();
@@ -126,7 +126,7 @@ namespace Impulse {
         }
 
         double Network::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
-            return this->layers.at(this->getSize() - 1)->loss(output, predictions);
+            return this->layers.at(this->getSize() - 1)->loss(std::move(output), std::move(predictions));
         }
 
         double Network::error(T_Size m) {
