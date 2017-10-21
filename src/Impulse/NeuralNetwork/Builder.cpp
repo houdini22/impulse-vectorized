@@ -33,6 +33,8 @@ namespace Impulse {
         };
 
         template void Builder::createLayer<Layer::Logistic>(T_Size size, std::function<void(Layer::Logistic *)> callback);
+        template void Builder::createLayer<Layer::Purelin>(T_Size size, std::function<void(Layer::Purelin *)> callback);
+        template void Builder::createLayer<Layer::Relu>(T_Size size, std::function<void(Layer::Relu *)> callback);
         template void Builder::createLayer<Layer::Softmax>(T_Size size, std::function<void(Layer::Softmax *)> callback);
 
         template<typename LAYER_TYPE>
@@ -45,6 +47,8 @@ namespace Impulse {
         };
 
         template void Builder::createLayer<Layer::Logistic>(T_Size size);
+        template void Builder::createLayer<Layer::Purelin>(T_Size size);
+        template void Builder::createLayer<Layer::Relu>(T_Size size);
         template void Builder::createLayer<Layer::Softmax>(T_Size size);
 
         Network &Builder::getNetwork() {
