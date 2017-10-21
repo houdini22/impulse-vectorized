@@ -52,7 +52,7 @@ Impulse::SlicedDataset getDataset() {
     return dataset;
 }
 
-void test_logistic() {
+/*void test_logistic() {
     Impulse::SlicedDataset dataset = getDataset();
 
     Builder builder(400);
@@ -82,15 +82,17 @@ void test_logistic() {
 
     Serializer serializer(net);
     serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/logistic.json");
-}
+}*/
 
 void test_softmax() {
     Impulse::SlicedDataset dataset = getDataset();
 
     Builder builder(400);
-    builder.createLayer(100, Layer::TYPE_LOGISTIC);
-    builder.createLayer(20, Layer::TYPE_LOGISTIC);
-    builder.createLayer(10, Layer::TYPE_SOFTMAX);
+    builder.createLayer<Layer::Logistic>(100);
+    builder.createLayer<Layer::Logistic>(20);
+    builder.createLayer<Layer::Softmax>(10, [](auto * layer) {
+        std::cout << layer->getType() << std::endl;
+    });
 
     Network net = builder.getNetwork();
 
@@ -111,12 +113,12 @@ void test_softmax() {
     std::cout << "Time: " << duration << std::endl;
 
     std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
-
+/*
     Serializer serializer(net);
-    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");
+    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");*/
 }
 
-void test_xor() {
+/*void test_xor() {
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder(
             "/home/hud/projekty/impulse-vectorized/data/xor.csv");
     Impulse::Dataset dataset = datasetBuilder.build();
@@ -330,7 +332,7 @@ void videoFace() {
         if (waitKey(30) >= 0) // spacebar
             break;
     }
-}
+}*/
 
 int main() {
     //test_logistic();

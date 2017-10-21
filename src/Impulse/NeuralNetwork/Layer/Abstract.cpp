@@ -28,6 +28,10 @@ namespace Impulse {
             T_Size Abstract::getSize() {
                 return this->size;
             }
+
+            T_Size Abstract::getOutputSize() {
+                return this->size;
+            }
         }
     }
 }

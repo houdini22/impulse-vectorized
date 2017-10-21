@@ -21,6 +21,32 @@ namespace Impulse {
             this->prevSize = size;
         }
 
+        template<typename LAYER_TYPE>
+        void Builder::createLayer(T_Size size, std::function<void(LAYER_TYPE *)> callback) {
+            LAYER_TYPE *layer = new LAYER_TYPE(size, this->prevSize);
+            Layer::LayerPointer pointer(layer);
+
+            callback(layer);
+
+            this->network.addLayer(pointer);
+            this->prevSize = layer->getOutputSize();
+        };
+
+        template void Builder::createLayer<Layer::Logistic>(T_Size size, std::function<void(Layer::Logistic *)> callback);
+        template void Builder::createLayer<Layer::Softmax>(T_Size size, std::function<void(Layer::Softmax *)> callback);
+
+        template<typename LAYER_TYPE>
+        void Builder::createLayer(T_Size size) {
+            LAYER_TYPE *layer = new LAYER_TYPE(size, this->prevSize);
+            Layer::LayerPointer pointer(layer);
+
+            this->network.addLayer(pointer);
+            this->prevSize = layer->getOutputSize();
+        };
+
+        template void Builder::createLayer<Layer::Logistic>(T_Size size);
+        template void Builder::createLayer<Layer::Softmax>(T_Size size);
+
         Network &Builder::getNetwork() {
             return this->network;
         }
