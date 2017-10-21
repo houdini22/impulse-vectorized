@@ -11,6 +11,11 @@ namespace Impulse {
 
         namespace Layer {
 
+            /**
+             * Layer pointer.
+             */
+            typedef std::shared_ptr<Layer::Abstract> LayerPointer;
+
             class Abstract {
             protected:
                 T_Size size;        // number of neurons
@@ -77,11 +82,6 @@ namespace Impulse {
                  */
                 virtual double error(T_Size m) = 0;
             };
-
-            /**
-             * Layer pointer.
-             */
-            typedef std::shared_ptr<Layer::Abstract> LayerPointer;
         }
     }
 }
