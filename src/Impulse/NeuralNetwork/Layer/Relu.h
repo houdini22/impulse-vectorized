@@ -16,6 +16,7 @@ namespace Impulse {
             class Relu : public Abstract {
             protected:
             public:
+                Relu();
 
                 Relu(T_Size size, T_Size prevSize);
 

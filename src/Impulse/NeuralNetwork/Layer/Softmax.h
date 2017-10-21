@@ -16,6 +16,7 @@ namespace Impulse {
             class Softmax : public Abstract {
             protected:
             public:
+                Softmax();
 
                 Softmax(T_Size size, T_Size prevSize);
 

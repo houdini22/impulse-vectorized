@@ -8,48 +8,68 @@ namespace Impulse {
             this->prevSize = inputSize;
         }
 
-        void Builder::createLayer(T_Size size, T_String type) {
-            if (type == Layer::TYPE_LOGISTIC) {
-                this->network.addLayer(Layer::LayerPointer(new Layer::Logistic(size, this->prevSize)));
-            } else if (type == Layer::TYPE_RELU) {
-                this->network.addLayer(Layer::LayerPointer(new Layer::Relu(size, this->prevSize)));
-            } else if (type == Layer::TYPE_SOFTMAX) {
-                this->network.addLayer(Layer::LayerPointer(new Layer::Softmax(size, this->prevSize)));
-            } else if (type == Layer::TYPE_PURELIN) {
-                this->network.addLayer(Layer::LayerPointer(new Layer::Purelin(size, this->prevSize)));
-            }
-            this->prevSize = size;
-        }
-
         template<typename LAYER_TYPE>
         void Builder::createLayer(T_Size size, std::function<void(LAYER_TYPE *)> callback) {
-            LAYER_TYPE *layer = new LAYER_TYPE(size, this->prevSize);
+            auto *layer = new LAYER_TYPE(size, this->prevSize);
             Layer::LayerPointer pointer(layer);
 
             callback(layer);
+
+            layer->configure();
 
             this->network.addLayer(pointer);
             this->prevSize = layer->getOutputSize();
         };
 
-        template void Builder::createLayer<Layer::Logistic>(T_Size size, std::function<void(Layer::Logistic *)> callback);
+        template void
+        Builder::createLayer<Layer::Logistic>(T_Size size, std::function<void(Layer::Logistic *)> callback);
+
         template void Builder::createLayer<Layer::Purelin>(T_Size size, std::function<void(Layer::Purelin *)> callback);
+
         template void Builder::createLayer<Layer::Relu>(T_Size size, std::function<void(Layer::Relu *)> callback);
+
         template void Builder::createLayer<Layer::Softmax>(T_Size size, std::function<void(Layer::Softmax *)> callback);
 
         template<typename LAYER_TYPE>
         void Builder::createLayer(T_Size size) {
-            LAYER_TYPE *layer = new LAYER_TYPE(size, this->prevSize);
+            auto *layer = new LAYER_TYPE(size, this->prevSize);
             Layer::LayerPointer pointer(layer);
+
+            layer->configure();
 
             this->network.addLayer(pointer);
             this->prevSize = layer->getOutputSize();
         };
 
         template void Builder::createLayer<Layer::Logistic>(T_Size size);
+
         template void Builder::createLayer<Layer::Purelin>(T_Size size);
+
         template void Builder::createLayer<Layer::Relu>(T_Size size);
+
         template void Builder::createLayer<Layer::Softmax>(T_Size size);
+
+        template<typename LAYER_TYPE>
+        void Builder::createLayer(std::function<void(LAYER_TYPE *)> callback) {
+            auto *layer = new LAYER_TYPE();
+            Layer::LayerPointer pointer(layer);
+
+            layer->setPrevSize(this->prevSize);
+            callback(layer);
+
+            layer->configure();
+
+            this->network.addLayer(pointer);
+            this->prevSize = layer->getOutputSize();
+        };
+
+        template void Builder::createLayer<Layer::Logistic>(std::function<void(Layer::Logistic *)> callback);
+
+        template void Builder::createLayer<Layer::Purelin>(std::function<void(Layer::Purelin *)> callback);
+
+        template void Builder::createLayer<Layer::Relu>(std::function<void(Layer::Relu *)> callback);
+
+        template void Builder::createLayer<Layer::Softmax>(std::function<void(Layer::Softmax *)> callback);
 
         Network &Builder::getNetwork() {
             return this->network;
@@ -65,8 +85,21 @@ namespace Impulse {
             Builder builder((T_Size) jsonFile["inputSize"]);
 
             nlohmann::json savedLayers = jsonFile["layers"];
-            for (auto it = savedLayers.begin(); it != savedLayers.end(); ++it) {
-                builder.createLayer(it.value()[0], it.value()[1]);
+
+            for (auto &element : savedLayers) {
+                T_Size size = element[0];
+                T_String layerType = element[1];
+
+                Layer::LayerPointer pointer;
+                if (layerType == Layer::TYPE_LOGISTIC) {
+                    builder.createLayer<Layer::Logistic>(size);
+                } else if (layerType == Layer::TYPE_RELU) {
+                    builder.createLayer<Layer::Relu>(size);
+                } else if (layerType == Layer::TYPE_SOFTMAX) {
+                    builder.createLayer<Layer::Softmax>(size);
+                } else if (layerType == Layer::TYPE_PURELIN) {
+                    builder.createLayer<Layer::Purelin>(size);
+                }
             }
 
             Math::T_RawVector theta = jsonFile["weights"];

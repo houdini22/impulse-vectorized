@@ -16,6 +16,8 @@ namespace Impulse {
             class Logistic : public Abstract {
             protected:
             public:
+                Logistic();
+
                 Logistic(T_Size size, T_Size prevSize);
 
                 Math::T_Matrix activation() override;

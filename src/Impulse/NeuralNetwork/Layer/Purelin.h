@@ -16,6 +16,8 @@ namespace Impulse {
             class Purelin : public Abstract {
             protected:
             public:
+                Purelin();
+
                 Purelin(T_Size size, T_Size prevSize);
 
                 Math::T_Matrix activation() override;

@@ -17,13 +17,14 @@ namespace Impulse {
         public:
             explicit Builder(T_Size inputSize);
 
-            void createLayer(T_Size size, T_String type);
-
             template<typename LAYER_TYPE>
             void createLayer(T_Size size, std::function<void(LAYER_TYPE *)> callback);
 
             template<typename LAYER_TYPE>
             void createLayer(T_Size size);
+
+            template<typename LAYER_TYPE>
+            void createLayer(std::function<void(LAYER_TYPE *)> callback);
 
             Network &getNetwork();
 

@@ -6,6 +6,8 @@ namespace Impulse {
 
         namespace Layer {
 
+            Logistic::Logistic() : Abstract() {};
+
             Logistic::Logistic(T_Size size, T_Size prevSize) : Abstract(size, prevSize) {};
 
             Math::T_Matrix Logistic::activation() {

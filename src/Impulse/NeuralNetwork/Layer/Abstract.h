@@ -24,6 +24,11 @@ namespace Impulse {
                 Math::T_Vector gb;        // gradient for biases
 
                 /**
+                 * Pure constructor
+                 */
+                Abstract();
+
+                /**
                  * Constructor.
                  * @param size
                  * @param prevSize
@@ -57,6 +62,18 @@ namespace Impulse {
                 virtual const T_String getType() = 0;
 
                 /**
+                 * Setter for size.
+                 * @param value
+                 */
+                void setSize(T_Size value);
+
+                /**
+                 * Setter for prev size.
+                 * @param value
+                 */
+                void setPrevSize(T_Size value);
+
+                /**
                  * Getter for layer size.
                  * @return
                  */
@@ -82,6 +99,11 @@ namespace Impulse {
                  * @return
                  */
                 virtual T_Size getOutputSize();
+
+                /**
+                 * Finish configuration of the layer
+                 */
+                virtual void configure();
             };
 
             /**

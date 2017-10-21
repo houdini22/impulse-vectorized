@@ -88,13 +88,19 @@ void test_softmax() {
     Impulse::SlicedDataset dataset = getDataset();
 
     Builder builder(400);
-    builder.createLayer<Layer::Logistic>(100);
-    builder.createLayer<Layer::Logistic>(20);
-    builder.createLayer<Layer::Softmax>(10, [](auto * layer) {
-        std::cout << layer->getType() << std::endl;
+    builder.createLayer<Layer::Logistic>([](auto *layer) {
+        layer->setSize(100);
+    });
+    builder.createLayer<Layer::Logistic>([](auto *layer) {
+        layer->setSize(20);
+    });
+    builder.createLayer<Layer::Softmax>([](auto *layer) {
+        layer->setSize(10);
     });
 
     Network net = builder.getNetwork();
+    /*Builder builder = Builder::fromJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");
+    Network net = builder.getNetwork();*/
 
     Trainer::ConjugateGradientTrainer trainer(net);
     trainer.setLearningIterations(400);
@@ -113,8 +119,7 @@ void test_softmax() {
     std::cout << "Time: " << duration << std::endl;
 
     std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
-/*
-    Serializer serializer(net);
+    /*Serializer serializer(net);
     serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");*/
 }
 

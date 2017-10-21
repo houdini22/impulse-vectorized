@@ -6,6 +6,8 @@ namespace Impulse {
 
         namespace Layer {
 
+            Relu::Relu() : Abstract() {};
+
             Relu::Relu(T_Size size, T_Size prevSize) : Abstract(size, prevSize) {}
 
             Math::T_Matrix Relu::activation() {
