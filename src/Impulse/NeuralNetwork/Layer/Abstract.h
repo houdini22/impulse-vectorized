@@ -40,7 +40,7 @@ namespace Impulse {
                  * @param input
                  * @return
                  */
-                Math::T_Matrix forward(Math::T_Matrix input);
+                virtual Math::T_Matrix forward(Math::T_Matrix input);
 
                 /**
                  * Calculates activated values.
@@ -104,6 +104,11 @@ namespace Impulse {
                  * Finish configuration of the layer
                  */
                 virtual void configure();
+
+                /**
+                 * Debug.
+                 */
+                virtual void debug() {};
             };
 
             /**

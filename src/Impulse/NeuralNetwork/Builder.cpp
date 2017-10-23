@@ -71,6 +71,8 @@ namespace Impulse {
 
         template void Builder::createLayer<Layer::Softmax>(std::function<void(Layer::Softmax *)> callback);
 
+        template void Builder::createLayer<Layer::Conv>(std::function<void(Layer::Conv *)> callback);
+
         Network &Builder::getNetwork() {
             return this->network;
         }

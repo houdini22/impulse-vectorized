@@ -133,5 +133,9 @@ namespace Impulse {
         double Network::error(T_Size m) {
             return this->layers.at(this->getSize() - 1)->error(m);
         }
+
+        void Network::debug() {
+            this->layers.at(0)->debug();
+        }
     }
 }

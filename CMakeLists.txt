@@ -56,7 +56,9 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Layer/Softmax.cpp
         src/Impulse/NeuralNetwork/Layer/Purelin.h
         src/Impulse/NeuralNetwork/Layer/Purelin.cpp
-        src/Impulse/NeuralNetwork/include.h)
+        src/Impulse/NeuralNetwork/Layer/Conv.h
+        src/Impulse/NeuralNetwork/Layer/Conv.cpp
+        src/Impulse/NeuralNetwork/include.h src/Impulse/NeuralNetwork/utils.h src/Impulse/NeuralNetwork/utils.cpp)
 
 find_package(Boost 1.57.0 COMPONENTS system filesystem REQUIRED)
 if(BOOST_FOUND)
