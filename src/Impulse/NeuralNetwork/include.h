@@ -30,6 +30,7 @@
 #include "Layer/Logistic.h"
 #include "Layer/Purelin.h"
 #include "Layer/Conv.h"
+#include "Layer/Pool.h"
 #include "Math/Fmincg.h"
 #include "Trainer/AbstractTrainer.h"
 #include "Trainer/ConjugateGradientTrainer.h"

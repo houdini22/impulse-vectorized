@@ -9,7 +9,7 @@ namespace Impulse {
 
         namespace Utils {
 
-            Math::T_Matrix im2col(Math::T_Matrix input, int channels,
+            Math::T_Matrix im2col(Math::T_Matrix &input, int channels,
                                   int height, int width,
                                   int kernel_h, int kernel_w,
                                   int pad_h, int pad_w,

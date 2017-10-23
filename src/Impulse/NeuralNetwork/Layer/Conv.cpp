@@ -70,16 +70,8 @@ namespace Impulse {
                 this->numFilters = value;
             }
 
-            Math::T_Matrix Conv::forward(Math::T_Matrix input) {
-                this->Z = (this->W * input).colwise() + this->b;
-                std::cout << this->Z << std::endl;
-                return this->A = this->activation();
-            }
-
             Math::T_Matrix Conv::activation() {
-                return this->Z.unaryExpr([](const double x) {
-                    return 1.0 / (1.0 + exp(-x));
-                });
+                return this->Z;
             }
 
             Math::T_Matrix Conv::derivative() {

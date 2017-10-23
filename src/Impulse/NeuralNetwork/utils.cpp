@@ -6,7 +6,7 @@ namespace Impulse {
 
         namespace Utils {
 
-            Math::T_Matrix im2col(Math::T_Matrix input, int channels,
+            Math::T_Matrix im2col(Math::T_Matrix &input, int channels,
                                   int height, int width,
                                   int kernel_h, int kernel_w,
                                   int pad_h, int pad_w,
@@ -25,7 +25,7 @@ namespace Impulse {
                      boundingY + kernel_h <= height + 2 * pad_h;
                      boundingY += stride_h) {
                     for (int boundingX = -pad_w;
-                         boundingX + kernel_w <= width + 2 * pad_h;
+                         boundingX + kernel_w <= width + 2 * pad_w;
                          boundingX += stride_w) {
                         int currentResultRow = 0;
                         for (int channel = 0; channel < channels; channel++) {
@@ -34,10 +34,8 @@ namespace Impulse {
                                 for (int x = 0; x < kernel_w; x++) {
                                     if (boundingY + y >= 0 && boundingX + x >= 0 && boundingX + x < width &&
                                         boundingY + y < height) {
-
                                         result(currentResultRow, currentResultCol) = input(
                                                 ((y + boundingY) * width) + boundingX + x + inputOffset, 0);
-
                                     }
                                     currentResultRow++;
                                 }
@@ -46,7 +44,6 @@ namespace Impulse {
                         currentResultCol++;
                     }
                 }
-
                 return result;
             }
         }

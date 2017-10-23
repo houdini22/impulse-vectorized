@@ -135,6 +135,10 @@ void test_conv() {
         layer->setNumFilters(2);
         // std::cout << layer->getOutputSize() << std::endl;
     });
+    /*builder.createLayer<Layer::Pool>([](auto *layer) {
+        layer->setFilterSize(2);
+        layer->setStride(2);
+    });*/
 
     Network net = builder.getNetwork();
 
