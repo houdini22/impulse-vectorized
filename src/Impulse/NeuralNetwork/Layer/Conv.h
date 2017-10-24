@@ -51,8 +51,6 @@ namespace Impulse {
 
                 const T_String getType() override;
 
-                T_Size getOutputSize() override;
-
                 double loss(Math::T_Matrix output, Math::T_Matrix predictions) override;
 
                 double error(T_Size m) override;

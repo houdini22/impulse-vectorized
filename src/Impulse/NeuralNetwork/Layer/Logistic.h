@@ -29,6 +29,8 @@ namespace Impulse {
                 double loss(Math::T_Matrix output, Math::T_Matrix predictions) override;
 
                 double error(T_Size m) override;
+
+                void transition(Layer::LayerPointer prevLayer) override;
             };
         }
     }

@@ -103,12 +103,6 @@ namespace Impulse {
                 virtual double error(T_Size m) = 0;
 
                 /**
-                 * Gets output size.
-                 * @return
-                 */
-                virtual T_Size getOutputSize();
-
-                /**
                  * Finish configuration of the layer
                  */
                 virtual void configure();

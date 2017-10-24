@@ -5,62 +5,26 @@ namespace Impulse {
     namespace NeuralNetwork {
 
         Builder::Builder(T_Size inputSize) : network(Network(inputSize)) {
-            this->prevSize = inputSize;
+            this->inputSize = inputSize;
         }
-
-        template<typename LAYER_TYPE>
-        void Builder::createLayer(T_Size size, std::function<void(LAYER_TYPE *)> callback) {
-            auto *layer = new LAYER_TYPE(size, this->prevSize);
-            Layer::LayerPointer pointer(layer);
-
-            callback(layer);
-
-            layer->configure();
-
-            this->network.addLayer(pointer);
-            this->prevSize = layer->getOutputSize();
-        };
-
-        template void
-        Builder::createLayer<Layer::Logistic>(T_Size size, std::function<void(Layer::Logistic *)> callback);
-
-        template void Builder::createLayer<Layer::Purelin>(T_Size size, std::function<void(Layer::Purelin *)> callback);
-
-        template void Builder::createLayer<Layer::Relu>(T_Size size, std::function<void(Layer::Relu *)> callback);
-
-        template void Builder::createLayer<Layer::Softmax>(T_Size size, std::function<void(Layer::Softmax *)> callback);
-
-        template<typename LAYER_TYPE>
-        void Builder::createLayer(T_Size size) {
-            auto *layer = new LAYER_TYPE(size, this->prevSize);
-            Layer::LayerPointer pointer(layer);
-
-            layer->configure();
-
-            this->network.addLayer(pointer);
-            this->prevSize = layer->getOutputSize();
-        };
-
-        template void Builder::createLayer<Layer::Logistic>(T_Size size);
-
-        template void Builder::createLayer<Layer::Purelin>(T_Size size);
-
-        template void Builder::createLayer<Layer::Relu>(T_Size size);
-
-        template void Builder::createLayer<Layer::Softmax>(T_Size size);
 
         template<typename LAYER_TYPE>
         void Builder::createLayer(std::function<void(LAYER_TYPE *)> callback) {
             auto *layer = new LAYER_TYPE();
             Layer::LayerPointer pointer(layer);
 
-            layer->setPrevSize(this->prevSize);
             callback(layer);
+
+            if (this->prevLayer != nullptr) {
+                layer->transition(this->prevLayer);
+            } else {
+                layer->setPrevSize(this->inputSize);
+            }
 
             layer->configure();
 
             this->network.addLayer(pointer);
-            this->prevSize = layer->getOutputSize();
+            this->prevLayer = pointer;
         };
 
         template void Builder::createLayer<Layer::Logistic>(std::function<void(Layer::Logistic *)> callback);
@@ -96,13 +60,21 @@ namespace Impulse {
 
                 Layer::LayerPointer pointer;
                 if (layerType == Layer::TYPE_LOGISTIC) {
-                    builder.createLayer<Layer::Logistic>(size);
+                    builder.createLayer<Layer::Logistic>([&size](auto *layer) {
+                        layer->setSize(size);
+                    });
                 } else if (layerType == Layer::TYPE_RELU) {
-                    builder.createLayer<Layer::Relu>(size);
+                    builder.createLayer<Layer::Relu>([&size](auto *layer) {
+                        layer->setSize(size);
+                    });
                 } else if (layerType == Layer::TYPE_SOFTMAX) {
-                    builder.createLayer<Layer::Softmax>(size);
+                    builder.createLayer<Layer::Softmax>([&size](auto *layer) {
+                        layer->setSize(size);
+                    });
                 } else if (layerType == Layer::TYPE_PURELIN) {
-                    builder.createLayer<Layer::Purelin>(size);
+                    builder.createLayer<Layer::Purelin>([&size](auto *layer) {
+                        layer->setSize(size);
+                    });
                 }
             }
 

@@ -39,15 +39,6 @@ namespace Impulse {
                 return TYPE_POOL;
             }
 
-            T_Size Pool::getOutputSize() {
-                return (
-                        (this->outputRows * this->outputCols)
-                        *
-                        this->depth
-                );
-
-            }
-
             double Pool::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
                 // TODO
                 return 0.0;

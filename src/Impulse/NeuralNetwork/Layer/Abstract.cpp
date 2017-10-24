@@ -30,10 +30,6 @@ namespace Impulse {
                 return this->size;
             }
 
-            T_Size Abstract::getOutputSize() {
-                return this->size;
-            }
-
             void Abstract::configure() {
                 // initialize weights
                 this->W.resize(this->size, this->prevSize);

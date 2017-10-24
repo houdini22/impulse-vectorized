@@ -20,8 +20,6 @@ namespace Impulse {
                 T_Size depth = 0;
                 T_Size filterSize = 2;
                 T_Size stride = 2;
-                T_Size outputRows = 0;
-                T_Size outputCols = 0;
             public:
                 Pool();
 
@@ -38,8 +36,6 @@ namespace Impulse {
                 Math::T_Matrix derivative() override;
 
                 const T_String getType() override;
-
-                T_Size getOutputSize() override;
 
                 double loss(Math::T_Matrix output, Math::T_Matrix predictions) override;
 

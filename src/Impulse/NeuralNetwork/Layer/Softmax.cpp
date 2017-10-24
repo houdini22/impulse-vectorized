@@ -37,6 +37,12 @@ namespace Impulse {
             double Softmax::error(T_Size m) {
                 return (-1.0 / (double) m);
             }
+
+            void Softmax::transition(Layer::LayerPointer prevLayer) {
+                if (prevLayer->getType() == Layer::TYPE_LOGISTIC) {
+                    this->setPrevSize(prevLayer->getOutputRows());
+                }
+            }
         }
     }
 }

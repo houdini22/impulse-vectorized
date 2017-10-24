@@ -18,7 +18,6 @@ namespace Impulse {
             Layer::LayerPointer prevLayer = nullptr;
 
             for (auto &layer : this->layers) {
-                layer->transition(prevLayer);
                 output = layer->forward(output);
                 prevLayer = layer;
             }

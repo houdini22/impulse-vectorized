@@ -93,15 +93,6 @@ namespace Impulse {
                 return TYPE_CONV;
             }
 
-            T_Size Conv::getOutputSize() {
-                return (
-                        (this->outputRows * this->outputCols)
-                        *
-                        this->numFilters
-                );
-
-            }
-
             double Conv::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
                 // TODO
                 return 0.0;
