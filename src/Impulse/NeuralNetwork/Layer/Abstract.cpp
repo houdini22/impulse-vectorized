@@ -44,6 +44,22 @@ namespace Impulse {
                 this->b.resize(this->size);
                 this->b.setZero();
             }
+
+            void Abstract::transition(Layer::LayerPointer prevLayer) {
+                // none by default
+            }
+
+            T_Size Abstract::getOutputRows() {
+                return this->size;
+            }
+
+            T_Size Abstract::getOutputCols() {
+                return this->prevSize;
+            }
+
+            T_Size Abstract::getDepth() {
+                return 1;
+            }
         }
     }
 }

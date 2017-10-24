@@ -31,6 +31,12 @@ namespace Impulse {
 
                 void setSize(T_Size width, T_Size height, T_Size depth);
 
+                T_Size getOutputRows() override;
+
+                T_Size getOutputCols() override;
+
+                T_Size getDepth() override;
+
                 void setFilterSize(T_Size value);
 
                 void setPadding(T_Size value);

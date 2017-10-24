@@ -10,36 +10,34 @@ namespace Impulse {
 
             void Conv::configure() {
                 this->W.resize(this->numFilters, this->filterSize * this->filterSize * this->depth);
-                this->W.setOnes();
+                this->W.setOnes(); // this->W.setRandom();
 
                 this->b.resize(this->numFilters, 1);
                 this->b.setOnes();
 
-                this->W.row(0) <<
-                               -1, 0, -1,
+                /*this->W.row(0) <<
+                               -1, 1, 0,
                         1, -1, -1,
+                        0, 1, 1,
+                        1, -1, 0,
+                        0, 1, 1,
+                        0, 1, -1,
                         0, 0, 1,
-                        1, 0, 0,
-                        0, -1, -1,
                         1, 1, 0,
-                        0, 1, 0,
-                        -1, 0, 1,
                         -1, 0, 1;
 
-                this->W.row(1) <<
-                               0, -1, 0,
-                        -1, -1, 0,
+                this->W.row(1) << 1, 1, -1,
+                        0, 1, 0,
                         0, 0, -1,
                         1, 0, 0,
-                        0, -1, 1,
-                        0, 0, -1,
-                        1, -1, 1,
-                        1, 0, 0,
-                        1, 1, -1;
+                        0, 0, 1,
+                        -1, 0, 1,
+                        -1, 0, -1,
+                        0, 1, -1,
+                        0, 0, -1;
 
                 this->b.row(0) << 1;
-                this->b.row(1) << 0;
-
+                this->b.row(1) << 0;*/
 
                 this->outputRows = (this->width - this->filterSize + 2 * this->padding) / this->stride + 1;
                 this->outputCols = (this->height - this->filterSize + 2 * this->padding) / this->stride + 1;
@@ -52,6 +50,18 @@ namespace Impulse {
                 this->width = width;
                 this->height = height;
                 this->depth = depth;
+            }
+
+            T_Size Conv::getOutputRows() {
+                return this->outputRows;
+            }
+
+            T_Size Conv::getOutputCols() {
+                return this->outputCols;
+            }
+
+            T_Size Conv::getDepth() {
+                return this->numFilters;
             }
 
             void Conv::setFilterSize(T_Size value) {
@@ -103,14 +113,7 @@ namespace Impulse {
             }
 
             void Conv::debug() {
-                /*std::cout << this->W.rows() << "," << this->W.cols() << std::endl;
-                std::cout << this->W << std::endl;
-                std::cout << this->Z.rows() << "," << this->Z.cols() << std::endl;
-                std::cout << this->b.rows() << ',' << this->b.cols() << std::endl;
-                std::cout << this->outputRows << std::endl;
-                std::cout << this->outputCols << std::endl;
-                std::cout << this->numFilters << std::endl;
-                std::cout << "---" << std::endl;*/
+
             }
         }
     }

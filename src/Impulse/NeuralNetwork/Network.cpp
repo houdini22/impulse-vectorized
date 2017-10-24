@@ -15,9 +15,12 @@ namespace Impulse {
 
         Math::T_Matrix Network::forward(Math::T_Matrix input) {
             Math::T_Matrix output = input;
+            Layer::LayerPointer prevLayer = nullptr;
 
             for (auto &layer : this->layers) {
+                layer->transition(prevLayer);
                 output = layer->forward(output);
+                prevLayer = layer;
             }
 
             return output;
@@ -34,6 +37,7 @@ namespace Impulse {
 
                 Math::T_Matrix delta = sigma * (i == 0 ? X : this->layers.at(
                         static_cast<unsigned long>(i - 1))->A).transpose().conjugate();
+
                 layer->gW = delta.array() / m + (regularization / m * layer->W.array());
                 layer->gb = sigma.rowwise().sum() / m;
 

@@ -126,6 +126,84 @@ void test_softmax() {
 void test_conv() {
     Impulse::SlicedDataset dataset = getDataset();
 
+    Builder builder(7 * 7 * 3);
+    builder.createLayer<Layer::Conv>([](auto *layer) {
+        layer->setSize(7, 7, 3);
+        layer->setFilterSize(3);
+        layer->setPadding(1);
+        layer->setStride(2);
+        layer->setNumFilters(2);
+    });
+    builder.createLayer<Layer::Pool>([](auto *layer) {
+        layer->setFilterSize(2);
+        layer->setStride(2);
+    });
+
+    Network net = builder.getNetwork();
+
+    Math::T_Matrix input;
+    input.resize(7 * 7 * 3, 1);
+    input.setOnes();
+
+    net.debug();
+
+    Math::T_Matrix transformed = Utils::im2col(input, 3, 7, 7, 3, 3, 1, 1, 2, 2);
+
+    std::cout << transformed.rows() << "," << transformed.cols() << std::endl;
+    std::cout << transformed << std::endl;
+
+    Math::T_Matrix output = net.forward(transformed);
+
+    std::cout << "OUTPUT: " << std::endl;
+    std::cout << output << std::endl;
+
+    /*
+    // MAX POOL TEST
+    Math::T_Matrix test(16, 3);
+    test.col(0) << 1, 1, 2, 4,
+                    5, 6, 7, 8,
+                    3, 2, 1, 0,
+                    1, 2, 3, 4;
+
+    test.col(1) << 9, 1, 12, 4,
+            5, 6, 7, 8,
+            13, 2, 14, 0,
+            1, 2, 3, 4;
+
+    test.col(2) << 11, 1, 12, 4,
+            5, 6, 7, 8,
+            13, 2, 1, 0,
+            1, 2, 3, 14;
+
+    Math::T_Matrix output = Utils::maxpool(test, 3, 4, 4, 2, 2, 2, 2);
+    std::cout << output << std::endl;*/
+
+    /*
+    Trainer::ConjugateGradientTrainer trainer(net);
+    trainer.setLearningIterations(400);
+    trainer.setVerboseStep(1);
+    trainer.setRegularization(0.0);
+
+    Trainer::CostGradientResult cost = trainer.cost(dataset);
+    std::cout << "Cost: " << cost.getCost() << std::endl;
+
+    std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
+
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+    trainer.train(dataset);
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    auto duration = duration_cast<seconds>(t2 - t1).count();
+    std::cout << "Time: " << duration << std::endl;
+
+    std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
+    Serializer serializer(net);
+    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");*/
+}
+
+/*
+ * void test_conv() {
+    Impulse::SlicedDataset dataset = getDataset();
+
     Builder builder(5 * 5 * 3);
     builder.createLayer<Layer::Conv>([](auto *layer) {
         layer->setSize(5, 5, 3);
@@ -135,10 +213,10 @@ void test_conv() {
         layer->setNumFilters(2);
         // std::cout << layer->getOutputSize() << std::endl;
     });
-    /*builder.createLayer<Layer::Pool>([](auto *layer) {
+    builder.createLayer<Layer::Pool>([](auto *layer) {
         layer->setFilterSize(2);
         layer->setStride(2);
-    });*/
+    });
 
     Network net = builder.getNetwork();
 
@@ -191,8 +269,9 @@ void test_conv() {
 
     std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
     Serializer serializer(net);
-    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");*/
+    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");
 }
+ * */
 
 /*void test_xor() {
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder(
@@ -412,8 +491,8 @@ void videoFace() {
 
 int main() {
     //test_logistic();
-    test_softmax();
-    //test_conv();
+    //test_softmax();
+    test_conv();
     //test_linear();
     //test_logistic_load();
     //test_xor();

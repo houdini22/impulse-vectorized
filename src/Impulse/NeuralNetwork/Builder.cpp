@@ -73,6 +73,8 @@ namespace Impulse {
 
         template void Builder::createLayer<Layer::Conv>(std::function<void(Layer::Conv *)> callback);
 
+        template void Builder::createLayer<Layer::Pool>(std::function<void(Layer::Pool *)> callback);
+
         Network &Builder::getNetwork() {
             return this->network;
         }

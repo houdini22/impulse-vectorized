@@ -8,10 +8,7 @@ namespace Impulse {
 
             Pool::Pool() : Abstract() {}
 
-            void Pool::configure() {
-                this->outputRows = (this->width - this->filterSize) / this->stride + 1;
-                this->outputCols = (this->height - this->filterSize) / this->stride + 1;
-            }
+            void Pool::configure() {}
 
             void Pool::setFilterSize(T_Size value) {
                 this->filterSize = value;
@@ -22,8 +19,10 @@ namespace Impulse {
             }
 
             Math::T_Matrix Pool::forward(Math::T_Matrix input) {
-
-                return this->Z;
+                std::cout << this->width << "," << this->height << "," << this->depth << std::endl;
+                std::cout << "INPUT:" << std::endl << input << std::endl;
+                Math::T_Matrix output = Utils::maxpool(input, this->depth, this->height, this->width, this->filterSize, this->filterSize, this->stride, this->stride);
+                return output;
             }
 
             Math::T_Matrix Pool::activation() {
@@ -56,6 +55,14 @@ namespace Impulse {
             double Pool::error(T_Size m) {
                 // TODO
                 return 0.0;
+            }
+
+            void Pool::transition(Layer::LayerPointer prevLayer) {
+                if (prevLayer->getType() == Layer::TYPE_CONV) {
+                    this->width = prevLayer->getOutputRows();
+                    this->height = prevLayer->getOutputCols();
+                    this->depth = prevLayer->getDepth();
+                }
             }
         }
     }

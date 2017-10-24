@@ -46,6 +46,42 @@ namespace Impulse {
                 }
                 return result;
             }
+
+            Math::T_Matrix maxpool(Math::T_Matrix &input, int channels,
+                                   int height, int width,
+                                   int kernel_h, int kernel_w,
+                                   int stride_h, int stride_w) {
+
+                int cols = ((width - kernel_h) / stride_w + 1)
+                           *
+                           ((width - kernel_h) / stride_w + 1);
+                int rows = channels;
+                int currentResultCol = 0;
+
+                Math::T_Matrix result;
+                result.resize(rows, cols);
+                result.setZero();
+
+                for (int boundingY = 0;
+                     boundingY + kernel_h <= height;
+                     boundingY += stride_h) {
+                    for (int boundingX = 0;
+                         boundingX + kernel_w <= width;
+                         boundingX += stride_w) {
+                        for (int channel = 0; channel < channels; channel++) {
+                            double _max = -INFINITY;
+                            for (int y = 0; y < kernel_h; y++) {
+                                for (int x = 0; x < kernel_w; x++) {
+                                    _max = std::max(_max, input(channel, ((y + boundingY) * width) + boundingX + x));
+                                }
+                            }
+                            result(channel, currentResultCol) = _max;
+                        }
+                        currentResultCol++;
+                    }
+                }
+                return result;
+            }
         }
     }
 }
