@@ -491,8 +491,8 @@ void videoFace() {
 
 int main() {
     //test_logistic();
-    //test_softmax();
-    test_conv();
+    test_softmax();
+    //test_conv();
     //test_linear();
     //test_logistic_load();
     //test_xor();

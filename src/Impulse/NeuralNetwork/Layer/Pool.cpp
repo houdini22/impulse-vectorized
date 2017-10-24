@@ -18,11 +18,12 @@ namespace Impulse {
                 this->stride = value;
             }
 
-            Math::T_Matrix Pool::forward(Math::T_Matrix input) {
-                std::cout << this->width << "," << this->height << "," << this->depth << std::endl;
-                std::cout << "INPUT:" << std::endl << input << std::endl;
-                Math::T_Matrix output = Utils::maxpool(input, this->depth, this->height, this->width, this->filterSize, this->filterSize, this->stride, this->stride);
-                return output;
+            Math::T_Matrix Pool::forward(const Math::T_Matrix &input) {
+                this->Z = Utils::maxpool(input, this->depth,
+                                         this->height, this->width,
+                                         this->filterSize, this->filterSize,
+                                         this->stride, this->stride);
+                return this->Z;
             }
 
             Math::T_Matrix Pool::activation() {
