@@ -18,7 +18,9 @@ namespace Impulse {
             if (this->prevLayer != nullptr) {
                 layer->transition(this->prevLayer);
             } else {
-                layer->setPrevSize(this->inputSize);
+                layer->setWidth(7);
+                layer->setHeight(7);
+                layer->setDepth(3);
             }
 
             layer->configure();

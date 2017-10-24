@@ -21,27 +21,21 @@ namespace Impulse {
 
             class Abstract {
             protected:
-                T_Size size;        // number of neurons
-                T_Size prevSize;    // number of prev layer size (input)
+                T_Size width;               // number of prev layer size (input)
+                T_Size height;              // number of neurons
+                T_Size depth;               // 3D YEAH
             public:
-                Math::T_Matrix W;         // weights
-                Math::T_Vector b;         // bias
-                Math::T_Matrix A;         // output of the layer after activation
-                Math::T_Matrix Z;         // output of the layer before activation
-                Math::T_Matrix gW;        // gradient for weights
-                Math::T_Vector gb;        // gradient for biases
+                Math::T_Matrix W;           // weights
+                Math::T_Vector b;           // bias
+                Math::T_Matrix A;           // output of the layer after activation
+                Math::T_Matrix Z;           // output of the layer before activation
+                Math::T_Matrix gW;          // gradient for weights
+                Math::T_Vector gb;          // gradient for biases
 
                 /**
                  * Pure constructor
                  */
                 Abstract();
-
-                /**
-                 * Constructor.
-                 * @param size
-                 * @param prevSize
-                 */
-                Abstract(T_Size size, T_Size prevSize);
 
                 /**
                  * Forward propagation.
@@ -79,7 +73,19 @@ namespace Impulse {
                  * Setter for prev size.
                  * @param value
                  */
-                void setPrevSize(T_Size value);
+                void setWidth(T_Size value);
+
+                /**
+                 *
+                 * @param value
+                 */
+                void setHeight(T_Size value);
+
+                /**
+                 *
+                 * @param value
+                 */
+                void setDepth(T_Size value);
 
                 /**
                  * Getter for layer size.
@@ -120,17 +126,17 @@ namespace Impulse {
                 /**
                  * Get output Rows
                  */
-                virtual T_Size getOutputRows();
+                virtual T_Size getOutputHeight();
 
                 /**
                  * Get output Cols
                  */
-                virtual T_Size getOutputCols();
+                virtual T_Size getOutputWidth();
 
                 /**
                  * Get depth
                  */
-                virtual T_Size getDepth();
+                virtual T_Size getOutputDepth();
             };
         }
     }

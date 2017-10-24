@@ -8,8 +8,6 @@ namespace Impulse {
 
             Softmax::Softmax() : Abstract() {}
 
-            Softmax::Softmax(T_Size size, T_Size prevSize) : Abstract(size, prevSize) {}
-
             Math::T_Matrix Softmax::activation() {
                 Math::T_Matrix t = this->Z.unaryExpr([](const double x) {
                     return exp(x);
@@ -40,7 +38,7 @@ namespace Impulse {
 
             void Softmax::transition(Layer::LayerPointer prevLayer) {
                 if (prevLayer->getType() == Layer::TYPE_LOGISTIC) {
-                    this->setPrevSize(prevLayer->getOutputRows());
+                    this->setWidth(prevLayer->getOutputHeight());
                 }
             }
         }

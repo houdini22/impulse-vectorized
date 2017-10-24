@@ -15,9 +15,6 @@ namespace Impulse {
 
             class Pool : public Abstract {
             protected:
-                T_Size width = 0;
-                T_Size height = 0;
-                T_Size depth = 0;
                 T_Size filterSize = 2;
                 T_Size stride = 2;
             public:

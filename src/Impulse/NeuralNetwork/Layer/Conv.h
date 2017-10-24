@@ -15,15 +15,12 @@ namespace Impulse {
 
             class Conv : public Abstract {
             protected:
-                T_Size width = 12;
-                T_Size height = 12;
-                T_Size depth = 3;
                 T_Size filterSize = 3;
                 T_Size padding = 1;
                 T_Size stride = 2;
                 T_Size numFilters = 2;
-                T_Size outputRows = 0;
-                T_Size outputCols = 0;
+                T_Size outputHeight = 0;
+                T_Size outputWidth = 0;
             public:
                 Conv();
 
@@ -31,11 +28,11 @@ namespace Impulse {
 
                 void setSize(T_Size width, T_Size height, T_Size depth);
 
-                T_Size getOutputRows() override;
+                T_Size getOutputHeight() override;
 
-                T_Size getOutputCols() override;
+                T_Size getOutputWidth() override;
 
-                T_Size getDepth() override;
+                T_Size getOutputDepth() override;
 
                 void setFilterSize(T_Size value);
 

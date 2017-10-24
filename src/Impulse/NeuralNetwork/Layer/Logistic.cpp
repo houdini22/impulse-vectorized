@@ -8,8 +8,6 @@ namespace Impulse {
 
             Logistic::Logistic() : Abstract() {};
 
-            Logistic::Logistic(T_Size size, T_Size prevSize) : Abstract(size, prevSize) {};
-
             Math::T_Matrix Logistic::activation() {
                 return this->Z.unaryExpr([](const double x) {
                     return 1.0 / (1.0 + exp(-x));
@@ -41,7 +39,7 @@ namespace Impulse {
 
             void Logistic::transition(Layer::LayerPointer prevLayer) {
                 if (prevLayer->getType() == Layer::TYPE_LOGISTIC) {
-                    this->setPrevSize(prevLayer->getOutputRows());
+                    this->setWidth(prevLayer->getOutputHeight());
                 }
             }
         }

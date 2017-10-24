@@ -8,14 +8,9 @@ namespace Impulse {
 
             Relu::Relu() : Abstract() {};
 
-            Relu::Relu(T_Size size, T_Size prevSize) : Abstract(size, prevSize) {}
-
             Math::T_Matrix Relu::activation() {
                 return this->Z.unaryExpr([](const double x) {
-                    if (x < 0.0) {
-                        return 0.0;
-                    }
-                    return x;
+                    return std::max(0.0, x);
                 });
             }
 

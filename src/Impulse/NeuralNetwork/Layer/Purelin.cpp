@@ -8,8 +8,6 @@ namespace Impulse {
 
             Purelin::Purelin() : Abstract() {};
 
-            Purelin::Purelin(T_Size size, T_Size prevSize) : Abstract(size, prevSize) {};
-
             Math::T_Matrix Purelin::activation() {
                 return this->Z;
             }

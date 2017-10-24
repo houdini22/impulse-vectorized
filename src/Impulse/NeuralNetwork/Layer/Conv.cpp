@@ -39,10 +39,10 @@ namespace Impulse {
                 this->b.row(0) << 1;
                 this->b.row(1) << 0;*/
 
-                this->outputRows = (this->width - this->filterSize + 2 * this->padding) / this->stride + 1;
-                this->outputCols = (this->height - this->filterSize + 2 * this->padding) / this->stride + 1;
+                this->outputWidth = (this->width - this->filterSize + 2 * this->padding) / this->stride + 1;
+                this->outputHeight = (this->height - this->filterSize + 2 * this->padding) / this->stride + 1;
 
-                this->Z.resize(this->numFilters, this->outputRows * this->outputCols);
+                this->Z.resize(this->numFilters, this->outputWidth * this->outputHeight);
                 this->Z.setZero();
             }
 
@@ -52,15 +52,15 @@ namespace Impulse {
                 this->depth = depth;
             }
 
-            T_Size Conv::getOutputRows() {
-                return this->outputRows;
+            T_Size Conv::getOutputHeight() {
+                return this->outputWidth;
             }
 
-            T_Size Conv::getOutputCols() {
-                return this->outputCols;
+            T_Size Conv::getOutputWidth() {
+                return this->outputHeight;
             }
 
-            T_Size Conv::getDepth() {
+            T_Size Conv::getOutputDepth() {
                 return this->numFilters;
             }
 

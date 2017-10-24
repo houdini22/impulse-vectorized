@@ -18,8 +18,6 @@ namespace Impulse {
             public:
                 Logistic();
 
-                Logistic(T_Size size, T_Size prevSize);
-
                 Math::T_Matrix activation() override;
 
                 Math::T_Matrix derivative() override;
