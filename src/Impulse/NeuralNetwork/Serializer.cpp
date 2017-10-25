@@ -4,12 +4,13 @@ namespace Impulse {
 
     namespace NeuralNetwork {
 
-        Serializer::Serializer(Network &net) : network(net) {}
+        Serializer::Serializer(Network::Abstract &net) : network(net) {}
 
         void Serializer::toJSON(T_String path) {
             nlohmann::json result;
 
-            result["inputSize"] = this->network.getInputSize();
+            T_Dimension dim = this->network.getDimension();
+            result["inputSize"] = {dim.width, dim.height, dim.depth};
 
             result["layers"] = {};
             for (T_Size i = 0; i < this->network.getSize(); i++) {

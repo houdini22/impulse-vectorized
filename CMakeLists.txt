@@ -30,8 +30,18 @@ set(SOURCE_FILES
         src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetSample.h
         main.cpp
         src/Vendor/json/src/json.hpp
-        src/Impulse/NeuralNetwork/Builder.h
-        src/Impulse/NeuralNetwork/Network.h
+        src/Impulse/NeuralNetwork/common.h
+        src/Impulse/NeuralNetwork/Builder/Abstract.h
+        src/Impulse/NeuralNetwork/Builder/Abstract.cpp
+        src/Impulse/NeuralNetwork/Builder/ClassifierBuilder.h
+        src/Impulse/NeuralNetwork/Builder/ClassifierBuilder.cpp
+        src/Impulse/NeuralNetwork/Builder/ConvBuilder.h
+        src/Impulse/NeuralNetwork/Builder/ConvBuilder.cpp
+        src/Impulse/NeuralNetwork/Network/Abstract.h
+        src/Impulse/NeuralNetwork/Network/ConvNetwork.h
+        src/Impulse/NeuralNetwork/Network/ConvNetwork.cpp
+        src/Impulse/NeuralNetwork/Network/ClassifierNetwork.h
+        src/Impulse/NeuralNetwork/Network/ClassifierNetwork.cpp
         src/Impulse/NeuralNetwork/Serializer.h
         src/Impulse/NeuralNetwork/Layer/Logistic.h
         src/Impulse/NeuralNetwork/Layer/Relu.h
@@ -41,13 +51,11 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Math/common.h
         src/Impulse/NeuralNetwork/Math/Fmincg.cpp
         src/Impulse/NeuralNetwork/Math/Fmincg.h
-        src/Impulse/NeuralNetwork/common.h
         src/Impulse/NeuralNetwork/Trainer/common.h
         src/Impulse/NeuralNetwork/Trainer/ConjugateGradientTrainer.cpp
         src/Impulse/NeuralNetwork/Trainer/ConjugateGradientTrainer.h
         src/Impulse/NeuralNetwork/Math/common.cpp
-        src/Impulse/NeuralNetwork/Builder.cpp
-        src/Impulse/NeuralNetwork/Network.cpp
+        src/Impulse/NeuralNetwork/Network/Abstract.cpp
         src/Impulse/NeuralNetwork/Serializer.cpp
         src/Impulse/NeuralNetwork/Layer/Abstract.cpp
         src/Impulse/NeuralNetwork/Layer/Logistic.cpp

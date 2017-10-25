@@ -6,7 +6,7 @@ namespace Impulse {
 
         namespace Trainer {
 
-            AbstractTrainer::AbstractTrainer(Network &net) : network(net) {}
+            AbstractTrainer::AbstractTrainer(Network::Abstract &net) : network(net) {}
 
             void AbstractTrainer::setRegularization(double value) {
                 this->regularization = value;

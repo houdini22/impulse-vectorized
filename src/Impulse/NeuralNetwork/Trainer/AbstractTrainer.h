@@ -13,7 +13,7 @@ namespace Impulse {
 
             class AbstractTrainer {
             protected:
-                Network network;                        // network to train
+                Network::Abstract network;                        // network to train
                 double regularization = 0.0;            // regularization (lambda) parameters
                 T_Size learningIterations = 1000;       // number of learning iterations
                 double learningRate = 0.1;              // learning rate
@@ -24,7 +24,7 @@ namespace Impulse {
                  * Constructor.
                  * @param net
                  */
-                explicit AbstractTrainer(Network &net);
+                explicit AbstractTrainer(Network::Abstract &net);
 
                 /**
                  * Sets regularization (lamdba) parameters.

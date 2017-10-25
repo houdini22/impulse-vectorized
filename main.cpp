@@ -60,7 +60,7 @@ Impulse::SlicedDataset getDataset() {
     builder.createLayer(20, Layer::TYPE_LOGISTIC);
     builder.createLayer(10, Layer::TYPE_LOGISTIC);
 
-    Network net = builder.getNetwork();
+    Abstract net = builder.getNetwork();
 
     //std::cout << "Forward:" << std::endl << net.forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 
@@ -85,9 +85,11 @@ Impulse::SlicedDataset getDataset() {
 }*/
 
 void test_softmax() {
+
     Impulse::SlicedDataset dataset = getDataset();
 
-    Builder builder(400);
+    Builder::ClassifierBuilder builder({400});
+
     builder.createLayer<Layer::Logistic>([](auto *layer) {
         layer->setSize(100);
     });
@@ -98,9 +100,10 @@ void test_softmax() {
         layer->setSize(10);
     });
 
-    Network net = builder.getNetwork();
+    Network::Abstract net = builder.getNetwork();
+
     /*Builder builder = Builder::fromJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");
-    Network net = builder.getNetwork()*/
+    Abstract net = builder.getNetwork()*/
 
     Trainer::ConjugateGradientTrainer trainer(net);
     trainer.setLearningIterations(400);
@@ -109,25 +112,24 @@ void test_softmax() {
 
     Trainer::CostGradientResult cost = trainer.cost(dataset);
     std::cout << "Cost: " << cost.getCost() << std::endl;
-
     std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
     trainer.train(dataset);
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
     auto duration = duration_cast<seconds>(t2 - t1).count();
     std::cout << "Time: " << duration << std::endl;
-
     std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
-    /*Serializer serializer(net);
-    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");*/
+    Serializer serializer(net);
+    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");
 }
 
 void test_conv() {
     Impulse::SlicedDataset dataset = getDataset();
 
-    Builder builder(7 * 7 * 3);
+    Builder::ConvBuilder builder({7, 7, 3});
     builder.createLayer<Layer::Conv>([](auto *layer) {
         layer->setSize(7, 7, 3);
         layer->setFilterSize(3);
@@ -140,7 +142,7 @@ void test_conv() {
         layer->setStride(2);
     });
 
-    Network net = builder.getNetwork();
+    Network::ConvNetwork net = builder.getNetwork();
 
     Math::T_Matrix input;
     input.resize(7 * 7 * 3, 1);
@@ -219,7 +221,7 @@ void test_conv() {
         layer->setStride(2);
     });
 
-    Network net = builder.getNetwork();
+    Abstract net = builder.getNetwork();
 
     Math::T_Matrix input;
     input.resize(5 * 5 * 3, 1);
@@ -291,7 +293,7 @@ void test_conv() {
     builder.createLayer(3, Layer::TYPE_LOGISTIC);
     builder.createLayer(1, Layer::TYPE_LOGISTIC);
 
-    Network net = builder.getNetwork();
+    Abstract net = builder.getNetwork();
 
     Impulse::DatasetSample sample({0, 1});
     Math::T_Matrix inputVector = sample.exportToEigen();
@@ -317,7 +319,7 @@ void test_conv() {
 
 void test_logistic_load() {
     Builder builder = Builder::fromJSON("/home/hud/projekty/impulse-vectorized/saved/logistic.json");
-    Network net = builder.getNetwork();
+    Abstract net = builder.getNetwork();
 
     Impulse::SlicedDataset dataset = getDataset();
 
@@ -351,7 +353,7 @@ void test_linear() {
     builder.createLayer(3, Layer::TYPE_PURELIN);
     builder.createLayer(1, Layer::TYPE_PURELIN);
 
-    Network net = builder.getNetwork();
+    Abstract net = builder.getNetwork();
 
     Impulse::DatasetSample sample({2, 2});
     Math::T_Matrix inputVector = sample.exportToEigen();
@@ -407,7 +409,7 @@ void face() {
     builder.createLayer(300, Layer::TYPE_LOGISTIC);
     builder.createLayer(4, Layer::TYPE_PURELIN);
 
-    Network net = builder.getNetwork();
+    Abstract net = builder.getNetwork();
 
     //std::cout << "Forward:" << std::endl << net.forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 
@@ -434,7 +436,7 @@ void face() {
 void videoFace() {
 
     Builder builder = Builder::fromJSON("/home/hud/projekty/impulse-vectorized/saved/face3_2.json");
-    Network net = builder.getNetwork();
+    Abstract net = builder.getNetwork();
 
     VideoCapture cap(0); // capture from default camera
     Mat frame;
@@ -492,12 +494,13 @@ void videoFace() {
 
 int main() {
     //test_logistic();
-    //test_softmax();
-    test_conv();
+    test_softmax();
+    //test_conv();
     //test_linear();
     //test_logistic_load();
     //test_xor();
     //face();
     //videoFace();
+
     return 0;
 }
