@@ -70,7 +70,21 @@ namespace Impulse {
                 void setSize(T_Size value);
 
                 /**
-                 * Setter for prev size.
+                 *
+                 * @param width
+                 * @param height
+                 * @param depth
+                 */
+                void setSize(T_Size width, T_Size height, T_Size depth);
+
+                /**
+                 *
+                 * @param value
+                 */
+                void setPrevSize(T_Size value);
+
+                /**
+                 *
                  * @param value
                  */
                 void setWidth(T_Size value);
@@ -86,6 +100,21 @@ namespace Impulse {
                  * @param value
                  */
                 void setDepth(T_Size value);
+
+                /**
+                 * Get output Rows
+                 */
+                virtual T_Size getOutputHeight();
+
+                /**
+                 * Get output Cols
+                 */
+                virtual T_Size getOutputWidth();
+
+                /**
+                 * Get depth
+                 */
+                virtual T_Size getOutputDepth();
 
                 /**
                  * Getter for layer size.
@@ -122,21 +151,6 @@ namespace Impulse {
                  * Transition
                  */
                 virtual void transition(Layer::LayerPointer prevLayer);
-
-                /**
-                 * Get output Rows
-                 */
-                virtual T_Size getOutputHeight();
-
-                /**
-                 * Get output Cols
-                 */
-                virtual T_Size getOutputWidth();
-
-                /**
-                 * Get depth
-                 */
-                virtual T_Size getOutputDepth();
             };
         }
     }

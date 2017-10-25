@@ -17,6 +17,16 @@ namespace Impulse {
                 this->setHeight(value);
             }
 
+            void Abstract::setSize(T_Size width, T_Size height, T_Size depth) {
+                this->setWidth(width);
+                this->setHeight(height);
+                this->setDepth(depth);
+            }
+
+            void Abstract::setPrevSize(T_Size value) {
+                this->setWidth(value);
+            }
+
             void Abstract::setWidth(T_Size value) {
                 this->width = value;
             }
@@ -48,12 +58,12 @@ namespace Impulse {
                 // none by default
             }
 
-            T_Size Abstract::getOutputHeight() {
-                return this->height;
-            }
-
             T_Size Abstract::getOutputWidth() {
                 return this->width;
+            }
+
+            T_Size Abstract::getOutputHeight() {
+                return this->height;
             }
 
             T_Size Abstract::getOutputDepth() {

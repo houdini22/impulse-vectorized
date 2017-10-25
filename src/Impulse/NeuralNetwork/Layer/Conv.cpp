@@ -10,46 +10,16 @@ namespace Impulse {
 
             void Conv::configure() {
                 this->W.resize(this->numFilters, this->filterSize * this->filterSize * this->depth);
-                this->W.setOnes(); // this->W.setRandom();
+                this->W.setRandom();
 
                 this->b.resize(this->numFilters, 1);
                 this->b.setOnes();
-
-                /*this->W.row(0) <<
-                               -1, 1, 0,
-                        1, -1, -1,
-                        0, 1, 1,
-                        1, -1, 0,
-                        0, 1, 1,
-                        0, 1, -1,
-                        0, 0, 1,
-                        1, 1, 0,
-                        -1, 0, 1;
-
-                this->W.row(1) << 1, 1, -1,
-                        0, 1, 0,
-                        0, 0, -1,
-                        1, 0, 0,
-                        0, 0, 1,
-                        -1, 0, 1,
-                        -1, 0, -1,
-                        0, 1, -1,
-                        0, 0, -1;
-
-                this->b.row(0) << 1;
-                this->b.row(1) << 0;*/
 
                 this->outputWidth = (this->width - this->filterSize + 2 * this->padding) / this->stride + 1;
                 this->outputHeight = (this->height - this->filterSize + 2 * this->padding) / this->stride + 1;
 
                 this->Z.resize(this->numFilters, this->outputWidth * this->outputHeight);
                 this->Z.setZero();
-            }
-
-            void Conv::setSize(T_Size width, T_Size height, T_Size depth) {
-                this->width = width;
-                this->height = height;
-                this->depth = depth;
             }
 
             T_Size Conv::getOutputHeight() {

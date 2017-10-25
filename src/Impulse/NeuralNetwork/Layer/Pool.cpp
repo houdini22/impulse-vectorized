@@ -19,8 +19,6 @@ namespace Impulse {
             }
 
             Math::T_Matrix Pool::forward(const Math::T_Matrix &input) {
-                std::cout << input << std::endl;
-                std::cout << this->depth << "," << this->width << "," << this->height << std::endl;
                 this->Z = Utils::maxpool(input, this->depth,
                                          this->height, this->width,
                                          this->filterSize, this->filterSize,
@@ -53,9 +51,9 @@ namespace Impulse {
 
             void Pool::transition(Layer::LayerPointer prevLayer) {
                 if (prevLayer->getType() == Layer::TYPE_CONV) {
-                    this->setWidth(prevLayer->getOutputWidth());
-                    this->setHeight(prevLayer->getOutputHeight());
-                    this->setDepth(prevLayer->getOutputDepth());
+                    this->setSize(prevLayer->getOutputHeight(),
+                                  prevLayer->getOutputWidth(),
+                                  prevLayer->getOutputDepth());
                 }
             }
         }

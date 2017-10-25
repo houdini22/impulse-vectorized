@@ -26,8 +26,6 @@ namespace Impulse {
 
                 void configure() override;
 
-                void setSize(T_Size width, T_Size height, T_Size depth);
-
                 T_Size getOutputHeight() override;
 
                 T_Size getOutputWidth() override;

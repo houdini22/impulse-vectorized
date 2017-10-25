@@ -100,7 +100,7 @@ void test_softmax() {
 
     Network net = builder.getNetwork();
     /*Builder builder = Builder::fromJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");
-    Network net = builder.getNetwork();*/
+    Network net = builder.getNetwork()*/
 
     Trainer::ConjugateGradientTrainer trainer(net);
     trainer.setLearningIterations(400);
@@ -119,6 +119,7 @@ void test_softmax() {
     std::cout << "Time: " << duration << std::endl;
 
     std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
+
     /*Serializer serializer(net);
     serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");*/
 }

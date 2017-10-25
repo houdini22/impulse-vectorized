@@ -21,6 +21,7 @@ namespace Impulse {
                 layer->setWidth(7);
                 layer->setHeight(7);
                 layer->setDepth(3);
+                // layer->setPrevSize(this->inputSize);
             }
 
             layer->configure();
