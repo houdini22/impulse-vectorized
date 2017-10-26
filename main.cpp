@@ -130,6 +130,7 @@ void test_conv() {
     Impulse::SlicedDataset dataset = getDataset();
 
     Builder::ConvBuilder builder({7, 7, 3});
+
     builder.createLayer<Layer::Conv>([](auto *layer) {
         layer->setSize(7, 7, 3);
         layer->setFilterSize(3);
