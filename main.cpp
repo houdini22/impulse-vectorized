@@ -90,10 +90,10 @@ void test_softmax() {
 
     Builder::ClassifierBuilder builder({400});
 
-    builder.createLayer<Layer::Logistic>([](auto *layer) {
+    builder.createLayer<Layer::Relu>([](auto *layer) {
         layer->setSize(100);
     });
-    builder.createLayer<Layer::Logistic>([](auto *layer) {
+    builder.createLayer<Layer::Relu>([](auto *layer) {
         layer->setSize(20);
     });
     builder.createLayer<Layer::Softmax>([](auto *layer) {

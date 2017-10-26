@@ -37,7 +37,8 @@ namespace Impulse {
             }
 
             void Softmax::transition(const Layer::LayerPointer &prevLayer) {
-                if (prevLayer->getType() == Layer::TYPE_LOGISTIC) {
+                if (prevLayer->getType() == Layer::TYPE_LOGISTIC ||
+                    prevLayer->getType() == Layer::TYPE_RELU) {
                     this->setPrevSize(prevLayer->getSize());
                 }
             }
