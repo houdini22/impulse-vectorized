@@ -2,17 +2,17 @@
 #define IMPULSE_NEURALNETWORK_MATH_FMINCG_H
 
 // number of extrapolation runs, set to a higher value for smaller ravine landscapes
-#define EXT 3.0
+#define _EXT 3.0
 // a bunch of constants for line searches
-#define RHO 0.01
-// RHO and SIG are the constants in the Wolfe-Powell conditions
-#define SIG 0.5
+#define _RHO 0.01
+// _RHO and _SIG are the constants in the Wolfe-Powell conditions
+#define _SIG 0.5
 // don't reevaluate within 0.1 of the limit of the current bracket
-#define INT 0.1
+#define _INT 0.1
 // max 20 function evaluations per line search
-#define MAX 20
+#define _MAX 20
 // maximum allowed slope ratio
-#define RATIO 100.0
+#define _RATIO 100.0
 
 #include "../include.h"
 

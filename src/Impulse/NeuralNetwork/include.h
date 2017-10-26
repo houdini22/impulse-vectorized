@@ -37,7 +37,7 @@
 #include "Layer/Conv.h"
 #include "Layer/Pool.h"
 #include "Math/Fmincg.h"
-#include "Trainer/AbstractTrainer.h"
+#include "Trainer/Abstract.h"
 #include "Trainer/ConjugateGradientTrainer.h"
 
 #endif //IMPULSE_NEURALNETWORK_INCLUDE_H

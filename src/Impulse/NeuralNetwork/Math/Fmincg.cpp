@@ -115,16 +115,16 @@ namespace Impulse {
                     double d3 = d1;
                     double z3 = -z1;
                     if (length > 0) {
-                        M = MAX;
+                        M = _MAX;
                     } else {
-                        M = std::min(MAX, static_cast<int>(-length) - i);
+                        M = std::min(_MAX, static_cast<int>(-length) - i);
                     }
                     // initialize quanteties
                     int success = 0;
                     double limit = -1;
 
                     while (true) {
-                        while (((f2 > f1 + z1 * RHO * d1) | (d2 > -SIG * d1)) && (M > 0)) {
+                        while (((f2 > f1 + z1 * _RHO * d1) | (d2 > -_SIG * d1)) && (M > 0)) {
                             // tighten the bracket
                             limit = z1;
                             double z2 = 0.0;
@@ -145,7 +145,7 @@ namespace Impulse {
                                 z2 = z3 / 2.0;
                             }
                             // don't accept too close to limits
-                            z2 = std::max(std::min(z2, INT * z3), (1 - INT) * z3);
+                            z2 = std::max(std::min(z2, _INT * z3), (1 - _INT) * z3);
                             // update the step
                             z1 = z1 + z2;
                             input = input + (s * z2);
@@ -159,9 +159,9 @@ namespace Impulse {
                             z3 = z3 - z2;
                         }
 
-                        if (f2 > f1 + z1 * RHO * d1 || d2 > -SIG * d1) {
+                        if (f2 > f1 + z1 * _RHO * d1 || d2 > -_SIG * d1) {
                             break; // this is a failure
-                        } else if (d2 > SIG * d1) {
+                        } else if (d2 > _SIG * d1) {
                             success = 1;
                             break; // success
                         } else if (M == 0) {
@@ -176,7 +176,7 @@ namespace Impulse {
                             // if we have no upper limit
                             if (limit < -0.5) {
                                 // the extrapolate the maximum amount
-                                z2 = z1 * (EXT - 1);
+                                z2 = z1 * (_EXT - 1);
                             } else {
                                 // otherwise bisect
                                 z2 = (limit - z1) / 2;
@@ -184,14 +184,14 @@ namespace Impulse {
                         else if ((limit > -0.5) && (z2 + z1 > limit)) {
                             // extraplation beyond max?
                             z2 = (limit - z1) / 2; // bisect
-                        } else if ((limit < -0.5) && (z2 + z1 > z1 * EXT)) {
+                        } else if ((limit < -0.5) && (z2 + z1 > z1 * _EXT)) {
                             // extrapolationbeyond limit
-                            z2 = z1 * (EXT - 1.0); // set to extrapolation limit
-                        } else if (z2 < -z3 * INT) {
-                            z2 = -z3 * INT;
-                        } else if ((limit > -0.5) && (z2 < (limit - z1) * (1.0 - INT))) {
+                            z2 = z1 * (_EXT - 1.0); // set to extrapolation limit
+                        } else if (z2 < -z3 * _INT) {
+                            z2 = -z3 * _INT;
+                        } else if ((limit > -0.5) && (z2 < (limit - z1) * (1.0 - _INT))) {
                             // too close to the limit
-                            z2 = (limit - z1) * (1.0 - INT);
+                            z2 = (limit - z1) * (1.0 - _INT);
                         }
                         // set point 3 equal to point 2
                         f3 = f2;
@@ -234,9 +234,9 @@ namespace Impulse {
                             d2 = (s * -1.0).dot(s);
                         }
                         // realmin in octave = 2.2251e-308
-                        // slope ratio but max RATIO
+                        // slope ratio but max _RATIO
                         double thres = d1 / (d2 - 2.2251e-308);
-                        z1 = z1 * std::min(RATIO, thres);
+                        z1 = z1 * std::min(_RATIO, thres);
                         d1 = d2;
                         ls_failed = 0; // this line search did not fail
                     } else {

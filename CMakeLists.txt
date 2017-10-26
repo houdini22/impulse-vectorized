@@ -46,8 +46,8 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Layer/Logistic.h
         src/Impulse/NeuralNetwork/Layer/Relu.h
         src/Impulse/NeuralNetwork/Layer/Abstract.h
-        src/Impulse/NeuralNetwork/Trainer/AbstractTrainer.h
-        src/Impulse/NeuralNetwork/Trainer/AbstractTrainer.cpp
+        src/Impulse/NeuralNetwork/Trainer/Abstract.h
+        src/Impulse/NeuralNetwork/Trainer/Abstract.cpp
         src/Impulse/NeuralNetwork/Math/common.h
         src/Impulse/NeuralNetwork/Math/Fmincg.cpp
         src/Impulse/NeuralNetwork/Math/Fmincg.h
