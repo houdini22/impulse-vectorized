@@ -48,17 +48,20 @@ namespace Impulse {
                     std::function<void(Layer::Purelin *)> callback);
 
             template void
-            Abstract<Network::ClassifierNetwork>::createLayer<Layer::Relu>(std::function<void(Layer::Relu *)> callback);
+            Abstract<Network::ClassifierNetwork>::createLayer<Layer::Relu>(
+                    std::function<void(Layer::Relu *)> callback);
 
             template void
             Abstract<Network::ClassifierNetwork>::createLayer<Layer::Softmax>(
                     std::function<void(Layer::Softmax *)> callback);
 
             template void
-            Abstract<Network::ConvNetwork>::createLayer<Layer::Conv>(std::function<void(Layer::Conv *)> callback);
+            Abstract<Network::ConvNetwork>::createLayer<Layer::Conv>(
+                    std::function<void(Layer::Conv *)> callback);
 
             template void
-            Abstract<Network::ConvNetwork>::createLayer<Layer::Pool>(std::function<void(Layer::Pool *)> callback);
+            Abstract<Network::ConvNetwork>::createLayer<Layer::Pool>(
+                    std::function<void(Layer::Pool *)> callback);
 
             template<class NETWORK_TYPE>
             NETWORK_TYPE &Abstract<NETWORK_TYPE>::getNetwork() {

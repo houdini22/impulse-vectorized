@@ -49,7 +49,7 @@ namespace Impulse {
                 return 0.0;
             }
 
-            void Pool::transition(Layer::LayerPointer prevLayer) {
+            void Pool::transition(const Layer::LayerPointer &prevLayer) {
                 if (prevLayer->getType() == Layer::TYPE_CONV) {
                     this->setSize(prevLayer->getOutputHeight(),
                                   prevLayer->getOutputWidth(),

@@ -150,7 +150,7 @@ namespace Impulse {
                 /**
                  * Transition
                  */
-                virtual void transition(Layer::LayerPointer prevLayer);
+                virtual void transition(const Layer::LayerPointer &prevLayer);
             };
         }
     }

@@ -100,10 +100,10 @@ void test_softmax() {
         layer->setSize(10);
     });
 
-    Network::Abstract net = builder.getNetwork();
+    Network::ClassifierNetwork net = builder.getNetwork();
 
-    /*Builder builder = Builder::fromJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");
-    Abstract net = builder.getNetwork()*/
+    /*Builder::ClassifierBuilder builder = Builder::ClassifierBuilder::fromJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");
+    Network::ClassifierNetwork net = builder.getNetwork();*/
 
     Trainer::ConjugateGradientTrainer trainer(net);
     trainer.setLearningIterations(400);

@@ -27,7 +27,8 @@ namespace Impulse {
                 return output;
             }
 
-            void Abstract::backward(Math::T_Matrix X, Math::T_Matrix Y, Math::T_Matrix predictions, double regularization) {
+            void
+            Abstract::backward(Math::T_Matrix X, Math::T_Matrix Y, Math::T_Matrix predictions, double regularization) {
                 long m = X.cols();
                 T_Size size = this->getSize();
 

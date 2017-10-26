@@ -54,7 +54,7 @@ namespace Impulse {
                 this->b.setZero();
             }
 
-            void Abstract::transition(Layer::LayerPointer prevLayer) {
+            void Abstract::transition(const Layer::LayerPointer &prevLayer) {
                 // none by default
             }
 

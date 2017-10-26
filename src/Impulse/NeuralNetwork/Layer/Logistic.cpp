@@ -37,7 +37,7 @@ namespace Impulse {
                 return (-1.0 / (double) m);
             }
 
-            void Logistic::transition(Layer::LayerPointer prevLayer) {
+            void Logistic::transition(const Layer::LayerPointer &prevLayer) {
                 if (prevLayer->getType() == Layer::TYPE_LOGISTIC) {
                     this->setPrevSize(prevLayer->getSize());
                 }
