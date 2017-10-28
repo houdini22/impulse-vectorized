@@ -35,7 +35,7 @@
 #include "Layer/Logistic.h"
 #include "Layer/Purelin.h"
 #include "Layer/Conv.h"
-#include "Layer/Pool.h"
+#include "Layer/MaxPool.h"
 #include "Math/Fmincg.h"
 #include "Trainer/Abstract.h"
 #include "Trainer/ConjugateGradientTrainer.h"

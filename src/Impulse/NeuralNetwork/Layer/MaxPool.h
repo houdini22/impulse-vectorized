@@ -11,14 +11,16 @@ namespace Impulse {
 
         namespace Layer {
 
-            const T_String TYPE_POOL = "pool";
+            const T_String TYPE_MAXPOOL = "maxpool";
 
-            class Pool : public Abstract {
+            class MaxPool : public Abstract {
             protected:
                 T_Size filterSize = 2;
                 T_Size stride = 2;
+                T_Size outputWidth = 0;
+                T_Size outputHeight = 0;
             public:
-                Pool();
+                MaxPool();
 
                 void configure() override;
 

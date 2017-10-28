@@ -10,7 +10,7 @@ namespace Impulse {
 
             void Conv::configure() {
                 this->W.resize(this->numFilters, this->filterSize * this->filterSize * this->depth);
-                this->W.setRandom();
+                this->W.setOnes(); // this->W.setRandom();
 
                 this->b.resize(this->numFilters, 1);
                 this->b.setOnes();
@@ -20,6 +20,30 @@ namespace Impulse {
 
                 this->Z.resize(this->numFilters, this->outputWidth * this->outputHeight);
                 this->Z.setZero();
+            }
+
+            Math::T_Matrix Conv::forward(const Math::T_Matrix &input) {
+                Math::T_Matrix result(this->getOutputWidth() * this->getOutputHeight() * this->getOutputDepth(),
+                                      input.cols());
+
+                // TODO: openmp
+#pragma omp parallel
+#pragma omp for
+                for (T_Size i = 0; i < input.cols(); i++) {
+                    Math::T_Matrix conv = Utils::im2col(input.col(i), this->depth,
+                                                        this->height, this->width,
+                                                        this->filterSize, this->filterSize,
+                                                        this->padding, this->padding,
+                                                        this->stride, this->stride);
+#pragma omp critical
+                    {
+                        Math::T_Matrix tmp = ((this->W * conv).colwise() + this->b).transpose();
+                        Eigen::Map<Math::T_Vector> tmp2(tmp.data(), tmp.size());
+                        result.col(i) = tmp2;
+                    }
+                }
+
+                return this->Z = this->A = result;
             }
 
             T_Size Conv::getOutputHeight() {

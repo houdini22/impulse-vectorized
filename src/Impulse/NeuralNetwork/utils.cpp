@@ -52,14 +52,12 @@ namespace Impulse {
                                    int kernel_h, int kernel_w,
                                    int stride_h, int stride_w) {
 
-                int cols = ((width - kernel_h) / stride_w + 1)
-                           *
-                           ((width - kernel_h) / stride_w + 1);
-                int rows = channels;
+                int resultWidth = ((width - kernel_w) / stride_w + 1);
+                int resultHeight = ((height - kernel_h) / stride_h + 1);
+                int resultDepth = channels;
                 int currentResultCol = 0;
 
-                Math::T_Matrix result;
-                result.resize(rows, cols);
+                Math::T_Matrix result(resultWidth * resultHeight * resultDepth, 1);
                 result.setZero();
 
                 for (int boundingY = 0;
@@ -70,12 +68,14 @@ namespace Impulse {
                          boundingX += stride_w) {
                         for (int channel = 0; channel < channels; channel++) {
                             double _max = -INFINITY;
+                            int inputOffset = height * width * channel;
+                            int outputOffset = resultWidth * resultHeight * channel;
                             for (int y = 0; y < kernel_h; y++) {
                                 for (int x = 0; x < kernel_w; x++) {
-                                    _max = std::max(_max, input(channel, ((y + boundingY) * width) + boundingX + x));
+                                    _max = std::max(_max, input(inputOffset + ((y + boundingY) * width) + boundingX + x, 0));
                                 }
                             }
-                            result(channel, currentResultCol) = _max;
+                            result(outputOffset + currentResultCol, 0) = _max;
                         }
                         currentResultCol++;
                     }

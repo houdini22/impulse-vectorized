@@ -90,10 +90,10 @@ void test_softmax() {
 
     Builder::ClassifierBuilder builder({400});
 
-    builder.createLayer<Layer::Relu>([](auto *layer) {
+    builder.createLayer<Layer::Logistic>([](auto *layer) {
         layer->setSize(100);
     });
-    builder.createLayer<Layer::Relu>([](auto *layer) {
+    builder.createLayer<Layer::Logistic>([](auto *layer) {
         layer->setSize(20);
     });
     builder.createLayer<Layer::Softmax>([](auto *layer) {
@@ -127,7 +127,7 @@ void test_softmax() {
 }
 
 void test_conv() {
-    Impulse::SlicedDataset dataset = getDataset();
+    //Impulse::SlicedDataset dataset = getDataset();
 
     Builder::ConvBuilder builder({7, 7, 3});
 
@@ -138,7 +138,7 @@ void test_conv() {
         layer->setStride(2);
         layer->setNumFilters(2);
     });
-    builder.createLayer<Layer::Pool>([](auto *layer) {
+    builder.createLayer<Layer::MaxPool>([](auto *layer) {
         layer->setFilterSize(2);
         layer->setStride(2);
     });
@@ -148,15 +148,19 @@ void test_conv() {
     Math::T_Matrix input;
     input.resize(7 * 7 * 3, 1);
     input.setOnes();
+    /*for(int i = 0; i < 100000; i++) {
+        if(i % 2 == 0) {
+            input.col(i) = input.col(i).unaryExpr([](const double x) {
+                return 2.0;
+            });
+        }
+    }*/
+
+    //std::cout << "INPUT: " << input << std::endl;
 
     net.debug();
 
-    Math::T_Matrix transformed = Utils::im2col(input, 3, 7, 7, 3, 3, 1, 1, 2, 2);
-
-    std::cout << transformed.rows() << "," << transformed.cols() << std::endl;
-    std::cout << transformed << std::endl;
-
-    Math::T_Matrix output = net.forward(transformed);
+    Math::T_Matrix output = net.forward(input);
 
     std::cout << "OUTPUT: " << std::endl;
     std::cout << output << std::endl;
@@ -203,79 +207,6 @@ void test_conv() {
     Serializer serializer(net);
     serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");*/
 }
-
-/*
- * void test_conv() {
-    Impulse::SlicedDataset dataset = getDataset();
-
-    Builder builder(5 * 5 * 3);
-    builder.createLayer<Layer::Conv>([](auto *layer) {
-        layer->setSize(5, 5, 3);
-        layer->setFilterSize(3);
-        layer->setPadding(1);
-        layer->setStride(2);
-        layer->setNumFilters(2);
-        // std::cout << layer->getOutputSize() << std::endl;
-    });
-    builder.createLayer<Layer::Pool>([](auto *layer) {
-        layer->setFilterSize(2);
-        layer->setStride(2);
-    });
-
-    Abstract net = builder.getNetwork();
-
-    Math::T_Matrix input;
-    input.resize(5 * 5 * 3, 1);
-    input.col(0) << 1, 2, 0, 2, 0,
-            2, 0, 0, 2, 1,
-            2, 1, 0, 0, 1,
-            1, 2, 2, 0, 2,
-            1, 1, 1, 1, 1,
-            2, 2, 1, 0, 2,
-            2, 0, 0, 0, 1,
-            0, 2, 1, 1, 2,
-            1, 2, 1, 2, 1,
-            2, 2, 1, 2, 1,
-            1, 1, 2, 1, 1,
-            2, 2, 0, 0, 2,
-            1, 1, 0, 2, 0,
-            1, 0, 0, 1, 0,
-            1, 2, 2, 1, 0;
-
-    net.debug();
-
-    Math::T_Matrix transformed = Utils::im2col(input, 3, 5, 5, 3, 3, 1, 1, 2, 2);
-
-    std::cout << transformed.rows() << "," << transformed.cols() << std::endl;
-    std::cout << transformed << std::endl;
-
-    Math::T_Matrix output = net.forward(transformed);
-
-    std::cout << "OUTPUT: " << std::endl;
-    std::cout << output << std::endl;
-
-    /*
-    Trainer::ConjugateGradientTrainer trainer(net);
-    trainer.setLearningIterations(400);
-    trainer.setVerboseStep(1);
-    trainer.setRegularization(0.0);
-
-    Trainer::CostGradientResult cost = trainer.cost(dataset);
-    std::cout << "Cost: " << cost.getCost() << std::endl;
-
-    std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
-
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();
-    trainer.train(dataset);
-    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    auto duration = duration_cast<seconds>(t2 - t1).count();
-    std::cout << "Time: " << duration << std::endl;
-
-    std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
-    Serializer serializer(net);
-    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");
-}
- * */
 
 /*void test_xor() {
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder(
@@ -495,8 +426,8 @@ void videoFace() {
 
 int main() {
     //test_logistic();
-    test_softmax();
-    //test_conv();
+    //test_softmax();
+    test_conv();
     //test_linear();
     //test_logistic_load();
     //test_xor();
