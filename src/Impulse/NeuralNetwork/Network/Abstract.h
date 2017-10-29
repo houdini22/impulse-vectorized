@@ -31,7 +31,7 @@ namespace Impulse {
 
                 T_Size getSize();
 
-                Layer::Abstract *getLayer(T_Size key);
+                Layer::LayerPointer getLayer(T_Size key);
 
                 Math::T_Vector getRolledTheta();
 

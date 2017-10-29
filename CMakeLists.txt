@@ -52,8 +52,10 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Math/Fmincg.cpp
         src/Impulse/NeuralNetwork/Math/Fmincg.h
         src/Impulse/NeuralNetwork/Trainer/common.h
-        src/Impulse/NeuralNetwork/Trainer/ConjugateGradientTrainer.cpp
-        src/Impulse/NeuralNetwork/Trainer/ConjugateGradientTrainer.h
+        src/Impulse/NeuralNetwork/Trainer/ConjugateGradient.cpp
+        src/Impulse/NeuralNetwork/Trainer/ConjugateGradient.h
+        src/Impulse/NeuralNetwork/Trainer/GradientDescent.cpp
+        src/Impulse/NeuralNetwork/Trainer/GradientDescent.h
         src/Impulse/NeuralNetwork/Math/common.cpp
         src/Impulse/NeuralNetwork/Network/Abstract.cpp
         src/Impulse/NeuralNetwork/Serializer.cpp

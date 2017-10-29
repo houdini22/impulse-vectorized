@@ -38,6 +38,7 @@
 #include "Layer/MaxPool.h"
 #include "Math/Fmincg.h"
 #include "Trainer/Abstract.h"
-#include "Trainer/ConjugateGradientTrainer.h"
+#include "Trainer/ConjugateGradient.h"
+#include "Trainer/GradientDescent.h"
 
 #endif //IMPULSE_NEURALNETWORK_INCLUDE_H

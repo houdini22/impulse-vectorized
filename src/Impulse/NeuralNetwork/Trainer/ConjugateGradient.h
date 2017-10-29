@@ -11,9 +11,9 @@ namespace Impulse {
 
         namespace Trainer {
 
-            class ConjugateGradientTrainer : public AbstractTrainer {
+            class ConjugateGradient : public AbstractTrainer {
             public:
-                explicit ConjugateGradientTrainer(Network::Abstract &net);
+                explicit ConjugateGradient(Network::Abstract &net);
 
                 void train(Impulse::SlicedDataset &dataSet) override;
             };

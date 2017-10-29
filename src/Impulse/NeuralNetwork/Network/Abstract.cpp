@@ -62,8 +62,8 @@ namespace Impulse {
                 return this->size;
             }
 
-            Layer::Abstract *Abstract::getLayer(T_Size key) {
-                return this->layers.at(key).get();
+            Layer::LayerPointer Abstract::getLayer(T_Size key) {
+                return this->layers.at(key);
             }
 
             Math::T_Vector Abstract::getRolledTheta() {

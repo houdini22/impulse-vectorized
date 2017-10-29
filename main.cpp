@@ -64,7 +64,7 @@ Impulse::SlicedDataset getDataset() {
 
     //std::cout << "Forward:" << std::endl << net.forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 
-    Trainer::ConjugateGradientTrainer trainer(net);
+    Trainer::ConjugateGradient trainer(net);
     trainer.setLearningIterations(400);
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
@@ -84,7 +84,51 @@ Impulse::SlicedDataset getDataset() {
     serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/logistic.json");
 }*/
 
-void test_softmax() {
+void test_softmax_gradient_descent() {
+
+    Impulse::SlicedDataset dataset = getDataset();
+
+    Builder::ClassifierBuilder builder({400});
+
+    builder.createLayer<Layer::Relu>([](auto *layer) {
+        layer->setSize(100);
+    });
+    builder.createLayer<Layer::Relu>([](auto *layer) {
+        layer->setSize(20);
+    });
+    builder.createLayer<Layer::Softmax>([](auto *layer) {
+        layer->setSize(10);
+    });
+
+    Network::ClassifierNetwork net = builder.getNetwork();
+
+    /*Builder::ClassifierBuilder builder = Builder::ClassifierBuilder::fromJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");
+    Network::ClassifierNetwork net = builder.getNetwork();*/
+
+    Trainer::GradientDescent trainer(net);
+    trainer.setLearningIterations(1000);
+    trainer.setVerboseStep(1);
+    trainer.setRegularization(0.0);
+    trainer.setVerbose(true);
+    trainer.setLearningRate(0.25);
+
+    Trainer::CostGradientResult cost = trainer.cost(dataset);
+    std::cout << "Cost: " << cost.getCost() << std::endl;
+    std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
+
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+    trainer.train(dataset);
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
+    auto duration = duration_cast<seconds>(t2 - t1).count();
+    std::cout << "Time: " << duration << std::endl;
+    std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
+
+    /*Serializer serializer(net);
+    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");*/
+}
+
+void test_softmax_cg() {
 
     Impulse::SlicedDataset dataset = getDataset();
 
@@ -105,7 +149,7 @@ void test_softmax() {
     /*Builder::ClassifierBuilder builder = Builder::ClassifierBuilder::fromJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");
     Network::ClassifierNetwork net = builder.getNetwork();*/
 
-    Trainer::ConjugateGradientTrainer trainer(net);
+    Trainer::ConjugateGradient trainer(net);
     trainer.setLearningIterations(400);
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
@@ -122,8 +166,8 @@ void test_softmax() {
     std::cout << "Time: " << duration << std::endl;
     std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
-    Serializer serializer(net);
-    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");
+    /*Serializer serializer(net);
+    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");*/
 }
 
 void test_conv() {
@@ -132,7 +176,6 @@ void test_conv() {
     Builder::ConvBuilder builder({7, 7, 3});
 
     builder.createLayer<Layer::Conv>([](auto *layer) {
-        layer->setSize(7, 7, 3);
         layer->setFilterSize(3);
         layer->setPadding(1);
         layer->setStride(2);
@@ -187,7 +230,7 @@ void test_conv() {
     std::cout << output << std::endl;*/
 
     /*
-    Trainer::ConjugateGradientTrainer trainer(net);
+    Trainer::ConjugateGradient trainer(net);
     trainer.setLearningIterations(400);
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
@@ -231,7 +274,7 @@ void test_conv() {
     Math::T_Matrix inputVector = sample.exportToEigen();
     std::cout << "Forward: " << net.forward(inputVector) << std::endl;
 
-    Trainer::ConjugateGradientTrainer trainer(net);
+    Trainer::ConjugateGradient trainer(net);
     trainer.setLearningIterations(100);
 
     Trainer::CostGradientResult cost = trainer.cost(slicedDataset);
@@ -262,7 +305,7 @@ void test_logistic_load() {
     auto duration = duration_cast<microseconds>(t2 - t1).count();
     std::cout << "Forward time: " << duration << std::endl;
 
-    Trainer::ConjugateGradientTrainer trainer(net);
+    Trainer::ConjugateGradient trainer(net);
 
     Trainer::CostGradientResult cost = trainer.cost(dataset);
     std::cout << "Cost: " << cost.getCost() << std::endl;
@@ -291,7 +334,7 @@ void test_linear() {
     Math::T_Matrix inputVector = sample.exportToEigen();
     std::cout << "Forward: " << net.forward(inputVector) << std::endl;
 
-    Trainer::ConjugateGradientTrainer trainer(net);
+    Trainer::ConjugateGradient trainer(net);
     trainer.setLearningIterations(100);
 
     Trainer::CostGradientResult cost = trainer.cost(slicedDataset);
@@ -345,7 +388,7 @@ void face() {
 
     //std::cout << "Forward:" << std::endl << net.forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 
-    Trainer::ConjugateGradientTrainer trainer(net);
+    Trainer::ConjugateGradient trainer(net);
     trainer.setLearningIterations(200);
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
@@ -426,8 +469,8 @@ void videoFace() {
 
 int main() {
     //test_logistic();
-    //test_softmax();
-    test_conv();
+    test_softmax_gradient_descent();
+    //test_conv();
     //test_linear();
     //test_logistic_load();
     //test_xor();

@@ -8,9 +8,9 @@ namespace Impulse {
 
         namespace Trainer {
 
-            ConjugateGradientTrainer::ConjugateGradientTrainer(Network::Abstract &net) : AbstractTrainer(net) {}
+            ConjugateGradient::ConjugateGradient(Network::Abstract &net) : AbstractTrainer(net) {}
 
-            void ConjugateGradientTrainer::train(Impulse::SlicedDataset &dataSet) {
+            void ConjugateGradient::train(Impulse::SlicedDataset &dataSet) {
                 Math::Fmincg minimizer;
                 Network::Abstract network = this->network;
                 Math::T_Vector theta = network.getRolledTheta();
