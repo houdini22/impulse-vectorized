@@ -186,6 +186,16 @@ void test_conv() {
         layer->setStride(2);
     });
 
+    builder.createLayer<Layer::FullyConnected>([](auto *layer) {
+        layer->setSize(8);
+    });
+    builder.createLayer<Layer::FullyConnected>([](auto *layer) {
+        layer->setSize(4);
+    });
+    builder.createLayer<Layer::Softmax>([](auto * layer) {
+        layer->setSize(2);
+    });
+
     Network::ConvNetwork net = builder.getNetwork();
     // net.debug();
 

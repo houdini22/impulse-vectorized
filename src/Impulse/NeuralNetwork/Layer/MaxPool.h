@@ -41,6 +41,12 @@ namespace Impulse {
                 double error(T_Size m) override;
 
                 void transition(const Layer::LayerPointer &prevLayer) override;
+
+                T_Size getOutputHeight() override;
+
+                T_Size getOutputWidth() override;
+
+                T_Size getOutputDepth() override;
             };
         }
     }

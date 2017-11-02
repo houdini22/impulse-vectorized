@@ -36,6 +36,7 @@
 #include "Layer/Purelin.h"
 #include "Layer/Conv.h"
 #include "Layer/MaxPool.h"
+#include "Layer/FullyConnected.h"
 #include "Math/Fmincg.h"
 #include "Trainer/Abstract.h"
 #include "Trainer/ConjugateGradient.h"

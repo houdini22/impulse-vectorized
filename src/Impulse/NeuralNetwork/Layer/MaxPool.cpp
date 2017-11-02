@@ -24,7 +24,6 @@ namespace Impulse {
             Math::T_Matrix MaxPool::forward(const Math::T_Matrix &input) {
                 Math::T_Matrix result(this->outputWidth * this->outputHeight * this->depth, input.cols());
 
-                // TODO: openmp
 #pragma omp parallel
 #pragma omp for
                 for (T_Size i = 0; i < input.cols(); i++) {
@@ -70,6 +69,18 @@ namespace Impulse {
                                   prevLayer->getOutputWidth(),
                                   prevLayer->getOutputDepth());
                 }
+            }
+
+            T_Size MaxPool::getOutputHeight() {
+                return this->outputWidth;
+            }
+
+            T_Size MaxPool::getOutputWidth() {
+                return this->outputHeight;
+            }
+
+            T_Size MaxPool::getOutputDepth() {
+                return this->depth;
             }
         }
     }

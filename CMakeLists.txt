@@ -70,6 +70,8 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Layer/Conv.cpp
         src/Impulse/NeuralNetwork/Layer/MaxPool.h
         src/Impulse/NeuralNetwork/Layer/MaxPool.cpp
+        src/Impulse/NeuralNetwork/Layer/FullyConnected.h
+        src/Impulse/NeuralNetwork/Layer/FullyConnected.cpp
         src/Impulse/NeuralNetwork/include.h
         src/Impulse/NeuralNetwork/utils.h src/Impulse/NeuralNetwork/utils.cpp)
 

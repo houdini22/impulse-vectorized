@@ -63,6 +63,14 @@ namespace Impulse {
             Abstract<Network::ConvNetwork>::createLayer<Layer::MaxPool>(
                     std::function<void(Layer::MaxPool *)> callback);
 
+            template void
+            Abstract<Network::ConvNetwork>::createLayer<Layer::FullyConnected>(
+                    std::function<void(Layer::FullyConnected *)> callback);
+
+            template void
+            Abstract<Network::ConvNetwork>::createLayer<Layer::Softmax>(
+                    std::function<void(Layer::Softmax *)> callback);
+
             template<class NETWORK_TYPE>
             NETWORK_TYPE &Abstract<NETWORK_TYPE>::getNetwork() {
                 return this->network;
