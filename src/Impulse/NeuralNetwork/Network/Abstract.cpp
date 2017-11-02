@@ -17,11 +17,9 @@ namespace Impulse {
 
             Math::T_Matrix Abstract::forward(Math::T_Matrix input) {
                 Math::T_Matrix output = input;
-                Layer::LayerPointer prevLayer = nullptr;
 
                 for (auto &layer : this->layers) {
                     output = layer->forward(output);
-                    prevLayer = layer;
                 }
 
                 return output;

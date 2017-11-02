@@ -17,16 +17,12 @@ namespace Impulse {
 
                 this->outputWidth = (this->width - this->filterSize + 2 * this->padding) / this->stride + 1;
                 this->outputHeight = (this->height - this->filterSize + 2 * this->padding) / this->stride + 1;
-
-                this->Z.resize(this->numFilters, this->outputWidth * this->outputHeight);
-                this->Z.setZero();
             }
 
             Math::T_Matrix Conv::forward(const Math::T_Matrix &input) {
-                Math::T_Matrix result(this->getOutputWidth() * this->getOutputHeight() * this->getOutputDepth(),
-                                      input.cols());
+                this->Z.resize(this->getOutputWidth() * this->getOutputHeight() * this->getOutputDepth(),
+                               input.cols());
 
-                // TODO: openmp
 #pragma omp parallel
 #pragma omp for
                 for (T_Size i = 0; i < input.cols(); i++) {
@@ -37,13 +33,14 @@ namespace Impulse {
                                                         this->stride, this->stride);
 #pragma omp critical
                     {
-                        Math::T_Matrix tmp = ((this->W * conv).colwise() + this->b).transpose();
+                        Math::T_Matrix tmp = ((this->W * conv).colwise() + this->b).transpose(); // transpose for
+                                                                                                 // rolling to vector
                         Eigen::Map<Math::T_Vector> tmp2(tmp.data(), tmp.size());
-                        result.col(i) = tmp2;
+                        this->Z.col(i) = tmp2;
                     }
                 }
 
-                return this->Z = this->A = result;
+                return this->A = this->activation();
             }
 
             T_Size Conv::getOutputHeight() {
@@ -75,7 +72,9 @@ namespace Impulse {
             }
 
             Math::T_Matrix Conv::activation() {
-                return this->Z;
+                return this->Z.unaryExpr([](const double x) {
+                    return std::max(0.0, x); // TODO: set it; relu by default
+                });
             }
 
             Math::T_Matrix Conv::derivative() {

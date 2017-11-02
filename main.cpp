@@ -106,11 +106,11 @@ void test_softmax_gradient_descent() {
     Network::ClassifierNetwork net = builder.getNetwork();*/
 
     Trainer::GradientDescent trainer(net);
-    trainer.setLearningIterations(1000);
+    trainer.setLearningIterations(20000);
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
     trainer.setVerbose(true);
-    trainer.setLearningRate(0.25);
+    trainer.setLearningRate(0.05);
 
     Trainer::CostGradientResult cost = trainer.cost(dataset);
     std::cout << "Cost: " << cost.getCost() << std::endl;
@@ -124,8 +124,8 @@ void test_softmax_gradient_descent() {
     std::cout << "Time: " << duration << std::endl;
     std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
-    /*Serializer serializer(net);
-    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");*/
+    Serializer serializer(net);
+    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax-gradient-descent.json");
 }
 
 void test_softmax_cg() {
@@ -187,6 +187,7 @@ void test_conv() {
     });
 
     Network::ConvNetwork net = builder.getNetwork();
+    // net.debug();
 
     Math::T_Matrix input;
     input.resize(7 * 7 * 3, 1);
@@ -199,9 +200,9 @@ void test_conv() {
         }
     }*/
 
-    //std::cout << "INPUT: " << input << std::endl;
+    // std::cout << "INPUT: " << input << std::endl;
 
-    net.debug();
+    // net.debug();
 
     Math::T_Matrix output = net.forward(input);
 
@@ -469,8 +470,8 @@ void videoFace() {
 
 int main() {
     //test_logistic();
-    test_softmax_gradient_descent();
-    //test_conv();
+    //test_softmax_gradient_descent();
+    test_conv();
     //test_linear();
     //test_logistic_load();
     //test_xor();
