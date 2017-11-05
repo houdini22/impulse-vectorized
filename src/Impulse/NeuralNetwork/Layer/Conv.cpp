@@ -6,7 +6,7 @@ namespace Impulse {
 
         namespace Layer {
 
-            Conv::Conv() : Abstract() {}
+            Conv::Conv() : Abstract3D() {}
 
             void Conv::configure() {
                 this->W.resize(this->numFilters, this->filterSize * this->filterSize * this->depth);
@@ -14,9 +14,6 @@ namespace Impulse {
 
                 this->b.resize(this->numFilters, 1);
                 this->b.setOnes();
-
-                this->outputWidth = (this->width - this->filterSize + 2 * this->padding) / this->stride + 1;
-                this->outputHeight = (this->height - this->filterSize + 2 * this->padding) / this->stride + 1;
             }
 
             Math::T_Matrix Conv::forward(const Math::T_Matrix &input) {
@@ -34,7 +31,7 @@ namespace Impulse {
 #pragma omp critical
                     {
                         Math::T_Matrix tmp = ((this->W * conv).colwise() + this->b).transpose(); // transpose for
-                                                                                                 // rolling to vector
+                        // rolling to vector
                         Eigen::Map<Math::T_Vector> tmp2(tmp.data(), tmp.size());
                         this->Z.col(i) = tmp2;
                     }
@@ -44,11 +41,11 @@ namespace Impulse {
             }
 
             T_Size Conv::getOutputHeight() {
-                return this->outputWidth;
+                return (this->width - this->filterSize + 2 * this->padding) / this->stride + 1;
             }
 
             T_Size Conv::getOutputWidth() {
-                return this->outputHeight;
+                return (this->height - this->filterSize + 2 * this->padding) / this->stride + 1;
             }
 
             T_Size Conv::getOutputDepth() {

@@ -43,21 +43,6 @@ namespace Impulse {
                 return this->height;
             }
 
-            void Abstract::configure() {
-                // initialize weights
-                this->W.resize(this->height, this->width);
-                this->W.setRandom();
-                this->W = this->W * sqrt(2.0 / this->width);
-
-                // initialize bias
-                this->b.resize(this->height);
-                this->b.setZero();
-            }
-
-            void Abstract::transition(const Layer::LayerPointer &prevLayer) {
-                // none by default
-            }
-
             T_Size Abstract::getOutputWidth() {
                 return this->width;
             }

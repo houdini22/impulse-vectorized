@@ -481,12 +481,12 @@ void videoFace() {
 int main() {
     //test_logistic();
     //test_softmax_gradient_descent();
+    //test_softmax_cg();
     test_conv();
     //test_linear();
     //test_logistic_load();
     //test_xor();
     //face();
     //videoFace();
-
     return 0;
 }

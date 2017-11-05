@@ -13,7 +13,7 @@ namespace Impulse {
 
             const T_String TYPE_LOGISTIC = "logistic";
 
-            class Logistic : public Abstract {
+            class Logistic : public Abstract2D {
             protected:
             public:
                 Logistic();
@@ -27,8 +27,6 @@ namespace Impulse {
                 double loss(Math::T_Matrix output, Math::T_Matrix predictions) override;
 
                 double error(T_Size m) override;
-
-                void transition(const Layer::LayerPointer &prevLayer) override;
             };
         }
     }

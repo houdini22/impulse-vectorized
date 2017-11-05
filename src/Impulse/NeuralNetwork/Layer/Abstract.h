@@ -140,17 +140,29 @@ namespace Impulse {
                 /**
                  * Finish configuration of the layer
                  */
-                virtual void configure();
+                virtual void configure() = 0;
+
+                /**
+                 * Transition
+                 */
+                virtual void transition(const Layer::LayerPointer &prevLayer) = 0;
+
+                /**
+                 * Is 2d layer
+                 * @return
+                 */
+                virtual bool is2d() = 0;
+
+                /**
+                 * Is 3d layer
+                 * @return
+                 */
+                virtual bool is3d() = 0;
 
                 /**
                  * Debug.
                  */
                 virtual void debug() {};
-
-                /**
-                 * Transition
-                 */
-                virtual void transition(const Layer::LayerPointer &prevLayer);
             };
         }
     }

@@ -13,7 +13,7 @@ namespace Impulse {
 
             const T_String TYPE_RELU = "relu";
 
-            class Relu : public Abstract {
+            class Relu : public Abstract2D {
             protected:
             public:
                 Relu();
@@ -27,8 +27,6 @@ namespace Impulse {
                 double loss(Math::T_Matrix output, Math::T_Matrix predictions) override;
 
                 double error(T_Size m) override;
-
-                void transition(const Layer::LayerPointer &prevLayer) override;
             };
         }
     }

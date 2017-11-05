@@ -23,6 +23,8 @@
 #include "utils.h"
 #include "Trainer/common.h"
 #include "Layer/Abstract.h"
+#include "Layer/Abstract2D.h"
+#include "Layer/Abstract3D.h"
 #include "Network/Abstract.h"
 #include "Network/ConvNetwork.h"
 #include "Network/ClassifierNetwork.h"

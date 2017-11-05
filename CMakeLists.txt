@@ -73,7 +73,12 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Layer/FullyConnected.h
         src/Impulse/NeuralNetwork/Layer/FullyConnected.cpp
         src/Impulse/NeuralNetwork/include.h
-        src/Impulse/NeuralNetwork/utils.h src/Impulse/NeuralNetwork/utils.cpp)
+        src/Impulse/NeuralNetwork/utils.h
+        src/Impulse/NeuralNetwork/utils.cpp
+        src/Impulse/NeuralNetwork/Layer/Abstract2D.h
+        src/Impulse/NeuralNetwork/Layer/Abstract2D.cpp
+        src/Impulse/NeuralNetwork/Layer/Abstract3D.h
+        src/Impulse/NeuralNetwork/Layer/Abstract3D.cpp)
 
 find_package(Boost 1.57.0 COMPONENTS system filesystem REQUIRED)
 if (BOOST_FOUND)

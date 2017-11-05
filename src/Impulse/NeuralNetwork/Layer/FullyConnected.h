@@ -18,8 +18,6 @@ namespace Impulse {
             public:
                 FullyConnected();
 
-                void transition(const Layer::LayerPointer &prevLayer) override;
-
                 const T_String getType() override;
             };
         }

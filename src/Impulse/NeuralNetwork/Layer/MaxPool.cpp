@@ -6,12 +6,9 @@ namespace Impulse {
 
         namespace Layer {
 
-            MaxPool::MaxPool() : Abstract() {}
+            MaxPool::MaxPool() : Abstract3D() {}
 
-            void MaxPool::configure() {
-                this->outputWidth = (this->width - this->filterSize) / this->stride + 1;
-                this->outputHeight = (this->height - this->filterSize) / this->stride + 1;
-            }
+            void MaxPool::configure() {}
 
             void MaxPool::setFilterSize(T_Size value) {
                 this->filterSize = value;
@@ -22,15 +19,17 @@ namespace Impulse {
             }
 
             Math::T_Matrix MaxPool::forward(const Math::T_Matrix &input) {
-                Math::T_Matrix result(this->outputWidth * this->outputHeight * this->depth, input.cols());
+                Math::T_Matrix result(this->getOutputWidth() *
+                                      this->getOutputHeight() *
+                                      this->getOutputDepth(), input.cols());
 
 #pragma omp parallel
 #pragma omp for
                 for (T_Size i = 0; i < input.cols(); i++) {
                     Math::T_Matrix maxPool = Utils::maxpool(input.col(i), this->depth,
-                                                    this->height, this->width,
-                                                    this->filterSize, this->filterSize,
-                                                    this->stride, this->stride);
+                                                            this->height, this->width,
+                                                            this->filterSize, this->filterSize,
+                                                            this->stride, this->stride);
 #pragma omp critical
                     {
                         result.col(i) = maxPool;
@@ -63,20 +62,12 @@ namespace Impulse {
                 return 0.0;
             }
 
-            void MaxPool::transition(const Layer::LayerPointer &prevLayer) {
-                if (prevLayer->getType() == Layer::TYPE_CONV) {
-                    this->setSize(prevLayer->getOutputHeight(),
-                                  prevLayer->getOutputWidth(),
-                                  prevLayer->getOutputDepth());
-                }
-            }
-
             T_Size MaxPool::getOutputHeight() {
-                return this->outputWidth;
+                return (this->height - this->filterSize) / this->stride + 1;;
             }
 
             T_Size MaxPool::getOutputWidth() {
-                return this->outputHeight;
+                return (this->width - this->filterSize) / this->stride + 1;
             }
 
             T_Size MaxPool::getOutputDepth() {

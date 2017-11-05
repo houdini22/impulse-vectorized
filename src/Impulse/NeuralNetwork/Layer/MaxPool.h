@@ -13,12 +13,10 @@ namespace Impulse {
 
             const T_String TYPE_MAXPOOL = "maxpool";
 
-            class MaxPool : public Abstract {
+            class MaxPool : public Abstract3D {
             protected:
                 T_Size filterSize = 2;
                 T_Size stride = 2;
-                T_Size outputWidth = 0;
-                T_Size outputHeight = 0;
             public:
                 MaxPool();
 
@@ -39,8 +37,6 @@ namespace Impulse {
                 double loss(Math::T_Matrix output, Math::T_Matrix predictions) override;
 
                 double error(T_Size m) override;
-
-                void transition(const Layer::LayerPointer &prevLayer) override;
 
                 T_Size getOutputHeight() override;
 

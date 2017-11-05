@@ -6,7 +6,7 @@ namespace Impulse {
 
         namespace Layer {
 
-            Relu::Relu() : Abstract() {};
+            Relu::Relu() : Abstract2D() {};
 
             Math::T_Matrix Relu::activation() {
                 return this->Z.unaryExpr([](const double x) {
@@ -34,13 +34,6 @@ namespace Impulse {
 
             double Relu::error(T_Size m) {
                 return 0.0; // TODO
-            }
-
-            void Relu::transition(const Layer::LayerPointer &prevLayer) {
-                if (prevLayer->getType() == Layer::TYPE_LOGISTIC ||
-                    prevLayer->getType() == Layer::TYPE_RELU) {
-                    this->setPrevSize(prevLayer->getSize());
-                }
             }
         }
     }

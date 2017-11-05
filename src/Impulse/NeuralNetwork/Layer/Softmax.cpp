@@ -6,7 +6,7 @@ namespace Impulse {
 
         namespace Layer {
 
-            Softmax::Softmax() : Abstract() {}
+            Softmax::Softmax() : Abstract2D() {}
 
             Math::T_Matrix Softmax::activation() {
                 Math::T_Matrix t = this->Z.unaryExpr([](const double x) {
@@ -34,14 +34,6 @@ namespace Impulse {
 
             double Softmax::error(T_Size m) {
                 return (-1.0 / (double) m);
-            }
-
-            void Softmax::transition(const Layer::LayerPointer &prevLayer) {
-                if (prevLayer->getType() == Layer::TYPE_LOGISTIC ||
-                    prevLayer->getType() == Layer::TYPE_RELU ||
-                    prevLayer->getType() == Layer::TYPE_FULLYCONNECTED) {
-                    this->setPrevSize(prevLayer->getSize());
-                }
             }
         }
     }

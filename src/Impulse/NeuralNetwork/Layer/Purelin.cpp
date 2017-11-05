@@ -6,14 +6,14 @@ namespace Impulse {
 
         namespace Layer {
 
-            Purelin::Purelin() : Abstract() {};
+            Purelin::Purelin() : Abstract2D() {};
 
             Math::T_Matrix Purelin::activation() {
                 return this->Z;
             }
 
             Math::T_Matrix Purelin::derivative() {
-                Math::T_Matrix d(this->A.rows(), this->A.cols());
+                Math::T_Matrix d(this->Z.rows(), this->Z.cols());
                 d.setOnes();
                 return d;
             }
