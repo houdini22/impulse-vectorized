@@ -57,7 +57,7 @@ namespace Impulse {
 
             Math::T_Matrix Abstract::backward(
                     Math::T_Matrix &sigma,
-                    Layer::LayerPointer prevLayer,
+                    const Layer::LayerPointer &prevLayer,
                     Math::T_Matrix prevActivations,
                     long &m,
                     double &regularization
@@ -68,7 +68,7 @@ namespace Impulse {
                 this->gW = delta.array() / m + (regularization / m * this->W.array());
                 this->gb = sigma.rowwise().sum() / m;
 
-                if(prevLayer != NULL) {
+                if(prevLayer != nullptr) {
                     Math::T_Matrix tmp1 = this->W.transpose() * sigma;
                     Math::T_Matrix tmp2 = prevLayer->derivative();
 

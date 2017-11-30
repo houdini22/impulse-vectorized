@@ -170,7 +170,7 @@ namespace Impulse {
                  */
                 virtual Math::T_Matrix backward(
                         Math::T_Matrix &sigma,
-                        Layer::LayerPointer prevLayer,
+                        const Layer::LayerPointer &prevLayer,
                         Math::T_Matrix prevActivations,
                         long &m,
                         double &regularization

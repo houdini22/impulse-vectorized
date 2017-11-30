@@ -37,7 +37,7 @@ namespace Impulse {
 
                     auto prevLayer = (
                             i == 0 ?
-                            NULL :
+                            nullptr :
                             this->layers.at(static_cast<unsigned long>(i - 1))
                     );
 
