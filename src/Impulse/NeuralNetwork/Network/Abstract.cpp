@@ -35,20 +35,22 @@ namespace Impulse {
                 for (long i = this->layers.size() - 1; i >= 0; i--) {
                     auto layer = this->layers.at(static_cast<unsigned long>(i));
 
-                    Math::T_Matrix delta = sigma * (i == 0 ? X : this->layers.at(
-                            static_cast<unsigned long>(i - 1))->A).transpose().conjugate();
+                    auto prevLayer = (
+                            i == 0 ?
+                            NULL :
+                            this->layers.at(static_cast<unsigned long>(i - 1))
+                    );
 
-                    layer->gW = delta.array() / m + (regularization / m * layer->W.array());
-                    layer->gb = sigma.rowwise().sum() / m;
-
-                    if (i > 0) {
-                        auto prevLayer = this->layers.at(static_cast<unsigned long>(i - 1));
-
-                        Math::T_Matrix tmp1 = layer->W.transpose() * sigma;
-                        Math::T_Matrix tmp2 = prevLayer->derivative();
-
-                        sigma = tmp1.array() * tmp2.array();
-                    }
+                    sigma = layer->backward(
+                            sigma,
+                            prevLayer,
+                            (
+                                    i == 0 ?
+                                    X :
+                                    prevLayer->A
+                            ),
+                            m,
+                            regularization);
                 }
             }
 

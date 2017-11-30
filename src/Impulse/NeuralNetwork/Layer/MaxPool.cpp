@@ -30,10 +30,7 @@ namespace Impulse {
                                                             this->height, this->width,
                                                             this->filterSize, this->filterSize,
                                                             this->stride, this->stride);
-#pragma omp critical
-                    {
-                        result.col(i) = maxPool;
-                    }
+                    result.col(i) = maxPool;
                 }
 
                 return this->Z = this->A = result;

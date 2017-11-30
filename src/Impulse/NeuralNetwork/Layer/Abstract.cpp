@@ -54,6 +54,28 @@ namespace Impulse {
             T_Size Abstract::getOutputDepth() {
                 return 1;
             }
+
+            Math::T_Matrix Abstract::backward(
+                    Math::T_Matrix &sigma,
+                    Layer::LayerPointer prevLayer,
+                    Math::T_Matrix prevActivations,
+                    long &m,
+                    double &regularization
+            ) {
+
+                Math::T_Matrix delta = sigma * prevActivations.transpose().conjugate();
+
+                this->gW = delta.array() / m + (regularization / m * this->W.array());
+                this->gb = sigma.rowwise().sum() / m;
+
+                if(prevLayer != NULL) {
+                    Math::T_Matrix tmp1 = this->W.transpose() * sigma;
+                    Math::T_Matrix tmp2 = prevLayer->derivative();
+
+                    return tmp1.array() * tmp2.array();
+                }
+                return Math::T_Matrix();
+            }
         }
     }
 }

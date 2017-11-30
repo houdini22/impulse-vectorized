@@ -163,6 +163,18 @@ namespace Impulse {
                  * Debug.
                  */
                 virtual void debug() {};
+
+                /**
+                 * Backward propagation
+                 * @return
+                 */
+                virtual Math::T_Matrix backward(
+                        Math::T_Matrix &sigma,
+                        Layer::LayerPointer prevLayer,
+                        Math::T_Matrix prevActivations,
+                        long &m,
+                        double &regularization
+                );
             };
         }
     }

@@ -28,13 +28,11 @@ namespace Impulse {
                                                         this->filterSize, this->filterSize,
                                                         this->padding, this->padding,
                                                         this->stride, this->stride);
-#pragma omp critical
-                    {
-                        Math::T_Matrix tmp = ((this->W * conv).colwise() + this->b).transpose(); // transpose for
-                        // rolling to vector
-                        Eigen::Map<Math::T_Vector> tmp2(tmp.data(), tmp.size());
-                        this->Z.col(i) = tmp2;
-                    }
+
+                    Math::T_Matrix tmp = ((this->W * conv).colwise() + this->b).transpose(); // transpose for
+                    // rolling to vector
+                    Eigen::Map<Math::T_Vector> tmp2(tmp.data(), tmp.size());
+                    this->Z.col(i) = tmp2;
                 }
 
                 return this->A = this->activation();

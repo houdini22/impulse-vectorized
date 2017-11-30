@@ -150,7 +150,7 @@ void test_softmax_cg() {
     Network::ClassifierNetwork net = builder.getNetwork();*/
 
     Trainer::ConjugateGradient trainer(net);
-    trainer.setLearningIterations(400);
+    trainer.setLearningIterations(100);
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
 
@@ -166,8 +166,8 @@ void test_softmax_cg() {
     std::cout << "Time: " << duration << std::endl;
     std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
-    /*Serializer serializer(net);
-    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");*/
+    Serializer serializer(net);
+    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");
 }
 
 void test_conv() {
@@ -192,7 +192,7 @@ void test_conv() {
     builder.createLayer<Layer::FullyConnected>([](auto *layer) {
         layer->setSize(4);
     });
-    builder.createLayer<Layer::Softmax>([](auto * layer) {
+    builder.createLayer<Layer::Softmax>([](auto *layer) {
         layer->setSize(2);
     });
 
@@ -481,8 +481,8 @@ void videoFace() {
 int main() {
     //test_logistic();
     //test_softmax_gradient_descent();
-    //test_softmax_cg();
-    test_conv();
+    test_softmax_cg();
+    //test_conv();
     //test_linear();
     //test_logistic_load();
     //test_xor();
