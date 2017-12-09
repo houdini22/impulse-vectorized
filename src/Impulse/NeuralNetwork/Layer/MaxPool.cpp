@@ -70,6 +70,10 @@ namespace Impulse {
             T_Size MaxPool::getOutputDepth() {
                 return this->depth;
             }
+
+            void MaxPool::debug() {
+                std::cout << this->getOutputWidth() << "," << this->getOutputHeight() << "," << this->getOutputDepth() << std::endl;
+            }
         }
     }
 }

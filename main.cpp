@@ -173,7 +173,7 @@ void test_softmax_cg() {
 void test_conv() {
     //Impulse::SlicedDataset dataset = getDataset();
 
-    Builder::ConvBuilder builder({7, 7, 3});
+    Builder::ConvBuilder builder({5, 5, 3});
 
     builder.createLayer<Layer::Conv>([](auto *layer) {
         layer->setFilterSize(3);
@@ -181,43 +181,83 @@ void test_conv() {
         layer->setStride(2);
         layer->setNumFilters(2);
     });
-    builder.createLayer<Layer::MaxPool>([](auto *layer) {
+    builder.createLayer<Layer::Softmax>([](auto *layer) {
+        layer->setSize(2);
+    });
+    /*builder.createLayer<Layer::MaxPool>([](auto *layer) {
         layer->setFilterSize(2);
         layer->setStride(2);
-    });
+    });*/
 
-    builder.createLayer<Layer::FullyConnected>([](auto *layer) {
+    /*builder.createLayer<Layer::FullyConnected>([](auto *layer) {
         layer->setSize(8);
     });
     builder.createLayer<Layer::FullyConnected>([](auto *layer) {
         layer->setSize(4);
     });
-    builder.createLayer<Layer::Softmax>([](auto *layer) {
-        layer->setSize(2);
-    });
+    */
 
     Network::ConvNetwork net = builder.getNetwork();
     // net.debug();
 
     Math::T_Matrix input;
-    input.resize(7 * 7 * 3, 1);
-    input.setOnes();
-    /*for(int i = 0; i < 100000; i++) {
-        if(i % 2 == 0) {
-            input.col(i) = input.col(i).unaryExpr([](const double x) {
-                return 2.0;
-            });
-        }
-    }*/
+    input.resize(5 * 5 * 3, 1);
+    input.col(0) <<
+                 2, 1, 1, 2, 1,
+            2, 1, 1, 2, 0,
+            1, 2, 0, 2, 0,
+            2, 2, 1, 2, 2,
+            2, 1, 2, 0, 0,
+            1, 2, 2, 0, 2,
+            0, 2, 2, 0, 1,
+            2, 1, 0, 0, 0,
+            0, 2, 1, 0, 0,
+            0, 1, 1, 1, 1,
+            2, 1, 2, 1, 2,
+            0, 2, 0, 1, 0,
+            2, 0, 0, 0, 0,
+            2, 2, 1, 0, 0,
+            0, 1, 2, 2, 0;
 
-    // std::cout << "INPUT: " << input << std::endl;
 
-    // net.debug();
-
+    std::cout << "INPUT: " << input << std::endl;
     Math::T_Matrix output = net.forward(input);
 
     std::cout << "OUTPUT: " << std::endl;
     std::cout << output << std::endl;
+
+    Impulse::SlicedDataset dataset;
+
+    Impulse::DatasetSample sampleInput({
+                                          2, 1, 1, 2, 1,
+                                          2, 1, 1, 2, 0,
+                                          1, 2, 0, 2, 0,
+                                          2, 2, 1, 2, 2,
+                                          2, 1, 2, 0, 0,
+                                          1, 2, 2, 0, 2,
+                                          0, 2, 2, 0, 1,
+                                          2, 1, 0, 0, 0,
+                                          0, 2, 1, 0, 0,
+                                          0, 1, 1, 1, 1,
+                                          2, 1, 2, 1, 2,
+                                          0, 2, 0, 1, 0,
+                                          2, 0, 0, 0, 0,
+                                          2, 2, 1, 0, 0,
+                                          0, 1, 2, 2, 0
+                                  });
+    dataset.input.addSample(sampleInput);
+
+    Impulse::DatasetSample outputSample({0, 1});
+    dataset.output.addSample(outputSample);
+
+    Trainer::GradientDescent trainer(net);
+    trainer.setLearningIterations(1);
+    trainer.setVerboseStep(1);
+    trainer.setRegularization(0.0);
+    trainer.setVerbose(true);
+    trainer.setLearningRate(0.01);
+
+    trainer.train(dataset);
 
     /*
     // MAX POOL TEST
@@ -478,15 +518,29 @@ void videoFace() {
     }
 }*/
 
+void test_test() {
+
+    Builder::ConvBuilder builder({32, 32, 16});
+
+    builder.createLayer<Layer::MaxPool>([](auto *layer) {
+        layer->setFilterSize(2);
+        layer->setStride(2);
+    });
+
+    Network::ConvNetwork net = builder.getNetwork();
+    net.debug();
+}
+
 int main() {
     //test_logistic();
     //test_softmax_gradient_descent();
-    test_softmax_cg();
-    //test_conv();
+    //test_softmax_cg();
+    test_conv();
     //test_linear();
     //test_logistic_load();
     //test_xor();
     //face();
     //videoFace();
+    //test_test();
     return 0;
 }

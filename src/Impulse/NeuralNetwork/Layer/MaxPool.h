@@ -43,6 +43,8 @@ namespace Impulse {
                 T_Size getOutputWidth() override;
 
                 T_Size getOutputDepth() override;
+
+                void debug();
             };
         }
     }

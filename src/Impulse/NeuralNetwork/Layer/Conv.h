@@ -50,6 +50,14 @@ namespace Impulse {
 
                 double error(T_Size m) override;
 
+                virtual Math::T_Matrix backward(
+                        Math::T_Matrix &sigma,
+                        const Layer::LayerPointer &prevLayer,
+                        Math::T_Matrix prevActivations,
+                        long &m,
+                        double &regularization
+                );
+
                 void debug() override;
             };
         }

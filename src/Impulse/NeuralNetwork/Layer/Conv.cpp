@@ -14,6 +14,18 @@ namespace Impulse {
 
                 this->b.resize(this->numFilters, 1);
                 this->b.setOnes();
+
+                /*this->W.row(0) << -1, 1, 0, 1, -1, -1, 0, 1, 1,
+                        1, -1, 0, 0, 1, 1, 0, 1, -1,
+                        0, 0, 1, 1, 1, 0, -1, 0, 1;
+                this->W.row(1) << 1, 1, -1, 0, 1, 0, 0, 0, -1,
+                        1, 0, 0, 0, 0, 1, -1, 0, 1,
+                        -1, 0, -1, 0, 1, -1, 0, 0, -1;
+                this->b.row(0) << 1;
+                this->b.row(1) << 0;
+
+                std::cout << "W" << std::endl << this->W << std::endl;
+                std::cout << "b" << std::endl << this->b << std::endl;*/
             }
 
             Math::T_Matrix Conv::forward(const Math::T_Matrix &input) {
@@ -33,8 +45,8 @@ namespace Impulse {
                     // rolling to vector
                     Eigen::Map<Math::T_Vector> tmp2(tmp.data(), tmp.size());
                     this->Z.col(i) = tmp2;
-                }
 
+                }
                 return this->A = this->activation();
             }
 
@@ -73,7 +85,12 @@ namespace Impulse {
             }
 
             Math::T_Matrix Conv::derivative() {
-                // TODO
+                Math::T_Matrix result;
+                result.resize(this->A.rows(), this->A.cols());
+                result.setZero();
+
+
+
                 return Math::T_Matrix();
             }
 
@@ -91,8 +108,34 @@ namespace Impulse {
                 return 0.0;
             }
 
-            void Conv::debug() {
+            Math::T_Matrix Conv::backward(
+                    Math::T_Matrix &sigma,
+                    const Layer::LayerPointer &prevLayer,
+                    Math::T_Matrix prevActivations,
+                    long &m,
+                    double &regularization
+            ) {
 
+                Math::T_Matrix result(sigma);
+                for (T_Size i = 0; i < m; i++) {
+                    result.col(i) += this->W * sigma.col(i);
+                }
+/*
+                this->gW = delta.array() / m + (regularization / m * this->W.array());
+                this->gb = sigma.rowwise().sum() / m;
+
+                if (prevLayer != nullptr) {
+                    Math::T_Matrix tmp1 = this->W.transpose() * sigma;
+                    Math::T_Matrix tmp2 = prevLayer->derivative();
+
+                    return tmp1.array() * tmp2.array();
+                }*/
+                return Math::T_Matrix();
+            }
+
+            void Conv::debug() {
+                std::cout << this->getOutputWidth() << "," << this->getOutputHeight() << "," << this->getOutputDepth()
+                          << std::endl;
             }
         }
     }
