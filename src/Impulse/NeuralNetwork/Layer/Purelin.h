@@ -13,7 +13,7 @@ namespace Impulse {
 
             const T_String TYPE_PURELIN = "purelin";
 
-            class Purelin : public Abstract2D {
+            class Purelin : public Abstract1D {
             protected:
             public:
                 Purelin();

@@ -8,16 +8,16 @@ namespace Impulse {
 
             Abstract3D::Abstract3D() : Abstract() {}
 
-            bool Abstract3D::is2d() {
+            bool Abstract3D::is1D() {
                 return false;
             }
 
-            bool Abstract3D::is3d() {
+            bool Abstract3D::is3D() {
                 return true;
             }
 
             void Abstract3D::transition(const Layer::LayerPointer &prevLayer) {
-                if (prevLayer->is3d()) {
+                if (prevLayer->is3D()) {
                     this->setSize(prevLayer->getOutputHeight(),
                                   prevLayer->getOutputWidth(),
                                   prevLayer->getOutputDepth());

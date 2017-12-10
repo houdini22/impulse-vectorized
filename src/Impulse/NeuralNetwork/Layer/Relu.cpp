@@ -6,16 +6,20 @@ namespace Impulse {
 
         namespace Layer {
 
-            Relu::Relu() : Abstract2D() {};
+            Relu::Relu() : Abstract1D() {};
 
             Math::T_Matrix Relu::activation() {
-                return this->Z.unaryExpr([](const double x) {
+                // apply relu
+                Math::T_Matrix result = this->Z.unaryExpr([](const double x) {
                     return std::max(0.0, x);
                 });
+                // apply normalization // TODO CONFIGURE
+                result.colwise().normalize();
+                return result;
             }
 
             Math::T_Matrix Relu::derivative() {
-                return this->A.unaryExpr([](const double x) {
+                this->A = this->A.unaryExpr([](const double x) {
                     if (x < 0.0) {
                         return 0.0;
                     }

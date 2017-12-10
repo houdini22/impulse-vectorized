@@ -13,7 +13,7 @@ namespace Impulse {
 
             const T_String TYPE_LOGISTIC = "logistic";
 
-            class Logistic : public Abstract2D {
+            class Logistic : public Abstract1D {
             protected:
             public:
                 Logistic();

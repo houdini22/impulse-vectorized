@@ -24,7 +24,11 @@ namespace Impulse {
 
                 void setFilterSize(T_Size value);
 
+                T_Size getFilterSize();
+
                 void setStride(T_Size value);
+
+                T_Size getStride();
 
                 Math::T_Matrix forward(const Math::T_Matrix &input) override;
 

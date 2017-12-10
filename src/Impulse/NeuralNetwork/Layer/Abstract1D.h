@@ -9,15 +9,15 @@ namespace Impulse {
 
         namespace Layer {
 
-            class Abstract2D : public Abstract {
+            class Abstract1D : public Abstract {
             public:
-                Abstract2D();
+                Abstract1D();
 
                 void configure() override;
 
-                bool is2d() override;
+                bool is1D() override;
 
-                bool is3d() override;
+                bool is3D() override;
 
                 void transition(const Layer::LayerPointer &prevLayer) override;
             };

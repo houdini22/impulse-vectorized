@@ -170,6 +170,65 @@ void test_softmax_cg() {
     serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");
 }
 
+void test_conv_backward() {
+    Impulse::SlicedDataset dataset = getDataset();
+
+    Builder::ConvBuilder builder({20, 20, 1});
+
+    builder.createLayer<Layer::Conv>([](auto *layer) {
+        layer->setFilterSize(3);
+        layer->setPadding(0);
+        layer->setStride(1);
+        layer->setNumFilters(32);
+    });
+
+    builder.createLayer<Layer::Conv>([](auto *layer) {
+        layer->setFilterSize(3);
+        layer->setPadding(0);
+        layer->setStride(1);
+        layer->setNumFilters(32);
+    });
+
+    builder.createLayer<Layer::MaxPool>([](auto *layer) {
+        layer->setFilterSize(2);
+        layer->setStride(2);
+    });
+
+    builder.createLayer<Layer::Conv>([](auto *layer) {
+        layer->setFilterSize(3);
+        layer->setPadding(0);
+        layer->setStride(1);
+        layer->setNumFilters(64);
+    });
+
+    builder.createLayer<Layer::Conv>([](auto *layer) {
+        layer->setFilterSize(3);
+        layer->setPadding(0);
+        layer->setStride(1);
+        layer->setNumFilters(64);
+    });
+
+    builder.createLayer<Layer::MaxPool>([](auto *layer) {
+        layer->setFilterSize(2);
+        layer->setStride(2);
+    });
+
+    builder.createLayer<Layer::FullyConnected>([](auto *layer) {
+        layer->setSize(512);
+    });
+
+    builder.createLayer<Layer::Softmax>([](auto *layer) {
+        layer->setSize(10);
+    });
+
+    Network::ConvNetwork net = builder.getNetwork();
+
+    Math::T_Matrix input = dataset.input.getSampleAt(0)->exportToEigen();
+    Math::T_Matrix output = net.forward(input);
+    std::cout << "OUTPUT: " << std::endl << output.rows() << "," << output.cols() << std::endl;
+    std::cout << "OUTPUT: " << std::endl << output << std::endl;
+}
+
 void test_conv() {
     //Impulse::SlicedDataset dataset = getDataset();
 
@@ -180,9 +239,6 @@ void test_conv() {
         layer->setPadding(1);
         layer->setStride(2);
         layer->setNumFilters(2);
-    });
-    builder.createLayer<Layer::Softmax>([](auto *layer) {
-        layer->setSize(2);
     });
     /*builder.createLayer<Layer::MaxPool>([](auto *layer) {
         layer->setFilterSize(2);
@@ -229,22 +285,22 @@ void test_conv() {
     Impulse::SlicedDataset dataset;
 
     Impulse::DatasetSample sampleInput({
-                                          2, 1, 1, 2, 1,
-                                          2, 1, 1, 2, 0,
-                                          1, 2, 0, 2, 0,
-                                          2, 2, 1, 2, 2,
-                                          2, 1, 2, 0, 0,
-                                          1, 2, 2, 0, 2,
-                                          0, 2, 2, 0, 1,
-                                          2, 1, 0, 0, 0,
-                                          0, 2, 1, 0, 0,
-                                          0, 1, 1, 1, 1,
-                                          2, 1, 2, 1, 2,
-                                          0, 2, 0, 1, 0,
-                                          2, 0, 0, 0, 0,
-                                          2, 2, 1, 0, 0,
-                                          0, 1, 2, 2, 0
-                                  });
+                                               2, 1, 1, 2, 1,
+                                               2, 1, 1, 2, 0,
+                                               1, 2, 0, 2, 0,
+                                               2, 2, 1, 2, 2,
+                                               2, 1, 2, 0, 0,
+                                               1, 2, 2, 0, 2,
+                                               0, 2, 2, 0, 1,
+                                               2, 1, 0, 0, 0,
+                                               0, 2, 1, 0, 0,
+                                               0, 1, 1, 1, 1,
+                                               2, 1, 2, 1, 2,
+                                               0, 2, 0, 1, 0,
+                                               2, 0, 0, 0, 0,
+                                               2, 2, 1, 0, 0,
+                                               0, 1, 2, 2, 0
+                                       });
     dataset.input.addSample(sampleInput);
 
     Impulse::DatasetSample outputSample({0, 1});
@@ -534,7 +590,7 @@ void test_test() {
 int main() {
     //test_logistic();
     //test_softmax_gradient_descent();
-    test_softmax_cg();
+    //test_softmax_cg();
     //test_conv();
     //test_linear();
     //test_logistic_load();
@@ -542,5 +598,6 @@ int main() {
     //face();
     //videoFace();
     //test_test();
+    test_conv_backward();
     return 0;
 }

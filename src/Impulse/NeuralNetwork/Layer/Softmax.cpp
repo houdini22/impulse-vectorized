@@ -6,7 +6,7 @@ namespace Impulse {
 
         namespace Layer {
 
-            Softmax::Softmax() : Abstract2D() {}
+            Softmax::Softmax() : Abstract1D() {}
 
             Math::T_Matrix Softmax::activation() {
                 Math::T_Matrix t = this->Z.unaryExpr([](const double x) {

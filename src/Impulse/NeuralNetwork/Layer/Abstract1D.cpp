@@ -6,9 +6,9 @@ namespace Impulse {
 
         namespace Layer {
 
-            Abstract2D::Abstract2D() : Abstract() {}
+            Abstract1D::Abstract1D() : Abstract() {}
 
-            void Abstract2D::configure() {
+            void Abstract1D::configure() {
                 // initialize weights
                 this->W.resize(this->height, this->width);
                 this->W.setRandom();
@@ -19,18 +19,18 @@ namespace Impulse {
                 this->b.setZero();
             }
 
-            bool Abstract2D::is2d() {
+            bool Abstract1D::is1D() {
                 return true;
             }
 
-            bool Abstract2D::is3d() {
+            bool Abstract1D::is3D() {
                 return false;
             }
 
-            void Abstract2D::transition(const Layer::LayerPointer &prevLayer) {
-                if (prevLayer->is2d()) {
+            void Abstract1D::transition(const Layer::LayerPointer &prevLayer) {
+                if (prevLayer->is1D()) {
                     this->setPrevSize(prevLayer->getSize());
-                } else if (prevLayer->is3d()) {
+                } else if (prevLayer->is3D()) {
                     this->setPrevSize(prevLayer->getOutputWidth() *
                                       prevLayer->getOutputHeight() *
                                       prevLayer->getOutputDepth());

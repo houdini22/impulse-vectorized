@@ -14,11 +14,20 @@ namespace Impulse {
                 this->filterSize = value;
             }
 
+            T_Size MaxPool::getFilterSize() {
+                return this->filterSize;
+            }
+
             void MaxPool::setStride(T_Size value) {
                 this->stride = value;
             }
 
+            T_Size MaxPool::getStride() {
+                return this->stride;
+            }
+
             Math::T_Matrix MaxPool::forward(const Math::T_Matrix &input) {
+                this->Z = input;
                 Math::T_Matrix result(this->getOutputWidth() *
                                       this->getOutputHeight() *
                                       this->getOutputDepth(), input.cols());
@@ -33,7 +42,7 @@ namespace Impulse {
                     result.col(i) = maxPool;
                 }
 
-                return this->Z = this->A = result;
+                return this->A = result;
             }
 
             Math::T_Matrix MaxPool::activation() {

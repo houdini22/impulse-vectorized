@@ -13,7 +13,7 @@ namespace Impulse {
 
             const T_String TYPE_RELU = "relu";
 
-            class Relu : public Abstract2D {
+            class Relu : public Abstract1D {
             protected:
             public:
                 Relu();

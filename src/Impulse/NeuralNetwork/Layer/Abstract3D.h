@@ -13,9 +13,9 @@ namespace Impulse {
             public:
                 Abstract3D();
 
-                bool is2d() override;
+                bool is1D() override;
 
-                bool is3d() override;
+                bool is3D() override;
 
                 void transition(const Layer::LayerPointer &prevLayer) override;
             };

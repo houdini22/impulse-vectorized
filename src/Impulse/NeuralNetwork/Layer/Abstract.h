@@ -93,15 +93,33 @@ namespace Impulse {
 
                 /**
                  *
+                 * @return
+                 */
+                T_Size getWidth();
+
+                /**
+                 *
                  * @param value
                  */
                 void setHeight(T_Size value);
 
                 /**
                  *
+                 * @return
+                 */
+                T_Size getHeight();
+
+                /**
+                 *
                  * @param value
                  */
                 void setDepth(T_Size value);
+
+                /**
+                 *
+                 * @return
+                 */
+                T_Size getDepth();
 
                 /**
                  * Get output Rows
@@ -148,13 +166,13 @@ namespace Impulse {
                  * Is 2d layer
                  * @return
                  */
-                virtual bool is2d() = 0;
+                virtual bool is1D() = 0;
 
                 /**
                  * Is 3d layer
                  * @return
                  */
-                virtual bool is3d() = 0;
+                virtual bool is3D() = 0;
 
                 /**
                  * Transition

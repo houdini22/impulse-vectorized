@@ -11,9 +11,9 @@ namespace Impulse {
 
             namespace BackPropagation {
 
-                class BackPropagation1DTo3D : public Abstract {
+                class BackPropagationToPool : public Abstract {
                 public:
-                    BackPropagation1DTo3D(Layer::LayerPointer layer, Layer::LayerPointer previousLayer);
+                    BackPropagationToPool(Layer::LayerPointer layer, Layer::LayerPointer previousLayer);
 
                     Math::T_Matrix propagate(Math::T_Matrix input,
                                              T_Size numberOfExamples,

@@ -31,12 +31,24 @@ namespace Impulse {
                 this->width = value;
             }
 
+            T_Size Abstract::getWidth() {
+                return this->width;
+            }
+
             void Abstract::setHeight(T_Size value) {
                 this->height = value;
             }
 
+            T_Size Abstract::getHeight() {
+                return this->height;
+            }
+
             void Abstract::setDepth(T_Size value) {
                 this->depth = value;
+            }
+
+            T_Size Abstract::getDepth() {
+                return this->depth;
             }
 
             T_Size Abstract::getSize() {

@@ -6,7 +6,7 @@ namespace Impulse {
 
         namespace Layer {
 
-            Logistic::Logistic() : Abstract2D() {};
+            Logistic::Logistic() : Abstract1D() {};
 
             Math::T_Matrix Logistic::activation() {
                 return this->Z.unaryExpr([](const double x) {

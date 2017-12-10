@@ -13,7 +13,7 @@ namespace Impulse {
 
             const T_String TYPE_SOFTMAX = "softmax";
 
-            class Softmax : public Abstract2D {
+            class Softmax : public Abstract1D {
             protected:
             public:
                 Softmax();

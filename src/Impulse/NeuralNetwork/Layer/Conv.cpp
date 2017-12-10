@@ -10,7 +10,8 @@ namespace Impulse {
 
             void Conv::configure() {
                 this->W.resize(this->numFilters, this->filterSize * this->filterSize * this->depth);
-                this->W.setOnes(); // this->W.setRandom();
+                this->W.setRandom();
+                this->W = this->W * sqrt(2.0 / this->filterSize * this->filterSize * this->depth);
 
                 this->b.resize(this->numFilters, 1);
                 this->b.setOnes();
@@ -47,7 +48,10 @@ namespace Impulse {
                     this->Z.col(i) = tmp2;
 
                 }
-                return this->A = this->activation();
+                this->A = this->activation();
+                // normalization
+                this->A.colwise().normalize();
+                return this->A;
             }
 
             T_Size Conv::getOutputHeight() {

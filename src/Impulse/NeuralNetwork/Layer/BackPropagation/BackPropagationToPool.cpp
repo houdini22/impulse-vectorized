@@ -8,32 +8,61 @@ namespace Impulse {
 
             namespace BackPropagation {
 
-                BackPropagation1DTo3D::BackPropagation1DTo3D
+                BackPropagationToPool::BackPropagationToPool
                         (Layer::LayerPointer layer, Layer::LayerPointer previousLayer) :
                         Abstract(layer, previousLayer) {
 
                 }
 
-                Math::T_Matrix BackPropagation1DTo3D::propagate(Math::T_Matrix input,
+                Math::T_Matrix BackPropagationToPool::propagate(Math::T_Matrix input,
                                                                 T_Size numberOfExamples,
                                                                 double regularization,
                                                                 Math::T_Matrix delta) {
 
-                    Math::T_Matrix previousActivations =
-                            this->previousLayer == nullptr ? input : this->previousLayer->A;
-                    delta = delta * previousActivations.transpose().conjugate();
+                    Layer::MaxPool *layer = (Layer::MaxPool *) this->previousLayer.get();
+                    Math::T_Matrix result(layer->Z.rows(), layer->Z.cols());
+                    result.setZero();
 
-                    this->layer->gW = delta.array() / numberOfExamples +
-                                      (regularization / numberOfExamples * this->layer->W.array());
-                    this->layer->gb = delta.rowwise().sum() / numberOfExamples;
+                    T_Size filterSize = layer->getFilterSize();
+                    T_Size stride = layer->getStride();
+                    T_Size width = layer->getWidth();
+                    T_Size height = layer->getHeight();
+                    T_Size channels = layer->getDepth();
 
-                    if (this->previousLayer != nullptr) {
-                        Math::T_Matrix tmp1 = this->layer->W.transpose() * delta;
-                        Math::T_Matrix tmp2 = previousLayer->derivative();
+#pragma omp parallel
+#pragma omp for
+                    for (T_Size i = 0; i < layer->Z.cols(); i++) {
 
-                        return tmp1.array() * tmp2.array(); // new delta
+                        for (int boundingY = 0;
+                             boundingY + filterSize <= height;
+                             boundingY += stride) {
+                            for (int boundingX = 0;
+                                 boundingX + filterSize <= width;
+                                 boundingX += stride) {
+                                for (int channel = 0; channel < channels; channel++) {
+                                    double _max = -INFINITY;
+                                    int inputOffset = height * width * channel;
+                                    int maxX = 0;
+                                    int maxY = 0;
+                                    for (int y = 0; y < filterSize; y++) {
+                                        for (int x = 0; x < filterSize; x++) {
+                                            if (_max <
+                                                layer->Z(inputOffset + ((y + boundingY) * width) + boundingX + x, i)) {
+                                                _max = layer->Z(inputOffset + ((y + boundingY) * width) + boundingX + x,
+                                                                i);
+                                                maxX = x;
+                                                maxY = y;
+                                            }
+                                        }
+                                    }
+                                    result(inputOffset + ((maxY + boundingY) * width) + boundingX + maxX, i) = 1;
+                                }
+                            }
+                        }
+
                     }
-                    return Math::T_Matrix(); // return empty - this is first layer
+
+                    return result;
                 }
             }
         }
