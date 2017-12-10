@@ -8,7 +8,7 @@ namespace Impulse {
 
             Abstract2D::Abstract2D() : Abstract() {}
 
-            void Abstract2D::configure()  {
+            void Abstract2D::configure() {
                 // initialize weights
                 this->W.resize(this->height, this->width);
                 this->W.setRandom();

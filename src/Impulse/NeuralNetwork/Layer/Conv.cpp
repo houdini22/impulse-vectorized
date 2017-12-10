@@ -85,12 +85,6 @@ namespace Impulse {
             }
 
             Math::T_Matrix Conv::derivative() {
-                Math::T_Matrix result;
-                result.resize(this->A.rows(), this->A.cols());
-                result.setZero();
-
-
-
                 return Math::T_Matrix();
             }
 
@@ -124,9 +118,9 @@ namespace Impulse {
                 this->gW = delta.array() / m + (regularization / m * this->W.array());
                 this->gb = sigma.rowwise().sum() / m;
 
-                if (prevLayer != nullptr) {
+                if (previousLayer != nullptr) {
                     Math::T_Matrix tmp1 = this->W.transpose() * sigma;
-                    Math::T_Matrix tmp2 = prevLayer->derivative();
+                    Math::T_Matrix tmp2 = previousLayer->derivative();
 
                     return tmp1.array() * tmp2.array();
                 }*/

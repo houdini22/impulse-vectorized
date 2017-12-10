@@ -68,7 +68,7 @@ namespace Impulse {
                 this->gW = delta.array() / m + (regularization / m * this->W.array());
                 this->gb = sigma.rowwise().sum() / m;
 
-                if(prevLayer != nullptr) {
+                if (prevLayer != nullptr) {
                     Math::T_Matrix tmp1 = this->W.transpose() * sigma;
                     Math::T_Matrix tmp2 = prevLayer->derivative();
 

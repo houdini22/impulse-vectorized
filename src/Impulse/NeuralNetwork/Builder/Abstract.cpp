@@ -21,16 +21,17 @@ namespace Impulse {
 
                 callback(layer);
 
-                if (this->prevLayer != nullptr) {
-                    pointer->transition(this->prevLayer);
-                } else {
+                if (this->previousLayer == nullptr) {
                     this->firstLayerTransition(pointer);
+                } else {
+                    pointer->transition(this->previousLayer);
                 }
 
-                layer->configure();
+                pointer->backpropagation = Layer::BackPropagation::Factory::create(pointer, this->previousLayer);
+                pointer->configure();
 
                 this->network.addLayer(pointer);
-                this->prevLayer = pointer;
+                this->previousLayer = pointer;
             };
 
             template

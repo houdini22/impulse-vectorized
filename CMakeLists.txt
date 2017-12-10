@@ -78,7 +78,7 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Layer/Abstract2D.h
         src/Impulse/NeuralNetwork/Layer/Abstract2D.cpp
         src/Impulse/NeuralNetwork/Layer/Abstract3D.h
-        src/Impulse/NeuralNetwork/Layer/Abstract3D.cpp)
+        src/Impulse/NeuralNetwork/Layer/Abstract3D.cpp src/Impulse/NeuralNetwork/Layer/BackPropagation/Factory.cpp src/Impulse/NeuralNetwork/Layer/BackPropagation/Factory.h src/Impulse/NeuralNetwork/Layer/BackPropagation/Abstract.h src/Impulse/NeuralNetwork/Layer/BackPropagation/Abstract.cpp src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation1DTo1D.h src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation1DTo1D.cpp)
 
 find_package(Boost 1.57.0 COMPONENTS system filesystem REQUIRED)
 if (BOOST_FOUND)

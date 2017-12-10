@@ -16,7 +16,7 @@ namespace Impulse {
             protected:
                 NETWORK_TYPE network;
                 T_Dimension dimension;
-                Layer::LayerPointer prevLayer = nullptr;
+                Layer::LayerPointer previousLayer = nullptr;
             public:
                 explicit Abstract(T_Dimension dims);
 

@@ -72,7 +72,8 @@ namespace Impulse {
             }
 
             void MaxPool::debug() {
-                std::cout << this->getOutputWidth() << "," << this->getOutputHeight() << "," << this->getOutputDepth() << std::endl;
+                std::cout << this->getOutputWidth() << "," << this->getOutputHeight() << "," << this->getOutputDepth()
+                          << std::endl;
             }
         }
     }

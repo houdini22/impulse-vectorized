@@ -11,7 +11,7 @@ namespace Impulse {
 
         namespace Layer {
 
-            // fwd declaration
+            // fwd declarations
             class Abstract;
 
             /**
@@ -21,17 +21,19 @@ namespace Impulse {
 
             class Abstract {
             protected:
-                T_Size width;               // number of prev layer size (input)
-                T_Size height;              // number of neurons
-                T_Size depth;               // 3D YEAH
-            public:
-                Math::T_Matrix W;           // weights
-                Math::T_Vector b;           // bias
-                Math::T_Matrix A;           // output of the layer after activation
-                Math::T_Matrix Z;           // output of the layer before activation
-                Math::T_Matrix gW;          // gradient for weights
-                Math::T_Vector gb;          // gradient for biases
+                T_Size width;                                                           // number of prev layer size (input)
+                T_Size height;                                                          // number of neurons
+                T_Size depth;                                                           // 3D YEAH
+                Layer::LayerPointer previousLayer = nullptr;                            // pointer to the previous layer in the network
 
+            public:
+                Math::T_Matrix W;                                                       // weights
+                Math::T_Vector b;                                                       // bias
+                Math::T_Matrix A;                                                       // output of the layer after activation
+                Math::T_Matrix Z;                                                       // output of the layer before activation
+                Math::T_Matrix gW;                                                      // gradient for weights
+                Math::T_Vector gb;                                                      // gradient for biases
+                BackPropagation::BackPropagationPointer backpropagation = nullptr;      // pointer to the backpropagation algorithm
                 /**
                  * Pure constructor
                  */
@@ -143,11 +145,6 @@ namespace Impulse {
                 virtual void configure() = 0;
 
                 /**
-                 * Transition
-                 */
-                virtual void transition(const Layer::LayerPointer &prevLayer) = 0;
-
-                /**
                  * Is 2d layer
                  * @return
                  */
@@ -158,6 +155,11 @@ namespace Impulse {
                  * @return
                  */
                 virtual bool is3d() = 0;
+
+                /**
+                 * Transition
+                 */
+                virtual void transition(const Layer::LayerPointer &prevLayer) = 0;
 
                 /**
                  * Debug.

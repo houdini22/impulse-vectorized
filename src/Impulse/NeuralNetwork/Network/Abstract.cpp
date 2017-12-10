@@ -34,23 +34,7 @@ namespace Impulse {
 
                 for (long i = this->layers.size() - 1; i >= 0; i--) {
                     auto layer = this->layers.at(static_cast<unsigned long>(i));
-
-                    auto prevLayer = (
-                            i == 0 ?
-                            nullptr :
-                            this->layers.at(static_cast<unsigned long>(i - 1))
-                    );
-
-                    sigma = layer->backward(
-                            sigma,
-                            prevLayer,
-                            (
-                                    i == 0 ?
-                                    X :
-                                    prevLayer->A
-                            ),
-                            m,
-                            regularization);
+                    sigma = layer->backpropagation->propagate(X, m, regularization, sigma);
                 }
             }
 
