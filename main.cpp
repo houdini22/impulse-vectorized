@@ -135,10 +135,7 @@ void test_softmax_cg() {
     Builder::ClassifierBuilder builder({400});
 
     builder.createLayer<Layer::Logistic>([](auto *layer) {
-        layer->setSize(100);
-    });
-    builder.createLayer<Layer::Logistic>([](auto *layer) {
-        layer->setSize(20);
+        layer->setSize(300);
     });
     builder.createLayer<Layer::Softmax>([](auto *layer) {
         layer->setSize(10);
@@ -150,7 +147,7 @@ void test_softmax_cg() {
     Network::ClassifierNetwork net = builder.getNetwork();*/
 
     Trainer::ConjugateGradient trainer(net);
-    trainer.setLearningIterations(100);
+    trainer.setLearningIterations(300);
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
 
@@ -182,12 +179,12 @@ void test_conv_backward() {
         layer->setNumFilters(32);
     });
 
-    builder.createLayer<Layer::Conv>([](auto *layer) {
+    /*builder.createLayer<Layer::Conv>([](auto *layer) {
         layer->setFilterSize(3);
         layer->setPadding(0);
         layer->setStride(1);
         layer->setNumFilters(32);
-    });
+    });*/
 
     builder.createLayer<Layer::MaxPool>([](auto *layer) {
         layer->setFilterSize(2);
@@ -201,12 +198,12 @@ void test_conv_backward() {
         layer->setNumFilters(64);
     });
 
-    builder.createLayer<Layer::Conv>([](auto *layer) {
+    /*builder.createLayer<Layer::Conv>([](auto *layer) {
         layer->setFilterSize(3);
         layer->setPadding(0);
         layer->setStride(1);
         layer->setNumFilters(64);
-    });
+    });*/
 
     builder.createLayer<Layer::MaxPool>([](auto *layer) {
         layer->setFilterSize(2);
@@ -215,6 +212,10 @@ void test_conv_backward() {
 
     builder.createLayer<Layer::FullyConnected>([](auto *layer) {
         layer->setSize(512);
+    });
+
+    builder.createLayer<Layer::FullyConnected>([](auto *layer) {
+        layer->setSize(256);
     });
 
     builder.createLayer<Layer::Softmax>([](auto *layer) {
@@ -226,7 +227,18 @@ void test_conv_backward() {
     Math::T_Matrix input = dataset.input.getSampleAt(0)->exportToEigen();
     Math::T_Matrix output = net.forward(input);
     std::cout << "OUTPUT: " << std::endl << output.rows() << "," << output.cols() << std::endl;
-    std::cout << "OUTPUT: " << std::endl << output << std::endl;
+
+    Trainer::GradientDescent trainer(net);
+    trainer.setLearningIterations(1);
+    trainer.setVerboseStep(1);
+    trainer.setRegularization(0.0);
+    trainer.setVerbose(true);
+    trainer.setLearningRate(0.01);
+
+    Trainer::CostGradientResult cost = trainer.cost(dataset);
+    std::cout << "Cost: " << cost.getCost() << std::endl;
+
+    trainer.train(dataset);
 }
 
 void test_conv() {

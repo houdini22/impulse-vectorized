@@ -16,6 +16,9 @@ namespace Impulse {
                 this->b.resize(this->numFilters, 1);
                 this->b.setOnes();
 
+                this->gW.resize(this->numFilters, this->filterSize * this->filterSize * this->depth);
+                this->gb.resize(this->numFilters, 1);
+
                 /*this->W.row(0) << -1, 1, 0, 1, -1, -1, 0, 1, 1,
                         1, -1, 0, 0, 1, 1, 0, 1, -1,
                         0, 0, 1, 1, 1, 0, -1, 0, 1;

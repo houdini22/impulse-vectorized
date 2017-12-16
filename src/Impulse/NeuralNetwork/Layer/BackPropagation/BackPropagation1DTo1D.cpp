@@ -17,21 +17,22 @@ namespace Impulse {
                 Math::T_Matrix BackPropagation1DTo1D::propagate(Math::T_Matrix input,
                                                                 T_Size numberOfExamples,
                                                                 double regularization,
-                                                                Math::T_Matrix delta) {
+                                                                Math::T_Matrix sigma) {
 
                     Math::T_Matrix previousActivations =
                             this->previousLayer == nullptr ? input : this->previousLayer->A;
-                    delta = delta * previousActivations.transpose().conjugate();
+
+                    Math::T_Matrix delta = sigma * previousActivations.transpose().conjugate();
 
                     this->layer->gW = delta.array() / numberOfExamples +
                                       (regularization / numberOfExamples * this->layer->W.array());
-                    this->layer->gb = delta.rowwise().sum() / numberOfExamples;
+                    this->layer->gb = sigma.rowwise().sum() / numberOfExamples;
 
                     if (this->previousLayer != nullptr) {
-                        Math::T_Matrix tmp1 = this->layer->W.transpose() * delta;
-                        Math::T_Matrix tmp2 = previousLayer->derivative();
+                        Math::T_Matrix tmp1 = this->layer->W.transpose() * sigma;
+                        Math::T_Matrix tmp2 = this->previousLayer->derivative();
 
-                        return tmp1.array() * tmp2.array(); // new delta
+                        return tmp1.array() * tmp2.array();
                     }
                     return Math::T_Matrix(); // return empty - this is first layer
                 }

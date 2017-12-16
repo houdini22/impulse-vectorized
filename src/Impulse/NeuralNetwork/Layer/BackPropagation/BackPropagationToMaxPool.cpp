@@ -8,13 +8,13 @@ namespace Impulse {
 
             namespace BackPropagation {
 
-                BackPropagationToPool::BackPropagationToPool
+                BackPropagationToMaxPool::BackPropagationToMaxPool
                         (Layer::LayerPointer layer, Layer::LayerPointer previousLayer) :
                         Abstract(layer, previousLayer) {
 
                 }
 
-                Math::T_Matrix BackPropagationToPool::propagate(Math::T_Matrix input,
+                Math::T_Matrix BackPropagationToMaxPool::propagate(Math::T_Matrix input,
                                                                 T_Size numberOfExamples,
                                                                 double regularization,
                                                                 Math::T_Matrix delta) {
@@ -31,7 +31,7 @@ namespace Impulse {
 
 #pragma omp parallel
 #pragma omp for
-                    for (T_Size i = 0; i < layer->Z.cols(); i++) {
+                    for (T_Size i = 0; i < numberOfExamples; i++) {
 
                         for (int boundingY = 0;
                              boundingY + filterSize <= height;
@@ -59,7 +59,6 @@ namespace Impulse {
                                 }
                             }
                         }
-
                     }
 
                     return result;

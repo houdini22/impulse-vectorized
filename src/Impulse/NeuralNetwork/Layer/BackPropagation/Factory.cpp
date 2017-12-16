@@ -12,10 +12,14 @@ namespace Impulse {
                     if (previousLayer == nullptr) {
                         if (layer->is1D()) {
                             return BackPropagationPointer(new BackPropagation1DTo1D(layer, previousLayer));
+                        } else if (layer->getType() == Layer::TYPE_CONV) {
+
                         }
                     } else {
-                        if (previousLayer->getType() == Layer::TYPE_CONV) {
-                            return BackPropagationPointer(new BackPropagationToPool(layer, previousLayer));
+                        if (previousLayer->getType() == Layer::TYPE_MAXPOOL) {
+                            return BackPropagationPointer(new BackPropagationToMaxPool(layer, previousLayer));
+                        } else if (previousLayer->getType() == Layer::TYPE_CONV && layer->is3D()) {
+                            return BackPropagationPointer(new BackPropagationToConv(layer, previousLayer));
                         } else if (previousLayer->is1D() && layer->is1D()) {
                             return BackPropagationPointer(new BackPropagation1DTo1D(layer, previousLayer));
                         }

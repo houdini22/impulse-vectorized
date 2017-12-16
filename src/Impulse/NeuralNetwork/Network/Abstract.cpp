@@ -30,11 +30,12 @@ namespace Impulse {
                 long m = X.cols();
                 T_Size size = this->getSize();
 
-                Math::T_Matrix sigma = predictions.array() - Y.array();
+                Math::T_Matrix delta = predictions.array() - Y.array();
 
                 for (long i = this->layers.size() - 1; i >= 0; i--) {
                     auto layer = this->layers.at(static_cast<unsigned long>(i));
-                    sigma = layer->backpropagation->propagate(X, m, regularization, sigma);
+                    std::cout << "i: " << i << std::endl;
+                    delta = layer->backpropagation->propagate(X, m, regularization, delta);
                 }
             }
 

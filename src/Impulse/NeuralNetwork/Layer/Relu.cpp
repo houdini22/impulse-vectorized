@@ -19,7 +19,7 @@ namespace Impulse {
             }
 
             Math::T_Matrix Relu::derivative() {
-                this->A = this->A.unaryExpr([](const double x) {
+                return this->A.unaryExpr([](const double x) {
                     if (x < 0.0) {
                         return 0.0;
                     }

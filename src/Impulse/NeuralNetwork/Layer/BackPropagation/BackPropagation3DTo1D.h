@@ -1,7 +1,5 @@
-#ifndef IMPULSE_VECTORIZED_BACKPROPAGATION1DTO3D_H
-#define IMPULSE_VECTORIZED_BACKPROPAGATION1DTO3D_H
-
-#include "../../include.h"
+#ifndef IMPULSE_VECTORIZED_BACKPROPAGATION3DTO1D_H
+#define IMPULSE_VECTORIZED_BACKPROPAGATION3DTO1D_H
 
 namespace Impulse {
 
@@ -11,9 +9,9 @@ namespace Impulse {
 
             namespace BackPropagation {
 
-                class BackPropagationToPool : public Abstract {
+                class BackPropagation3DTo1D : public Abstract {
                 public:
-                    BackPropagationToPool(Layer::LayerPointer layer, Layer::LayerPointer previousLayer);
+                    BackPropagation3DTo1D(Layer::LayerPointer layer, Layer::LayerPointer previousLayer);
 
                     Math::T_Matrix propagate(Math::T_Matrix input,
                                              T_Size numberOfExamples,
@@ -25,4 +23,4 @@ namespace Impulse {
     }
 }
 
-#endif //IMPULSE_VECTORIZED_BACKPROPAGATION1DTO1D_H
+#endif //IMPULSE_VECTORIZED_BACKPROPAGATION3DTO1D_H
