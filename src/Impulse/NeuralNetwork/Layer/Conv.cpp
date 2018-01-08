@@ -10,26 +10,16 @@ namespace Impulse {
 
             void Conv::configure() {
                 this->W.resize(this->numFilters, this->filterSize * this->filterSize * this->depth);
-                this->W.setRandom();
-                this->W = this->W * sqrt(2.0 / this->filterSize * this->filterSize * this->depth);
+                this->W.setOnes();
+
+                //this->W.setRandom();
+                //this->W = this->W * sqrt(2.0 / this->filterSize * this->filterSize * this->depth);
 
                 this->b.resize(this->numFilters, 1);
                 this->b.setOnes();
 
                 this->gW.resize(this->numFilters, this->filterSize * this->filterSize * this->depth);
                 this->gb.resize(this->numFilters, 1);
-
-                /*this->W.row(0) << -1, 1, 0, 1, -1, -1, 0, 1, 1,
-                        1, -1, 0, 0, 1, 1, 0, 1, -1,
-                        0, 0, 1, 1, 1, 0, -1, 0, 1;
-                this->W.row(1) << 1, 1, -1, 0, 1, 0, 0, 0, -1,
-                        1, 0, 0, 0, 0, 1, -1, 0, 1,
-                        -1, 0, -1, 0, 1, -1, 0, 0, -1;
-                this->b.row(0) << 1;
-                this->b.row(1) << 0;
-
-                std::cout << "W" << std::endl << this->W << std::endl;
-                std::cout << "b" << std::endl << this->b << std::endl;*/
             }
 
             Math::T_Matrix Conv::forward(const Math::T_Matrix &input) {
@@ -55,8 +45,12 @@ namespace Impulse {
 
                 }
                 this->A = this->activation();
+
+                std::cout << "CONV INPUT: " << input.rows() << "," << input.cols() << std::endl << input << std::endl;
+                std::cout << "CONV ACTIVATED: " << this->A.rows() << "," << this->A.cols() << std::endl << this->A << std::endl;
+
                 // normalization
-                this->A.colwise().normalize();
+                //this->A.colwise().normalize();
                 return this->A;
             }
 

@@ -61,6 +61,9 @@ namespace Impulse {
                         }
                     }
 
+                    std::cout << "MAX POOL DELTA RECEIVED: " << std::endl << delta << std::endl;
+                    std::cout << "MAX POOL DELTA SENT: " << std::endl << result << std::endl;
+
                     return result;
                 }
             }

@@ -241,6 +241,52 @@ void test_conv_backward() {
     trainer.train(dataset);
 }
 
+void test_conv_backward2() {
+    Builder::ConvBuilder builder({2, 2, 1});
+
+    builder.createLayer<Layer::Conv>([](auto *layer) {
+        layer->setFilterSize(1);
+        layer->setPadding(0);
+        layer->setStride(1);
+        layer->setNumFilters(4);
+    });
+
+    builder.createLayer<Layer::MaxPool>([](auto *layer) {
+        layer->setFilterSize(2);
+        layer->setStride(2);
+    });
+
+    builder.createLayer<Layer::FullyConnected>([](auto *layer) {
+        layer->setSize(4);
+    });
+
+    Network::ConvNetwork net = builder.getNetwork();
+
+    Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
+            "/home/hud/projekty/impulse-vectorized/data/test1_x.csv");
+    Impulse::Dataset datasetInput = datasetBuilder1.build();
+
+    Impulse::DatasetBuilder::CSVBuilder datasetBuilder2(
+            "/home/hud/projekty/impulse-vectorized/data/test1_y.csv");
+    Impulse::Dataset datasetOutput = datasetBuilder2.build();
+
+    Impulse::SlicedDataset dataset;
+    dataset.input = datasetInput;
+    dataset.output = datasetOutput;
+
+    Math::T_Matrix netOutput = net.forward(datasetInput.getSampleAt(0)->exportToEigen());
+    std::cout << "OUTPUT: " << std::endl << netOutput.rows() << "," << netOutput.cols() << std::endl;
+
+    Trainer::GradientDescent trainer(net);
+    trainer.setLearningIterations(1);
+    trainer.setVerboseStep(1);
+    trainer.setRegularization(0.0);
+    trainer.setVerbose(true);
+    trainer.setLearningRate(0.01);
+
+    trainer.train(dataset);
+}
+
 void test_conv() {
     //Impulse::SlicedDataset dataset = getDataset();
 
@@ -610,6 +656,7 @@ int main() {
     //face();
     //videoFace();
     //test_test();
-    test_conv_backward();
+    //test_conv_backward();
+    test_conv_backward2();
     return 0;
 }
