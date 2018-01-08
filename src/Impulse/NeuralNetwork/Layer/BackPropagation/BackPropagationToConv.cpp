@@ -30,9 +30,7 @@ namespace Impulse {
                     T_Size inputHeight = previousLayer->getHeight();
                     T_Size inputDepth = previousLayer->getDepth();
 
-                    Math::T_Matrix result(
-                            previousLayer->getWidth() * previousLayer->getHeight() * previousLayer->getDepth(),
-                            input.cols());
+                    Math::T_Matrix result(inputWidth * inputHeight * inputDepth, input.cols());
                     result.setZero();
 
                     previousLayer->gW.setZero();
@@ -49,14 +47,32 @@ namespace Impulse {
                                     T_Size horizStart = stride * w;
                                     T_Size horizEnd = horizStart + filterSize;
 
-                                    previousLayer->A(c * (outputWidth * outputHeight) +
-                                                     (h *
-                                                      previousLayer->getOutputWidth()) +
-                                                     w, m);
+                                    previousLayer->A(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
 
-                                    previousLayer->gb(c, 0) +=
-                                            delta(c * (outputWidth * outputHeight) +
-                                                  (h * previousLayer->getOutputWidth()) + w, m);
+
+                                    // filter loop
+                                    for (T_Size d = 0; d < inputDepth; d++) {
+                                        for (T_Size y = 0, vStart = vertStart; vStart < vertEnd; y++, vStart++) {
+                                            for (T_Size x = 0, hStart = horizStart; hStart < horizEnd; x++, hStart++) {
+                                                /*previousLayer->W(c, d * (inputWidth * inputHeight) + (filterSize * y) + x);
+                                                delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
+                                                result(d * (inputWidth * inputHeight) + (inputWidth * y) + x, m);
+                                                std::cout << "DATA: " << x << "," << y << "," << c << std::endl;*/
+                                                result(d * (inputWidth * inputHeight) + (h * inputWidth) + w, m) +=
+                                                        previousLayer->W(c, d * (filterSize * filterSize) + (filterSize * y) + x) *
+                                                                delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
+
+                                                // std::cout << "RESULT: " << d * (inputWidth * inputHeight) + (h * inputWidth) + w << std::endl;
+                                                previousLayer->A(c * (outputWidth * outputHeight), m);
+                                            }
+                                        }
+                                    }
+
+
+                                    previousLayer->gb(c, 0) += delta(
+                                            c * (outputWidth * outputHeight) + (h * outputWidth) + w,
+                                            m
+                                    );
                                 }
                             }
                         }

@@ -38,6 +38,8 @@ namespace Impulse {
                                                         this->padding, this->padding,
                                                         this->stride, this->stride);
 
+                    std::cout << "CONV: " << conv.rows() << "," << conv.cols() << std::endl << conv << std::endl;
+
                     Math::T_Matrix tmp = ((this->W * conv).colwise() + this->b).transpose(); // transpose for
                     // rolling to vector
                     Eigen::Map<Math::T_Vector> tmp2(tmp.data(), tmp.size());
