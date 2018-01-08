@@ -33,12 +33,15 @@ namespace Impulse {
             }
 
             Math::T_Matrix Conv::forward(const Math::T_Matrix &input) {
-                this->Z.resize(this->getOutputWidth() * this->getOutputHeight() * this->getOutputDepth(),
+                this->Z.resize(this->width * this->height * this->depth, input.cols());
+                this->A.resize(this->getOutputWidth() * this->getOutputHeight() * this->getOutputDepth(),
                                input.cols());
 
 #pragma omp parallel
 #pragma omp for
                 for (T_Size i = 0; i < input.cols(); i++) {
+                    this->Z.col(i) = input.col(i);
+
                     Math::T_Matrix conv = Utils::im2col(input.col(i), this->depth,
                                                         this->height, this->width,
                                                         this->filterSize, this->filterSize,
@@ -48,7 +51,7 @@ namespace Impulse {
                     Math::T_Matrix tmp = ((this->W * conv).colwise() + this->b).transpose(); // transpose for
                     // rolling to vector
                     Eigen::Map<Math::T_Vector> tmp2(tmp.data(), tmp.size());
-                    this->Z.col(i) = tmp2;
+                    this->A.col(i) = tmp2;
 
                 }
                 this->A = this->activation();
@@ -73,20 +76,36 @@ namespace Impulse {
                 this->filterSize = value;
             }
 
+            T_Size Conv::getFilterSize() {
+                return this->filterSize;
+            }
+
             void Conv::setPadding(T_Size value) {
                 this->padding = value;
+            }
+
+            T_Size Conv::getPadding() {
+                return this->padding;
             }
 
             void Conv::setStride(T_Size value) {
                 this->stride = value;
             }
 
+            T_Size Conv::getStride() {
+                return this->stride;
+            }
+
             void Conv::setNumFilters(T_Size value) {
                 this->numFilters = value;
             }
 
+            T_Size Conv::getNumFilters() {
+                return this->numFilters;
+            }
+
             Math::T_Matrix Conv::activation() {
-                return this->Z.unaryExpr([](const double x) {
+                return this->A.unaryExpr([](const double x) {
                     return std::max(0.0, x); // TODO: set it; relu by default
                 });
             }

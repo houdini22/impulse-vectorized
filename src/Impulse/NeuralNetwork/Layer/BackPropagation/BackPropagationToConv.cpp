@@ -19,20 +19,39 @@ namespace Impulse {
                                                                 double regularization,
                                                                 Math::T_Matrix delta) {
 
-                    Layer::LayerPointer previousLayer = this->previousLayer;
-                    Math::T_Matrix result(previousLayer->A.rows(), previousLayer->A.cols());
+                    auto *previousLayer = (Layer::Conv *) this->previousLayer.get();
+
+                    T_Size stride = previousLayer->getStride();
+                    T_Size filterSize = previousLayer->getFilterSize();
+
+                    Math::T_Matrix result(
+                            previousLayer->getWidth() * previousLayer->getHeight() * previousLayer->getDepth(),
+                            input.cols());
                     result.setZero();
 
-                    this->layer->gW.setZero();
-                    this->layer->gb.setZero();
+                    previousLayer->gW.setZero();
+                    previousLayer->gb.setZero();
 
 #pragma omp parallel
 #pragma omp for
-                    for (T_Size i = 0; i < numberOfExamples; i++) {
-                        for (T_Size y = 0; y < this->previousLayer->getHeight(); y++) {
-                            for (T_Size x = 0; x < this->previousLayer->getWidth(); x++) {
-                                for (T_Size c = 0; c < this->previousLayer->getDepth(); c++) {
+                    for (T_Size m = 0; m < numberOfExamples; m++) {
+                        for (T_Size h = 0; h < previousLayer->getOutputHeight(); h++) {
+                            for (T_Size w = 0; w < previousLayer->getOutputWidth(); w++) {
+                                for (T_Size c = 0; c < previousLayer->getOutputDepth(); c++) {
+                                    T_Size vertStart = stride * h;
+                                    T_Size vertEnd = vertStart + filterSize;
+                                    T_Size horizStart = stride * w;
+                                    T_Size horizEnd = horizStart + filterSize;
 
+                                    for (T_Size x = 0, hStart = horizStart; hStart <= horizEnd; x++, hStart++) {
+                                        for (T_Size y = 0, vStart = vertStart; vStart <= vertEnd; y++, vStart++) {
+                                            for (T_Size inputChannel = 0;
+                                                 inputChannel < previousLayer->getDepth(); inputChannel++) {
+                                                result(inputChannel * (vStart * previousLayer->getWidth()) + hStart, m);
+                                                previousLayer->W(c, inputChannel * (y * filterSize) + x);
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }

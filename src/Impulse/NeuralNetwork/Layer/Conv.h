@@ -34,11 +34,19 @@ namespace Impulse {
 
                 void setFilterSize(T_Size value);
 
+                T_Size getFilterSize();
+
                 void setPadding(T_Size value);
+
+                T_Size getPadding();
 
                 void setStride(T_Size value);
 
+                T_Size getStride();
+
                 void setNumFilters(T_Size value);
+
+                T_Size getNumFilters();
 
                 Math::T_Matrix activation() override;
 
