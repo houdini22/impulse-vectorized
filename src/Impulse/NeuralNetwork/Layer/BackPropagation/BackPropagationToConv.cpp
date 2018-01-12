@@ -63,7 +63,7 @@ namespace Impulse {
                                                                 delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
 
                                                 // std::cout << "RESULT: " << d * (inputWidth * inputHeight) + (h * inputWidth) + w << std::endl;
-                                                previousLayer->A(c * (outputWidth * outputHeight), m);
+                                                std::cout << "!!!: " << c * (outputWidth * outputHeight) + (h * outputWidth) + w << std::endl;
                                             }
                                         }
                                     }
