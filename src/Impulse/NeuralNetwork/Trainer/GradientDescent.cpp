@@ -26,6 +26,10 @@ namespace Impulse {
                     for (T_Size j = 0; j < network.getSize(); j++) {
                         Layer::LayerPointer layer = network.getLayer(j);
 
+                        if (layer->getType() == Layer::TYPE_MAXPOOL) {
+                            continue;
+                        }
+
                         layer->W = layer->W.array() - learningRate * (layer->gW.array());
                         layer->b = layer->b.array() - learningRate * (layer->gb.array());
                     }

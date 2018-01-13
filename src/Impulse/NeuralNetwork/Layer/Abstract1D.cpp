@@ -18,6 +18,9 @@ namespace Impulse {
                 // initialize bias
                 this->b.resize(this->height);
                 this->b.setOnes();
+
+                this->gW.resize(this->height, this->width);
+                this->gb.resize(this->height);
             }
 
             bool Abstract1D::is1D() {

@@ -19,7 +19,7 @@ namespace Impulse {
                                                                 double regularization,
                                                                 Math::T_Matrix sigma) {
 
-                    return Math::T_Matrix(); // return empty - this is first layer
+                    return sigma;
                 }
             }
         }

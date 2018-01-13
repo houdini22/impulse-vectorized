@@ -263,11 +263,11 @@ void test_conv_backward2() {
     Network::ConvNetwork net = builder.getNetwork();
 
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
-            "/home/hud/projekty/impulse-vectorized/data/test1_x.csv");
+            "/home/hud/CLionProjects/impulse-vectorized/data/test1_x.csv");
     Impulse::Dataset datasetInput = datasetBuilder1.build();
 
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder2(
-            "/home/hud/projekty/impulse-vectorized/data/test1_y.csv");
+            "/home/hud/CLionProjects/impulse-vectorized/data/test1_y.csv");
     Impulse::Dataset datasetOutput = datasetBuilder2.build();
 
     Impulse::SlicedDataset dataset;
