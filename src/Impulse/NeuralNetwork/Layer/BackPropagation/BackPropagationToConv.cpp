@@ -51,16 +51,9 @@ namespace Impulse {
 
                                     // filter loop
                                     for (T_Size d = 0; d < inputDepth; d++) {
-                                        for (T_Size y = 0, vStart = vertStart; y < vertEnd - vertStart; y++, vStart++) {
+                                        for (T_Size y = 0, vStart = vertStart; y < filterSize; y++, vStart++) {
                                             for (T_Size x = 0, hStart = horizStart;
-                                                 x < horizEnd - horizStart; x++, hStart++) {
-                                                //previousLayer->W(c, d * (filterSize * filterSize) + (y * filterSize) + x);
-                                                //delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
-
-                                                /*std::cout << "RESULT: "
-                                                          << (d * (inputWidth + padding) * (inputHeight + padding)) + (vertStart * (inputWidth + padding)) + horizStart
-                                                          << std::endl;*/
-
+                                                 x < filterSize; x++, hStart++) {
                                                 tmpResult((d * (inputWidth + padding) * (inputHeight + padding)) +
                                                           (vertStart * (inputWidth + padding)) + horizStart, m) +=
                                                         previousLayer->W(c, d * (filterSize * filterSize) +
