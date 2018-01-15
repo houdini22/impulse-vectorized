@@ -72,8 +72,7 @@ namespace Impulse {
                             int outputOffset = resultWidth * resultHeight * channel;
                             for (int y = 0; y < kernel_h; y++) {
                                 for (int x = 0; x < kernel_w; x++) {
-                                    _max = std::max(_max,
-                                                    input(inputOffset + ((y + boundingY) * width) + boundingX + x, 0));
+                                    _max = std::max(_max, input(inputOffset + ((y + boundingY) * width) + boundingX + x, 0));
                                 }
                             }
                             result(outputOffset + currentResultCol, 0) = _max;

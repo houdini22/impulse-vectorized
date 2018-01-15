@@ -15,9 +15,9 @@ namespace Impulse {
                 }
 
                 Math::T_Matrix BackPropagationToMaxPool::propagate(Math::T_Matrix input,
-                                                                T_Size numberOfExamples,
-                                                                double regularization,
-                                                                Math::T_Matrix delta) {
+                                                                   T_Size numberOfExamples,
+                                                                   double regularization,
+                                                                   Math::T_Matrix delta) {
 
                     Layer::MaxPool *prevLayer = (Layer::MaxPool *) this->previousLayer.get();
                     Math::T_Matrix result(prevLayer->Z.rows(), prevLayer->Z.cols());
@@ -32,19 +32,16 @@ namespace Impulse {
 //#pragma omp parallel
 //#pragma omp for
                     for (T_Size m = 0; m < numberOfExamples; m++) {
-                        for (int boundingY = 0;
-                             boundingY + filterSize <= height;
-                             boundingY += stride) {
-                            for (int boundingX = 0;
-                                 boundingX + filterSize <= width;
-                                 boundingX += stride) {
-                                for (int channel = 0; channel < channels; channel++) {
+                        for (T_Size channel = 0; channel < channels; channel++) {
+                            for (T_Size boundingY = 0; boundingY + filterSize <= height; boundingY += stride) {
+                                for (T_Size boundingX = 0; boundingX + filterSize <= width; boundingX += stride) {
                                     double _max = -INFINITY;
-                                    int inputOffset = height * width * channel;
-                                    int maxX = 0;
-                                    int maxY = 0;
-                                    for (int filterY = 0; filterY < filterSize; filterY++) {
-                                        for (int filterX = 0; filterX < filterSize; filterX++) {
+                                    T_Size inputOffset = height * width * channel;
+                                    T_Size maxX = 0;
+                                    T_Size maxY = 0;
+
+                                    for (T_Size filterY = 0; filterY < filterSize; filterY++) {
+                                        for (T_Size filterX = 0; filterX < filterSize; filterX++) {
                                             if (_max < prevLayer->Z(inputOffset + ((filterY + boundingY) * width) + boundingX + filterX, m)) {
                                                 _max = prevLayer->Z(inputOffset + ((filterY + boundingY) * width) + boundingX + filterX, m);
                                                 maxX = filterX;
@@ -58,8 +55,8 @@ namespace Impulse {
                         }
                     }
 
-                    std::cout << "MAX POOL DELTA RECEIVED: " << std::endl << delta << std::endl;
-                    std::cout << "MAX POOL DELTA SENT: " << std::endl << result << std::endl;
+                    //std::cout << "MAX POOL DELTA RECEIVED: " << std::endl << delta << std::endl;
+                    //std::cout << "MAX POOL DELTA SENT: " << std::endl << result << std::endl;
 
                     return result;
                 }

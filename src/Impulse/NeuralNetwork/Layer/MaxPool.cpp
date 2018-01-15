@@ -43,8 +43,8 @@ namespace Impulse {
                                                    this->stride, this->stride);
                 }
 
-                //std::cout << "MAX POOL INPUT: " << input.rows() << "," << input.cols() << std::endl << input << std::endl;
-                //std::cout << "MAX POOL OUTPUT: " << result.rows() << "," << result.cols() << std::endl << result << std::endl;
+                //std::cout << "MAX POOL INPUT: " << input.rows() << "," << input.cols() << std::endl;
+                //std::cout << "MAX POOL OUTPUT: " << this->A.rows() << "," << this->A.cols() << std::endl;
 
                 return this->A;
             }

@@ -63,10 +63,7 @@ namespace Impulse {
                                         }
                                     }
 
-                                    previousLayer->gb(c, 0) += sigma(
-                                            c * (outputWidth * outputHeight) + (h * outputWidth) + w,
-                                            m
-                                    );
+                                    previousLayer->gb(c, 0) += sigma(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
                                 }
                             }
                         }

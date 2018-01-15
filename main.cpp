@@ -291,7 +291,7 @@ void test_conv_backward2() {
     std::cout << "OUTPUT: " << std::endl << netOutput << std::endl;
 
     Trainer::GradientDescent trainer(net);
-    trainer.setLearningIterations(10000);
+    trainer.setLearningIterations(5000);
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
     trainer.setVerbose(true);
@@ -746,7 +746,7 @@ int main() {
     //videoFace();
     //test_test();
     //test_conv_backward();
-    //test_conv_backward2();
-    test_conv_mnist();
+    test_conv_backward2();
+    //test_conv_mnist();
     return 0;
 }
