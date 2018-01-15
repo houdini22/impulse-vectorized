@@ -93,8 +93,8 @@ namespace Impulse {
                     previousLayer->gb /= numberOfExamples;
                     previousLayer->gW /= numberOfExamples;
 
-                    std::cout << "CONV DELTA RECEIVED: " << std::endl << delta << std::endl;
-                    std::cout << "CONV DELTA SENT: " << std::endl << tmpResult << std::endl;
+                    //std::cout << "CONV DELTA RECEIVED: " << std::endl << delta << std::endl;
+                    //std::cout << "CONV DELTA SENT: " << std::endl << tmpResult << std::endl;
                     //std::cout << "DELTA GW: " << std::endl << previousLayer->gW << std::endl;
                     //std::cout << "DELTA GB: " << std::endl << previousLayer->gb << std::endl;
 

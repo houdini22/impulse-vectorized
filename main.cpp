@@ -28,7 +28,7 @@
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
 
 #include "src/Impulse/NeuralNetwork/include.h"
-#include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/Modifier/Callback.h"
+#include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/Modifier/Category.h"
 #include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/Modifier/MinMaxScaling.h"
 
 using namespace std::chrono;
@@ -248,7 +248,7 @@ void test_conv_backward2() {
         layer->setFilterSize(1);
         layer->setPadding(0);
         layer->setStride(1);
-        layer->setNumFilters(4);
+        layer->setNumFilters(32);
     });
 
     builder.createLayer<Layer::MaxPool>([](auto *layer) {
@@ -291,7 +291,7 @@ void test_conv_backward2() {
     std::cout << "OUTPUT: " << std::endl << netOutput << std::endl;
 
     Trainer::GradientDescent trainer(net);
-    trainer.setLearningIterations(1);
+    trainer.setLearningIterations(500);
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
     trainer.setVerbose(true);
@@ -303,6 +303,95 @@ void test_conv_backward2() {
 
     Serializer serializer(net);
     serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/conv.json");
+}
+
+void test_conv_mnist() {
+    Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
+            "/home/hud/CLionProjects/impulse-vectorized/data/mnist_test.csv");
+    Impulse::Dataset dataset = datasetBuilder1.build();
+    Impulse::DatasetModifier::DatasetSlicer slicer(&dataset);
+    slicer.addOutputColumn(0);
+    for (int i = 0; i < 28 * 28; i++) {
+        slicer.addInputColumn(i + 1);
+    }
+
+    Impulse::SlicedDataset slicedDataset = slicer.slice();
+
+    Impulse::DatasetModifier::Modifier::MinMaxScaling modifier(&slicedDataset.input);
+    modifier.apply();
+    Impulse::DatasetModifier::Modifier::Category modifier2(&slicedDataset.output);
+    modifier2.applyToColumn(0);
+
+    Builder::ConvBuilder builder({28, 28, 1});
+
+    builder.createLayer<Layer::Conv>([](auto *layer) {
+        layer->setFilterSize(3);
+        layer->setPadding(0);
+        layer->setStride(1);
+        layer->setNumFilters(32);
+    });
+
+    builder.createLayer<Layer::Conv>([](auto *layer) {
+        layer->setFilterSize(3);
+        layer->setPadding(0);
+        layer->setStride(1);
+        layer->setNumFilters(32);
+    });
+
+    builder.createLayer<Layer::MaxPool>([](auto *layer) {
+        layer->setFilterSize(2);
+        layer->setStride(2);
+    });
+
+    builder.createLayer<Layer::Conv>([](auto *layer) {
+        layer->setFilterSize(3);
+        layer->setPadding(0);
+        layer->setStride(1);
+        layer->setNumFilters(64);
+    });
+
+    builder.createLayer<Layer::Conv>([](auto *layer) {
+        layer->setFilterSize(3);
+        layer->setPadding(0);
+        layer->setStride(1);
+        layer->setNumFilters(64);
+    });
+
+    builder.createLayer<Layer::MaxPool>([](auto *layer) {
+        layer->setFilterSize(2);
+        layer->setStride(2);
+    });
+
+    builder.createLayer<Layer::FullyConnected>([](auto *layer) {
+        layer->setSize(512);
+    });
+
+    builder.createLayer<Layer::Softmax>([](auto *layer) {
+        layer->setSize(10);
+    });
+
+    Network::ConvNetwork net = builder.getNetwork();
+
+    Math::T_Matrix netOutput = net.forward(slicedDataset.input.getSampleAt(0)->exportToEigen());
+    std::cout << "OUTPUT: " << std::endl << netOutput << std::endl;
+
+    Trainer::GradientDescent trainer(net);
+    trainer.setLearningIterations(500);
+    trainer.setVerboseStep(1);
+    trainer.setRegularization(0.0);
+    trainer.setVerbose(true);
+    trainer.setLearningRate(0.05);
+
+    std::cout << "ERROR: " << trainer.cost(slicedDataset).getCost() << std::endl;
+
+    return;
+/*
+
+
+    trainer.train(dataset);
+
+    Serializer serializer(net);
+    serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/conv.json");*/
 }
 
 void test_conv() {
@@ -675,6 +764,7 @@ int main() {
     //videoFace();
     //test_test();
     //test_conv_backward();
-    test_conv_backward2();
+    //test_conv_backward2();
+    test_conv_mnist();
     return 0;
 }

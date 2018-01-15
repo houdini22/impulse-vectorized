@@ -39,6 +39,8 @@ namespace Impulse {
                                                             this->height, this->width,
                                                             this->filterSize, this->filterSize,
                                                             this->stride, this->stride);
+                    //std::cout << result.rows() << "," << maxPool.rows() << std::endl;
+                    //std::cout << (this->width) << "," << (this->filterSize) << std::endl;
                     result.col(i) = maxPool;
                 }
 
@@ -72,7 +74,7 @@ namespace Impulse {
             }
 
             T_Size MaxPool::getOutputHeight() {
-                return (this->height - this->filterSize) / this->stride + 1;;
+                return (this->height - this->filterSize) / this->stride + 1;
             }
 
             T_Size MaxPool::getOutputWidth() {
