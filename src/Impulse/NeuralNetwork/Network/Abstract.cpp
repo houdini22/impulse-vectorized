@@ -28,13 +28,12 @@ namespace Impulse {
             void
             Abstract::backward(Math::T_Matrix X, Math::T_Matrix Y, Math::T_Matrix predictions, double regularization) {
                 long m = X.cols();
-                T_Size size = this->getSize();
 
                 Math::T_Matrix delta = predictions.array() - Y.array();
 
                 for (long i = this->layers.size() - 1; i >= 0; i--) {
                     auto layer = this->layers.at(static_cast<unsigned long>(i));
-                    std::cout << "i: " << i << std::endl;
+                    //std::cout << "LAYER INDEX: " << i << std::endl;
                     delta = layer->backpropagation->propagate(X, m, regularization, delta);
                 }
             }

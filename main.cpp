@@ -260,6 +260,10 @@ void test_conv_backward2() {
         layer->setSize(4);
     });
 
+    builder.createLayer<Layer::Softmax>([](auto *layer) {
+        layer->setSize(2);
+    });
+
     Network::ConvNetwork net = builder.getNetwork();
 
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
@@ -274,15 +278,17 @@ void test_conv_backward2() {
     dataset.input = datasetInput;
     dataset.output = datasetOutput;
 
-    Math::T_Matrix netOutput = net.forward(datasetInput.getSampleAt(0)->exportToEigen());
-    std::cout << "OUTPUT: " << std::endl << netOutput.rows() << "," << netOutput.cols() << std::endl;
+    Math::T_Matrix netOutput = net.forward(datasetInput.getSampleAt(1)->exportToEigen());
+    std::cout << "OUTPUT: " << std::endl << netOutput << std::endl;
 
     Trainer::GradientDescent trainer(net);
-    trainer.setLearningIterations(1);
+    trainer.setLearningIterations(500);
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
     trainer.setVerbose(true);
-    trainer.setLearningRate(0.01);
+    trainer.setLearningRate(0.05);
+
+    std::cout << "ERROR: " << trainer.cost(dataset).getCost() << std::endl;
 
     trainer.train(dataset);
 }

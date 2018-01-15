@@ -42,8 +42,8 @@ namespace Impulse {
                     result.col(i) = maxPool;
                 }
 
-                std::cout << "MAX POOL INPUT: " << input.rows() << "," << input.cols() << std::endl << input << std::endl;
-                std::cout << "MAX POOL OUTPUT: " << result.rows() << "," << result.cols() << std::endl << result << std::endl;
+                //std::cout << "MAX POOL INPUT: " << input.rows() << "," << input.cols() << std::endl << input << std::endl;
+                //std::cout << "MAX POOL OUTPUT: " << result.rows() << "," << result.cols() << std::endl << result << std::endl;
 
                 return this->A = result;
             }

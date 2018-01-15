@@ -6,7 +6,7 @@ namespace Impulse {
 
         namespace Layer {
 
-            FullyConnected::FullyConnected() : Relu() {};
+            FullyConnected::FullyConnected() : Logistic() {};
 
             const T_String FullyConnected::getType() {
                 return TYPE_FULLYCONNECTED;

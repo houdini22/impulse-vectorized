@@ -11,9 +11,9 @@ namespace Impulse {
             void Abstract1D::configure() {
                 // initialize weights
                 this->W.resize(this->height, this->width);
-                this->W.setOnes();
-                //this->W.setRandom();
-                //this->W = this->W * sqrt(2.0 / this->width);
+                //this->W.setOnes();
+                this->W.setRandom();
+                this->W = this->W * sqrt(2.0 / this->width);
 
                 // initialize bias
                 this->b.resize(this->height);

@@ -21,6 +21,7 @@ namespace Impulse {
 
                     auto *previousLayer = (Layer::Conv *) this->previousLayer.get();
 
+                    T_Size padding = previousLayer->getPadding();
                     T_Size stride = previousLayer->getStride();
                     T_Size filterSize = previousLayer->getFilterSize();
                     T_Size outputWidth = previousLayer->getOutputWidth();
@@ -30,14 +31,15 @@ namespace Impulse {
                     T_Size inputHeight = previousLayer->getHeight();
                     T_Size inputDepth = previousLayer->getDepth();
 
-                    Math::T_Matrix result(inputWidth * inputHeight * inputDepth, input.cols());
-                    result.setZero();
+                    Math::T_Matrix tmpResult((inputWidth + padding) * (inputHeight + padding) * inputDepth,
+                                             input.cols());
+                    tmpResult.setZero();
 
                     previousLayer->gW.setZero();
                     previousLayer->gb.setZero();
 
-#pragma omp parallel
-#pragma omp for
+//#pragma omp parallel
+//#pragma omp for
                     for (T_Size m = 0; m < numberOfExamples; m++) {
                         for (T_Size c = 0; c < outputDepth; c++) {
                             for (T_Size h = 0; h < outputHeight; h++) {
@@ -47,23 +49,35 @@ namespace Impulse {
                                     T_Size horizStart = stride * w;
                                     T_Size horizEnd = horizStart + filterSize;
 
-                                    previousLayer->A(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
-
+                                    //std::cout << "RESULT: " << c * (outputWidth * outputHeight) + (h * outputWidth) + w << std::endl;
 
                                     // filter loop
                                     for (T_Size d = 0; d < inputDepth; d++) {
-                                        for (T_Size y = 0, vStart = vertStart; vStart < vertEnd; y++, vStart++) {
-                                            for (T_Size x = 0, hStart = horizStart; hStart < horizEnd; x++, hStart++) {
-                                                /*previousLayer->W(c, d * (inputWidth * inputHeight) + (filterSize * y) + x);
-                                                delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
-                                                result(d * (inputWidth * inputHeight) + (inputWidth * y) + x, m);
-                                                std::cout << "DATA: " << x << "," << y << "," << c << std::endl;*/
-                                                result(d * (inputWidth * inputHeight) + (h * inputWidth) + w, m) +=
-                                                        previousLayer->W(c, d * (filterSize * filterSize) + (filterSize * y) + x) *
-                                                                delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
+                                        for (T_Size y = 0, vStart = vertStart; y < vertEnd - vertStart; y++, vStart++) {
+                                            for (T_Size x = 0, hStart = horizStart;
+                                                 x < horizEnd - horizStart; x++, hStart++) {
+                                                //previousLayer->W(c, d * (filterSize * filterSize) + (y * filterSize) + x);
+                                                //delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
 
-                                                // std::cout << "RESULT: " << d * (inputWidth * inputHeight) + (h * inputWidth) + w << std::endl;
-                                                std::cout << "!!!: " << c * (outputWidth * outputHeight) + (h * outputWidth) + w << std::endl;
+                                                /*std::cout << "RESULT: "
+                                                          << (d * (inputWidth + padding) * (inputHeight + padding)) + (vertStart * (inputWidth + padding)) + horizStart
+                                                          << std::endl;*/
+
+                                                tmpResult((d * (inputWidth + padding) * (inputHeight + padding)) +
+                                                          (vertStart * (inputWidth + padding)) + horizStart, m) +=
+                                                        previousLayer->W(c, d * (filterSize * filterSize) +
+                                                                            (y * filterSize) + x) *
+                                                        delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w,
+                                                              m);
+
+                                                previousLayer->gW(c, d * (filterSize * filterSize) +
+                                                                     (y * filterSize) + x) += previousLayer->A(
+                                                        (d * (inputWidth + padding) * (inputHeight + padding)) +
+                                                        (vertStart * (inputWidth + padding)) + horizStart, m)
+                                                                     *
+                                                                     delta(c * (outputWidth * outputHeight) +
+                                                                           (h * outputWidth) + w,
+                                                                           m);
                                             }
                                         }
                                     }
@@ -78,12 +92,15 @@ namespace Impulse {
                         }
                     }
 
-                    std::cout << "CONV WEIGHTS SIZE: " << std::endl << previousLayer->W.rows() << ","
-                              << previousLayer->W.cols() << std::endl;
-                    std::cout << "CONV DELTA RECEIVED: " << std::endl << delta << std::endl;
-                    std::cout << "CONV DELTA SENT: " << std::endl << result << std::endl;
+                    previousLayer->gb /= numberOfExamples;
+                    previousLayer->gW /= numberOfExamples;
 
-                    return result;
+                    //std::cout << "CONV DELTA RECEIVED: " << std::endl << delta << std::endl;
+                    //std::cout << "CONV DELTA SENT: " << std::endl << tmpResult << std::endl;
+                    //std::cout << "DELTA GW: " << std::endl << previousLayer->gW << std::endl;
+                    //std::cout << "DELTA GB: " << std::endl << previousLayer->gb << std::endl;
+
+                    return tmpResult;
                 }
             }
         }

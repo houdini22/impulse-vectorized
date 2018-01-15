@@ -13,7 +13,7 @@ namespace Impulse {
 
             const T_String TYPE_FULLYCONNECTED = "fully-connected";
 
-            class FullyConnected : public Relu {
+            class FullyConnected : public Logistic {
             protected:
             public:
                 FullyConnected();
