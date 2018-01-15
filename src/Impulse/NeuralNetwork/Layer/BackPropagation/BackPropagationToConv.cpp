@@ -17,7 +17,7 @@ namespace Impulse {
                 Math::T_Matrix BackPropagationToConv::propagate(Math::T_Matrix input,
                                                                 T_Size numberOfExamples,
                                                                 double regularization,
-                                                                Math::T_Matrix delta) {
+                                                                Math::T_Matrix sigma) {
 
                     auto *previousLayer = (Layer::Conv *) this->previousLayer.get();
 
@@ -37,8 +37,8 @@ namespace Impulse {
                     previousLayer->gW.setZero();
                     previousLayer->gb.setZero();
 
-#pragma omp parallel
-#pragma omp for collapse(4)
+//#pragma omp parallel
+//#pragma omp for collapse(4)
                     for (T_Size m = 0; m < numberOfExamples; m++) {
                         for (T_Size c = 0; c < outputDepth; c++) {
                             for (T_Size h = 0; h < outputHeight; h++) {
@@ -54,17 +54,16 @@ namespace Impulse {
                                             for (T_Size x = 0, hStart = horizStart; x < filterSize; x++, hStart++) {
                                                 tmpResult(((d * (inputWidth + padding) * (inputHeight + padding)) + ((vertStart + y) * (inputWidth + padding)) + (horizStart + x)), m)
                                                         += previousLayer->W(c, d * (filterSize * filterSize) + (y * filterSize) + x)
-                                                        * delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
+                                                           * sigma(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
 
                                                 previousLayer->gW(c, d * (filterSize * filterSize) + (y * filterSize) + x)
                                                         += previousLayer->Z((d * (inputWidth + padding) * (inputHeight + padding)) + ((vertStart + y) * (inputWidth + padding)) + (horizStart + x), m)
-                                                        * delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
+                                                           * sigma(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
                                             }
                                         }
                                     }
 
-
-                                    previousLayer->gb(c, 0) += delta(
+                                    previousLayer->gb(c, 0) += sigma(
                                             c * (outputWidth * outputHeight) + (h * outputWidth) + w,
                                             m
                                     );
@@ -73,13 +72,13 @@ namespace Impulse {
                         }
                     }
 
-                    previousLayer->gb /= numberOfExamples;
-                    previousLayer->gW /= numberOfExamples;
+                    /*previousLayer->gb = previousLayer->gb.array() / numberOfExamples;
+                    previousLayer->gW = previousLayer->gW.array() / numberOfExamples;*/
 
-                    //std::cout << "CONV DELTA RECEIVED: " << std::endl << delta << std::endl;
-                    //std::cout << "CONV DELTA SENT: " << std::endl << tmpResult << std::endl;
-                    //std::cout << "DELTA GW: " << std::endl << previousLayer->gW << std::endl;
-                    //std::cout << "DELTA GB: " << std::endl << previousLayer->gb << std::endl;
+                    /*std::cout << "CONV DELTA RECEIVED: " << std::endl << sigma << std::endl;
+                    std::cout << "CONV DELTA SENT: " << std::endl << tmpResult << std::endl;
+                    std::cout << "DELTA GW: " << std::endl << previousLayer->gW << std::endl;
+                    std::cout << "DELTA GB: " << std::endl << previousLayer->gb << std::endl;*/
 
                     return tmpResult;
                 }

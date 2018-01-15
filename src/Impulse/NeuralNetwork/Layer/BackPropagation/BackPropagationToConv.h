@@ -18,7 +18,7 @@ namespace Impulse {
                     Math::T_Matrix propagate(Math::T_Matrix input,
                                              T_Size numberOfExamples,
                                              double regularization,
-                                             Math::T_Matrix delta);
+                                             Math::T_Matrix sigma);
                 };
             }
         }

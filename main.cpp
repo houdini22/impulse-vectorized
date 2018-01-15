@@ -248,7 +248,7 @@ void test_conv_backward2() {
         layer->setFilterSize(1);
         layer->setPadding(0);
         layer->setStride(1);
-        layer->setNumFilters(32);
+        layer->setNumFilters(4);
     });
 
     builder.createLayer<Layer::MaxPool>([](auto *layer) {
@@ -295,7 +295,7 @@ void test_conv_backward2() {
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
     trainer.setVerbose(true);
-    trainer.setLearningRate(0.05);
+    trainer.setLearningRate(0.01);
 
     std::cout << "ERROR: " << trainer.cost(dataset).getCost() << std::endl;
 
@@ -731,19 +731,6 @@ void videoFace() {
             break;
     }
 }*/
-
-void test_test() {
-
-    Builder::ConvBuilder builder({32, 32, 16});
-
-    builder.createLayer<Layer::MaxPool>([](auto *layer) {
-        layer->setFilterSize(2);
-        layer->setStride(2);
-    });
-
-    Network::ConvNetwork net = builder.getNetwork();
-    net.debug();
-}
 
 int main() {
     //test_logistic();

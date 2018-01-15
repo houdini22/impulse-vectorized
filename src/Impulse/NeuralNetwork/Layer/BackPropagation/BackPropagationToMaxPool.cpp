@@ -29,32 +29,30 @@ namespace Impulse {
                     T_Size height = layer->getHeight();
                     T_Size channels = layer->getDepth();
 
-#pragma omp parallel
-#pragma omp for
+//#pragma omp parallel
+//#pragma omp for
                     for (T_Size i = 0; i < numberOfExamples; i++) {
-                        for (int boundingY = 0;
+                        for (int boundingY = 0, y = 0;
                              boundingY + filterSize <= height;
-                             boundingY += stride) {
-                            for (int boundingX = 0;
+                             boundingY += stride, y++) {
+                            for (int boundingX = 0, x = 0;
                                  boundingX + filterSize <= width;
-                                 boundingX += stride) {
+                                 boundingX += stride, x++) {
                                 for (int channel = 0; channel < channels; channel++) {
                                     double _max = -INFINITY;
                                     int inputOffset = height * width * channel;
                                     int maxX = 0;
                                     int maxY = 0;
-                                    for (int y = 0; y < filterSize; y++) {
-                                        for (int x = 0; x < filterSize; x++) {
-                                            if (_max <
-                                                layer->Z(inputOffset + ((y + boundingY) * width) + boundingX + x, i)) {
-                                                _max = layer->Z(inputOffset + ((y + boundingY) * width) + boundingX + x,
-                                                                i);
-                                                maxX = x;
-                                                maxY = y;
+                                    for (int filterY = 0; filterY < filterSize; filterY++) {
+                                        for (int filterX = 0; filterX < filterSize; filterX++) {
+                                            if (_max < layer->Z(inputOffset + ((filterY + boundingY) * width) + boundingX + filterX, i)) {
+                                                _max = layer->Z(inputOffset + ((filterY + boundingY) * width) + boundingX + filterX, i);
+                                                maxX = filterX;
+                                                maxY = filterY;
                                             }
                                         }
                                     }
-                                    result(inputOffset + ((maxY + boundingY) * width) + boundingX + maxX, i) = 1;
+                                    result(inputOffset + ((maxY + boundingY) * width) + boundingX + maxX, i) = delta(inputOffset + ((maxY + boundingY) * width) + boundingX + maxX, i);
                                 }
                             }
                         }
