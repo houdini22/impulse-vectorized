@@ -16,7 +16,7 @@ namespace Impulse {
                 return true;
             }
 
-            void Abstract3D::transition(const Layer::LayerPointer &prevLayer) {
+            void Abstract3D::transition(Layer::LayerPointer prevLayer) {
                 if (prevLayer->is3D()) {
                     this->setSize(prevLayer->getOutputHeight(),
                                   prevLayer->getOutputWidth(),

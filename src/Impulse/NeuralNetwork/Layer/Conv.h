@@ -24,7 +24,7 @@ namespace Impulse {
 
                 void configure() override;
 
-                Math::T_Matrix forward(const Math::T_Matrix &input) override;
+                Math::T_Matrix forward(Math::T_Matrix input) override;
 
                 T_Size getOutputHeight() override;
 

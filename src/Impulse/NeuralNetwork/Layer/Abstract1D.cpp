@@ -33,7 +33,7 @@ namespace Impulse {
                 return false;
             }
 
-            void Abstract1D::transition(const Layer::LayerPointer &prevLayer) {
+            void Abstract1D::transition(Layer::LayerPointer prevLayer) {
                 if (prevLayer->is1D()) {
                     this->setPrevSize(prevLayer->getSize());
                 } else if (prevLayer->is3D()) {

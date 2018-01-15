@@ -33,7 +33,6 @@ namespace Impulse {
 
                 for (long i = this->layers.size() - 1; i >= 0; i--) {
                     auto layer = this->layers.at(static_cast<unsigned long>(i));
-                    //std::cout << "LAYER INDEX: " << i << std::endl;
                     delta = layer->backpropagation->propagate(X, m, regularization, delta);
                 }
             }

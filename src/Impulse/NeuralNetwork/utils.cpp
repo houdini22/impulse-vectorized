@@ -6,7 +6,7 @@ namespace Impulse {
 
         namespace Utils {
 
-            Math::T_Matrix im2col(const Math::T_Matrix &input, int channels,
+            Math::T_Matrix im2col(Math::T_Matrix input, int channels,
                                   int height, int width,
                                   int kernel_h, int kernel_w,
                                   int pad_h, int pad_w,
@@ -47,7 +47,7 @@ namespace Impulse {
                 return result;
             }
 
-            Math::T_Matrix maxpool(const Math::T_Matrix &input, int channels,
+            Math::T_Matrix maxpool(Math::T_Matrix input, int channels,
                                    int height, int width,
                                    int kernel_h, int kernel_w,
                                    int stride_h, int stride_w) {
@@ -60,12 +60,8 @@ namespace Impulse {
                 Math::T_Matrix result(resultWidth * resultHeight * resultDepth, 1);
                 result.setZero();
 
-                for (int boundingY = 0;
-                     boundingY + kernel_h <= height;
-                     boundingY += stride_h) {
-                    for (int boundingX = 0;
-                         boundingX + kernel_w <= width;
-                         boundingX += stride_w) {
+                for (int boundingY = 0; boundingY + kernel_h <= height; boundingY += stride_h) {
+                    for (int boundingX = 0; boundingX + kernel_w <= width; boundingX += stride_w) {
                         for (int channel = 0; channel < channels; channel++) {
                             double _max = -INFINITY;
                             int inputOffset = height * width * channel;

@@ -17,7 +17,7 @@ namespace Impulse {
 
                 bool is3D() override;
 
-                void transition(const Layer::LayerPointer &prevLayer) override;
+                void transition(Layer::LayerPointer prevLayer) override;
             };
         }
     }

@@ -26,7 +26,7 @@ namespace Impulse {
                 return this->stride;
             }
 
-            Math::T_Matrix MaxPool::forward(const Math::T_Matrix &input) {
+            Math::T_Matrix MaxPool::forward(Math::T_Matrix input) {
                 this->Z = input;
                 this->A.resize(this->getOutputWidth() *
                                this->getOutputHeight() *
