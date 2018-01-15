@@ -380,13 +380,11 @@ void test_conv_mnist() {
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
     trainer.setVerbose(true);
-    trainer.setLearningRate(0.05);
+    trainer.setLearningRate(0.1);
 
     std::cout << "ERROR: " << trainer.cost(slicedDataset).getCost() << std::endl;
 
     trainer.train(slicedDataset);
-
-    return;
 }
 
 void test_conv() {
@@ -759,7 +757,7 @@ int main() {
     //videoFace();
     //test_test();
     //test_conv_backward();
-    //test_conv_backward2();
-    test_conv_mnist();
+    test_conv_backward2();
+    //test_conv_mnist();
     return 0;
 }

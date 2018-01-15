@@ -38,7 +38,7 @@ namespace Impulse {
                     previousLayer->gb.setZero();
 
 #pragma omp parallel
-#pragma omp for
+#pragma omp for collapse(4)
                     for (T_Size m = 0; m < numberOfExamples; m++) {
                         for (T_Size c = 0; c < outputDepth; c++) {
                             for (T_Size h = 0; h < outputHeight; h++) {
@@ -52,10 +52,6 @@ namespace Impulse {
                                     for (T_Size d = 0; d < inputDepth; d++) {
                                         for (T_Size y = 0, vStart = vertStart; y < filterSize; y++, vStart++) {
                                             for (T_Size x = 0, hStart = horizStart; x < filterSize; x++, hStart++) {
-                                                /*tmpResult(((d * (inputWidth + padding) * (inputHeight + padding)) + ((vertStart + y) * (inputWidth + padding)) + (horizStart + x)), m);
-                                                previousLayer->W(c, d * (filterSize * filterSize) + (y * filterSize) + x);
-                                                delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);*/
-
                                                 tmpResult(((d * (inputWidth + padding) * (inputHeight + padding)) + ((vertStart + y) * (inputWidth + padding)) + (horizStart + x)), m)
                                                         += previousLayer->W(c, d * (filterSize * filterSize) + (y * filterSize) + x)
                                                         * delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
@@ -63,17 +59,6 @@ namespace Impulse {
                                                 previousLayer->gW(c, d * (filterSize * filterSize) + (y * filterSize) + x)
                                                         += previousLayer->Z((d * (inputWidth + padding) * (inputHeight + padding)) + ((vertStart + y) * (inputWidth + padding)) + (horizStart + x), m)
                                                         * delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
-                                                /*
-                                                previousLayer->gW(c, d * (filterSize * filterSize) +
-                                                                     (y * filterSize) + x) += previousLayer->A(
-                                                        (d * (inputWidth + padding) * (inputHeight + padding)) +
-                                                        (vertStart * (inputWidth + padding)) + horizStart, m)
-                                                                                              *
-                                                                                              delta(c * (outputWidth *
-                                                                                                         outputHeight) +
-                                                                                                    (h * outputWidth) +
-                                                                                                    w,
-                                                                                                    m);*/
                                             }
                                         }
                                     }
