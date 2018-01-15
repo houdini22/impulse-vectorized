@@ -291,7 +291,7 @@ void test_conv_backward2() {
     std::cout << "OUTPUT: " << std::endl << netOutput << std::endl;
 
     Trainer::GradientDescent trainer(net);
-    trainer.setLearningIterations(500);
+    trainer.setLearningIterations(10000);
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
     trainer.setVerbose(true);
@@ -303,6 +303,8 @@ void test_conv_backward2() {
 
     Serializer serializer(net);
     serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/conv.json");
+
+    std::cout << net.forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
 }
 
 void test_conv_mnist() {
@@ -744,7 +746,7 @@ int main() {
     //videoFace();
     //test_test();
     //test_conv_backward();
-    test_conv_backward2();
-    //test_conv_mnist();
+    //test_conv_backward2();
+    test_conv_mnist();
     return 0;
 }
