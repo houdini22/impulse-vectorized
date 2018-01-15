@@ -29,8 +29,8 @@ namespace Impulse {
                     T_Size height = layer->getHeight();
                     T_Size channels = layer->getDepth();
 
-//#pragma omp parallel
-//#pragma omp for
+#pragma omp parallel
+#pragma omp for
                     for (T_Size i = 0; i < numberOfExamples; i++) {
                         for (int boundingY = 0;
                              boundingY + filterSize <= height;
