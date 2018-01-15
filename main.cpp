@@ -307,7 +307,7 @@ void test_conv_backward2() {
 
 void test_conv_mnist() {
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
-            "/home/hud/CLionProjects/impulse-vectorized/data/mnist_test.csv");
+            "/home/hud/CLionProjects/impulse-vectorized/data/mnist_test_1000.csv");
     Impulse::Dataset dataset = datasetBuilder1.build();
     Impulse::DatasetModifier::DatasetSlicer slicer(&dataset);
     slicer.addOutputColumn(0);
@@ -384,14 +384,9 @@ void test_conv_mnist() {
 
     std::cout << "ERROR: " << trainer.cost(slicedDataset).getCost() << std::endl;
 
+    trainer.train(slicedDataset);
+
     return;
-/*
-
-
-    trainer.train(dataset);
-
-    Serializer serializer(net);
-    serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/conv.json");*/
 }
 
 void test_conv() {

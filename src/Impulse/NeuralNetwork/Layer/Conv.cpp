@@ -12,12 +12,10 @@ namespace Impulse {
                 this->W.resize(this->numFilters, this->filterSize * this->filterSize * this->depth);
                 this->W.setRandom();
                 this->W = this->W * sqrt(2.0 / (this->width * this->height * this->depth));
-                //this->W.setOnes();
 
                 this->b.resize(this->numFilters, 1);
                 this->b.setRandom();
                 this->b = this->b * sqrt(2.0 / (this->width * this->height * this->depth));
-                //this->b.setOnes();
 
                 this->gW.resize(this->numFilters, this->filterSize * this->filterSize * this->depth);
                 this->gb.resize(this->numFilters, 1);

@@ -28,26 +28,25 @@ namespace Impulse {
 
             Math::T_Matrix MaxPool::forward(const Math::T_Matrix &input) {
                 this->Z = input;
-                Math::T_Matrix result(this->getOutputWidth() *
-                                      this->getOutputHeight() *
-                                      this->getOutputDepth(), input.cols());
+                this->A.resize(this->getOutputWidth() *
+                               this->getOutputHeight() *
+                               this->getOutputDepth(), input.cols());
 
 #pragma omp parallel
 #pragma omp for
                 for (T_Size i = 0; i < input.cols(); i++) {
-                    Math::T_Matrix maxPool = Utils::maxpool(input.col(i), this->depth,
-                                                            this->height, this->width,
-                                                            this->filterSize, this->filterSize,
-                                                            this->stride, this->stride);
                     //std::cout << result.rows() << "," << maxPool.rows() << std::endl;
                     //std::cout << (this->width) << "," << (this->filterSize) << std::endl;
-                    result.col(i) = maxPool;
+                    this->A.col(i) = Utils::maxpool(input.col(i), this->depth,
+                                                   this->height, this->width,
+                                                   this->filterSize, this->filterSize,
+                                                   this->stride, this->stride);
                 }
 
                 //std::cout << "MAX POOL INPUT: " << input.rows() << "," << input.cols() << std::endl << input << std::endl;
                 //std::cout << "MAX POOL OUTPUT: " << result.rows() << "," << result.cols() << std::endl << result << std::endl;
 
-                return this->A = result;
+                return this->A;
             }
 
             Math::T_Matrix MaxPool::activation() {
