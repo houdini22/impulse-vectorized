@@ -49,8 +49,6 @@ namespace Impulse {
                                     T_Size horizStart = stride * w;
                                     T_Size horizEnd = horizStart + filterSize;
 
-                                    //std::cout << "RESULT: " << c * (outputWidth * outputHeight) + (h * outputWidth) + w << std::endl;
-
                                     // filter loop
                                     for (T_Size d = 0; d < inputDepth; d++) {
                                         for (T_Size y = 0, vStart = vertStart; y < vertEnd - vertStart; y++, vStart++) {
@@ -95,8 +93,8 @@ namespace Impulse {
                     previousLayer->gb /= numberOfExamples;
                     previousLayer->gW /= numberOfExamples;
 
-                    //std::cout << "CONV DELTA RECEIVED: " << std::endl << delta << std::endl;
-                    //std::cout << "CONV DELTA SENT: " << std::endl << tmpResult << std::endl;
+                    std::cout << "CONV DELTA RECEIVED: " << std::endl << delta << std::endl;
+                    std::cout << "CONV DELTA SENT: " << std::endl << tmpResult << std::endl;
                     //std::cout << "DELTA GW: " << std::endl << previousLayer->gW << std::endl;
                     //std::cout << "DELTA GB: " << std::endl << previousLayer->gb << std::endl;
 

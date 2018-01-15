@@ -10,13 +10,14 @@ namespace Impulse {
 
             void Conv::configure() {
                 this->W.resize(this->numFilters, this->filterSize * this->filterSize * this->depth);
+                this->W.setRandom();
+                this->W = this->W * sqrt(2.0 / (this->width * this->height * this->depth));
                 //this->W.setOnes();
 
-                this->W.setRandom();
-                this->W = this->W * sqrt(2.0 / this->filterSize * this->filterSize * this->depth);
-
                 this->b.resize(this->numFilters, 1);
-                this->b.setOnes();
+                this->b.setRandom();
+                this->b = this->b * sqrt(2.0 / (this->width * this->height * this->depth));
+                //this->b.setOnes();
 
                 this->gW.resize(this->numFilters, this->filterSize * this->filterSize * this->depth);
                 this->gb.resize(this->numFilters, 1);
@@ -122,31 +123,6 @@ namespace Impulse {
             double Conv::error(T_Size m) {
                 // TODO
                 return 0.0;
-            }
-
-            Math::T_Matrix Conv::backward(
-                    Math::T_Matrix &sigma,
-                    const Layer::LayerPointer &prevLayer,
-                    Math::T_Matrix prevActivations,
-                    long &m,
-                    double &regularization
-            ) {
-
-                Math::T_Matrix result(sigma);
-                for (T_Size i = 0; i < m; i++) {
-                    result.col(i) += this->W * sigma.col(i);
-                }
-/*
-                this->gW = delta.array() / m + (regularization / m * this->W.array());
-                this->gb = sigma.rowwise().sum() / m;
-
-                if (previousLayer != nullptr) {
-                    Math::T_Matrix tmp1 = this->W.transpose() * sigma;
-                    Math::T_Matrix tmp2 = previousLayer->derivative();
-
-                    return tmp1.array() * tmp2.array();
-                }*/
-                return Math::T_Matrix();
             }
 
             void Conv::debug() {

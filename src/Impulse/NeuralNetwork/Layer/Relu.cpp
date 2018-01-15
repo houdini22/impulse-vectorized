@@ -14,7 +14,7 @@ namespace Impulse {
                     return std::max(0.0, x);
                 });
                 // apply normalization // TODO CONFIGURE
-                result.colwise().normalize();
+                //result.colwise().normalize();
                 return result;
             }
 
