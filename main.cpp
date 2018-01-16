@@ -242,7 +242,7 @@ void test_conv_backward() {
 }
 
 void test_conv_backward2() {
-    Builder::ConvBuilder builder({2, 2, 1});
+    Builder::ConvBuilder builder({4, 4, 1});
 
     builder.createLayer<Layer::Conv>([](auto *layer) {
         layer->setFilterSize(1);
@@ -257,11 +257,11 @@ void test_conv_backward2() {
     });
 
     builder.createLayer<Layer::FullyConnected>([](auto *layer) {
-        layer->setSize(32);
+        layer->setSize(128);
     });
 
     builder.createLayer<Layer::FullyConnected>([](auto *layer) {
-        layer->setSize(10);
+        layer->setSize(32);
     });
 
     builder.createLayer<Layer::Softmax>([](auto *layer) {

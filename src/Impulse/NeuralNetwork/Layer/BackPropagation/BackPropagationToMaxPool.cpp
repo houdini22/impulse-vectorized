@@ -27,32 +27,42 @@ namespace Impulse {
                     T_Size stride = prevLayer->getStride();
                     T_Size inputWidth = prevLayer->getWidth();
                     T_Size inputHeight = prevLayer->getHeight();
-                    T_Size channels = prevLayer->getDepth();
+                    T_Size inputDepth = prevLayer->getDepth();
                     T_Size outputWidth = prevLayer->getOutputWidth();
                     T_Size outputHeight = prevLayer->getOutputHeight();
+                    T_Size outputDepth = prevLayer->getOutputDepth();
+
+                    //std::cout << "delta: " << delta.rows() << "," << delta.cols() << std::endl;
+                    //std::cout << "output: " << prevLayer->A.rows() << "," << prevLayer->A.cols() << std::endl;
 
 //#pragma omp parallel
 //#pragma omp for
                     for (T_Size m = 0; m < numberOfExamples; m++) {
-                        for (T_Size channel = 0; channel < channels; channel++) {
-                            for (T_Size boundingY = 0, y = 0; boundingY + filterSize <= inputHeight; boundingY += stride, y++) {
-                                for (T_Size boundingX = 0, x = 0; boundingX + filterSize <= inputWidth; boundingX += stride, x++) {
+                        for (T_Size c = 0; c < outputDepth; c++) {
+                            for (T_Size h = 0; h < outputHeight; h++) {
+                                for (T_Size w = 0; w < outputWidth; w++) {
+                                    T_Size vertStart = stride * h;
+                                    T_Size vertEnd = vertStart + filterSize;
+                                    T_Size horizStart = stride * w;
+                                    T_Size horizEnd = horizStart + filterSize;
+
                                     double _max = -INFINITY;
-                                    T_Size inputOffset = inputHeight * inputWidth * channel;
-                                    T_Size outputOffset = outputHeight * outputWidth * channel;
+                                    T_Size inputOffset = inputHeight * inputWidth * c;
+                                    T_Size outputOffset = outputHeight * outputWidth * c;
                                     T_Size maxX = 0;
                                     T_Size maxY = 0;
 
-                                    for (T_Size filterY = 0; filterY < filterSize; filterY++) {
-                                        for (T_Size filterX = 0; filterX < filterSize; filterX++) {
-                                            if (_max < prevLayer->Z(inputOffset + ((filterY + boundingY) * inputWidth) + boundingX + filterX, m)) {
-                                                _max = prevLayer->Z(inputOffset + ((filterY + boundingY) * inputWidth) + boundingX + filterX, m);
-                                                maxX = filterX;
-                                                maxY = filterY;
+                                    for (T_Size y = 0, vStart = vertStart; y < filterSize; y++, vStart++) {
+                                        for (T_Size x = 0, hStart = horizStart; x < filterSize; x++, hStart++) {
+                                            if (_max < prevLayer->Z(inputOffset + ((y + h) * inputWidth) + w + x, m)) {
+                                                _max = prevLayer->Z(inputOffset + ((y + h) * inputWidth) + w + x, m);
+                                                maxX = x;
+                                                maxY = y;
                                             }
                                         }
                                     }
-                                    result(inputOffset + ((maxY + boundingY) * inputWidth) + boundingX + maxX, m) = delta(outputOffset + (y * outputWidth) + x, m);
+
+                                    result(inputOffset + ((maxY + h) * inputWidth) + w + maxX, m) = delta(outputOffset + (h * outputWidth) + w, m);
                                 }
                             }
                         }

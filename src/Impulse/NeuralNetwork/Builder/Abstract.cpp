@@ -72,6 +72,10 @@ namespace Impulse {
             Abstract<Network::ConvNetwork>::createLayer<Layer::Softmax>(
                     std::function<void(Layer::Softmax *)> callback);
 
+            template void
+            Abstract<Network::ConvNetwork>::createLayer<Layer::Logistic>(
+                    std::function<void(Layer::Logistic *)> callback);
+
             template<class NETWORK_TYPE>
             NETWORK_TYPE &Abstract<NETWORK_TYPE>::getNetwork() {
                 return this->network;

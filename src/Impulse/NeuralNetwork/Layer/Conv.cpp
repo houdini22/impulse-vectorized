@@ -106,7 +106,12 @@ namespace Impulse {
             }
 
             Math::T_Matrix Conv::derivative() {
-                return Math::T_Matrix();
+                return this->A.unaryExpr([](const double x) {
+                    if (x > 0.0) {
+                        return 1.0;
+                    }
+                    return 0.0;
+                });
             }
 
             const T_String Conv::getType() {

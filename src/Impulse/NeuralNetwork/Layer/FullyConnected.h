@@ -13,12 +13,16 @@ namespace Impulse {
 
             const T_String TYPE_FULLYCONNECTED = "fully-connected";
 
-            class FullyConnected : public Relu {
+            class FullyConnected : public Conv {
             protected:
             public:
                 FullyConnected();
 
                 const T_String getType() override;
+
+                void transition(Layer::LayerPointer prevLayer) override;
+
+                void setSize(T_Size value) override;
             };
         }
     }

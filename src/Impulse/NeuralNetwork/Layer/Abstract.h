@@ -69,7 +69,7 @@ namespace Impulse {
                  * Setter for size.
                  * @param value
                  */
-                void setSize(T_Size value);
+                virtual void setSize(T_Size value);
 
                 /**
                  *
