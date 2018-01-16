@@ -248,7 +248,7 @@ void test_conv_backward2() {
         layer->setFilterSize(1);
         layer->setPadding(0);
         layer->setStride(1);
-        layer->setNumFilters(4);
+        layer->setNumFilters(32);
     });
 
     builder.createLayer<Layer::MaxPool>([](auto *layer) {
@@ -257,7 +257,7 @@ void test_conv_backward2() {
     });
 
     builder.createLayer<Layer::FullyConnected>([](auto *layer) {
-        layer->setSize(20);
+        layer->setSize(32);
     });
 
     builder.createLayer<Layer::FullyConnected>([](auto *layer) {
@@ -291,11 +291,11 @@ void test_conv_backward2() {
     std::cout << "OUTPUT: " << std::endl << netOutput << std::endl;
 
     Trainer::GradientDescent trainer(net);
-    trainer.setLearningIterations(5000);
+    trainer.setLearningIterations(10000);
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
     trainer.setVerbose(true);
-    trainer.setLearningRate(0.01);
+    trainer.setLearningRate(0.1);
 
     std::cout << "ERROR: " << trainer.cost(dataset).getCost() << std::endl;
 
@@ -305,6 +305,7 @@ void test_conv_backward2() {
     serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/conv.json");
 
     std::cout << net.forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+    std::cout << net.forward(datasetInput.getSampleAt(1)->exportToEigen()) << std::endl;
 }
 
 void test_conv_mnist() {

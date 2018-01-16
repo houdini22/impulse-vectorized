@@ -8,7 +8,7 @@ namespace Impulse {
 
             namespace BackPropagation {
 
-                BackPropagationPointer Factory::create(Layer::LayerPointer layer, Layer::LayerPointer previousLayer) {
+                BackPropagationPointer Factory::create(Layer::LayerPointer previousLayer, Layer::LayerPointer layer) {
                     if (previousLayer == nullptr) {
                         if (layer->is1D()) {
                             return BackPropagationPointer(new BackPropagation1DTo1D(layer, previousLayer));

@@ -25,38 +25,38 @@ namespace Impulse {
 
                     T_Size filterSize = prevLayer->getFilterSize();
                     T_Size stride = prevLayer->getStride();
-                    T_Size width = prevLayer->getWidth();
-                    T_Size height = prevLayer->getHeight();
+                    T_Size inputWidth = prevLayer->getWidth();
+                    T_Size inputHeight = prevLayer->getHeight();
                     T_Size channels = prevLayer->getDepth();
+                    T_Size outputWidth = prevLayer->getOutputWidth();
+                    T_Size outputHeight = prevLayer->getOutputHeight();
 
 //#pragma omp parallel
 //#pragma omp for
                     for (T_Size m = 0; m < numberOfExamples; m++) {
                         for (T_Size channel = 0; channel < channels; channel++) {
-                            for (T_Size boundingY = 0; boundingY + filterSize <= height; boundingY += stride) {
-                                for (T_Size boundingX = 0; boundingX + filterSize <= width; boundingX += stride) {
+                            for (T_Size boundingY = 0, y = 0; boundingY + filterSize <= inputHeight; boundingY += stride, y++) {
+                                for (T_Size boundingX = 0, x = 0; boundingX + filterSize <= inputWidth; boundingX += stride, x++) {
                                     double _max = -INFINITY;
-                                    T_Size inputOffset = height * width * channel;
+                                    T_Size inputOffset = inputHeight * inputWidth * channel;
+                                    T_Size outputOffset = outputHeight * outputWidth * channel;
                                     T_Size maxX = 0;
                                     T_Size maxY = 0;
 
                                     for (T_Size filterY = 0; filterY < filterSize; filterY++) {
                                         for (T_Size filterX = 0; filterX < filterSize; filterX++) {
-                                            if (_max < prevLayer->Z(inputOffset + ((filterY + boundingY) * width) + boundingX + filterX, m)) {
-                                                _max = prevLayer->Z(inputOffset + ((filterY + boundingY) * width) + boundingX + filterX, m);
+                                            if (_max < prevLayer->Z(inputOffset + ((filterY + boundingY) * inputWidth) + boundingX + filterX, m)) {
+                                                _max = prevLayer->Z(inputOffset + ((filterY + boundingY) * inputWidth) + boundingX + filterX, m);
                                                 maxX = filterX;
                                                 maxY = filterY;
                                             }
                                         }
                                     }
-                                    result(inputOffset + ((maxY + boundingY) * width) + boundingX + maxX, m) = delta(inputOffset + ((maxY + boundingY) * width) + boundingX + maxX, m);
+                                    result(inputOffset + ((maxY + boundingY) * inputWidth) + boundingX + maxX, m) = delta(outputOffset + (y * outputWidth) + x, m);
                                 }
                             }
                         }
                     }
-
-                    //std::cout << "MAX POOL DELTA RECEIVED: " << std::endl << delta << std::endl;
-                    //std::cout << "MAX POOL DELTA SENT: " << std::endl << result << std::endl;
 
                     return result;
                 }

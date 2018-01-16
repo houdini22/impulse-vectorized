@@ -27,7 +27,7 @@ namespace Impulse {
                     pointer->transition(this->previousLayer);
                 }
 
-                pointer->backpropagation = Layer::BackPropagation::Factory::create(pointer, this->previousLayer);
+                pointer->backpropagation = Layer::BackPropagation::Factory::create(this->previousLayer, pointer);
                 pointer->configure();
 
                 this->network.addLayer(pointer);
