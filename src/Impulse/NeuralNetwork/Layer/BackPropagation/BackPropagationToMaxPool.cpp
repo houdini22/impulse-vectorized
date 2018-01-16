@@ -35,8 +35,8 @@ namespace Impulse {
                     //std::cout << "delta: " << delta.rows() << "," << delta.cols() << std::endl;
                     //std::cout << "output: " << prevLayer->A.rows() << "," << prevLayer->A.cols() << std::endl;
 
-//#pragma omp parallel
-//#pragma omp for
+#pragma omp parallel
+#pragma omp for
                     for (T_Size m = 0; m < numberOfExamples; m++) {
                         for (T_Size c = 0; c < outputDepth; c++) {
                             for (T_Size h = 0; h < outputHeight; h++) {

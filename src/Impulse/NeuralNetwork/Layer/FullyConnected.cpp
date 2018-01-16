@@ -23,6 +23,8 @@ namespace Impulse {
                         this->setWidth(layer->getOutputWidth());
                         this->setHeight(layer->getOutputHeight());
                         this->setDepth(layer->getOutputDepth());
+                        this->setNumFilters(layer->getOutputWidth() * layer->getOutputHeight() * layer->getOutputDepth());
+
                     } else if (prevLayer->getType() == Layer::TYPE_FULLYCONNECTED) {
                         auto layer = (Layer::FullyConnected *) prevLayer.get();
 

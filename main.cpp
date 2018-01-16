@@ -257,7 +257,7 @@ void test_conv_backward2() {
     });
 
     builder.createLayer<Layer::FullyConnected>([](auto *layer) {
-        layer->setSize(128);
+
     });
 
     builder.createLayer<Layer::FullyConnected>([](auto *layer) {
@@ -328,14 +328,7 @@ void test_conv_mnist() {
     Builder::ConvBuilder builder({28, 28, 1});
 
     builder.createLayer<Layer::Conv>([](auto *layer) {
-        layer->setFilterSize(3);
-        layer->setPadding(0);
-        layer->setStride(1);
-        layer->setNumFilters(32);
-    });
-
-    builder.createLayer<Layer::Conv>([](auto *layer) {
-        layer->setFilterSize(3);
+        layer->setFilterSize(5);
         layer->setPadding(0);
         layer->setStride(1);
         layer->setNumFilters(32);
@@ -347,14 +340,7 @@ void test_conv_mnist() {
     });
 
     builder.createLayer<Layer::Conv>([](auto *layer) {
-        layer->setFilterSize(3);
-        layer->setPadding(0);
-        layer->setStride(1);
-        layer->setNumFilters(64);
-    });
-
-    builder.createLayer<Layer::Conv>([](auto *layer) {
-        layer->setFilterSize(3);
+        layer->setFilterSize(5);
         layer->setPadding(0);
         layer->setStride(1);
         layer->setNumFilters(64);
@@ -366,7 +352,11 @@ void test_conv_mnist() {
     });
 
     builder.createLayer<Layer::FullyConnected>([](auto *layer) {
-        layer->setSize(512);
+
+    });
+
+    builder.createLayer<Layer::FullyConnected>([](auto *layer) {
+        layer->setSize(1024);
     });
 
     builder.createLayer<Layer::Softmax>([](auto *layer) {
@@ -383,7 +373,7 @@ void test_conv_mnist() {
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
     trainer.setVerbose(true);
-    trainer.setLearningRate(0.1);
+    trainer.setLearningRate(0.01);
 
     std::cout << "ERROR: " << trainer.cost(slicedDataset).getCost() << std::endl;
 
@@ -747,7 +737,7 @@ int main() {
     //videoFace();
     //test_test();
     //test_conv_backward();
-    test_conv_backward2();
-    //test_conv_mnist();
+    //test_conv_backward2();
+    test_conv_mnist();
     return 0;
 }

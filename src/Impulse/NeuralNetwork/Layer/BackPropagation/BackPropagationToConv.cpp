@@ -37,8 +37,8 @@ namespace Impulse {
                     previousLayer->gW.setZero();
                     previousLayer->gb.setZero();
 
-//#pragma omp parallel
-//#pragma omp for collapse(4)
+#pragma omp parallel
+#pragma omp for
                     for (T_Size m = 0; m < numberOfExamples; m++) {
                         for (T_Size c = 0; c < outputDepth; c++) {
                             for (T_Size h = 0; h < outputHeight; h++) {
