@@ -32,11 +32,8 @@ namespace Impulse {
                     T_Size outputHeight = prevLayer->getOutputHeight();
                     T_Size outputDepth = prevLayer->getOutputDepth();
 
-                    //std::cout << "delta: " << delta.rows() << "," << delta.cols() << std::endl;
-                    //std::cout << "output: " << prevLayer->A.rows() << "," << prevLayer->A.cols() << std::endl;
-
-#pragma omp parallel
-#pragma omp for
+//#pragma omp parallel
+//#pragma omp for
                     for (T_Size m = 0; m < numberOfExamples; m++) {
                         for (T_Size c = 0; c < outputDepth; c++) {
                             for (T_Size h = 0; h < outputHeight; h++) {
@@ -54,15 +51,15 @@ namespace Impulse {
 
                                     for (T_Size y = 0, vStart = vertStart; y < filterSize; y++, vStart++) {
                                         for (T_Size x = 0, hStart = horizStart; x < filterSize; x++, hStart++) {
-                                            if (_max < prevLayer->Z(inputOffset + ((y + h) * inputWidth) + w + x, m)) {
-                                                _max = prevLayer->Z(inputOffset + ((y + h) * inputWidth) + w + x, m);
-                                                maxX = x;
-                                                maxY = y;
+                                            if (_max < prevLayer->Z(inputOffset + (vStart * inputWidth) + hStart, m)) {
+                                                _max = prevLayer->Z(inputOffset + (vStart * inputWidth) + hStart, m);
+                                                maxX = hStart;
+                                                maxY = vStart;
                                             }
                                         }
                                     }
 
-                                    result(inputOffset + ((maxY + h) * inputWidth) + w + maxX, m) = delta(outputOffset + (h * outputWidth) + w, m);
+                                    result(inputOffset + (maxY * inputWidth) + maxX, m) = delta(outputOffset + (h * outputWidth) + w, m);
                                 }
                             }
                         }

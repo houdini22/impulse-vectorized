@@ -261,7 +261,7 @@ void test_conv_backward2() {
     });
 
     builder.createLayer<Layer::FullyConnected>([](auto *layer) {
-        layer->setSize(32);
+        layer->setSize(10);
     });
 
     builder.createLayer<Layer::Softmax>([](auto *layer) {
@@ -295,7 +295,7 @@ void test_conv_backward2() {
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
     trainer.setVerbose(true);
-    trainer.setLearningRate(0.1);
+    trainer.setLearningRate(0.05);
 
     std::cout << "ERROR: " << trainer.cost(dataset).getCost() << std::endl;
 
@@ -737,7 +737,7 @@ int main() {
     //videoFace();
     //test_test();
     //test_conv_backward();
-    //test_conv_backward2();
-    test_conv_mnist();
+    test_conv_backward2();
+    //test_conv_mnist();
     return 0;
 }
