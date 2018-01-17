@@ -38,22 +38,14 @@ namespace Impulse {
                                                         this->padding, this->padding,
                                                         this->stride, this->stride);
 
-                    //std::cout << "CONV: " << conv.rows() << "," << conv.cols() << std::endl << conv << std::endl;
-
                     Math::T_Matrix tmp = ((this->W * conv).colwise() + this->b).transpose(); // transpose for
                     // rolling to vector
                     Eigen::Map<Math::T_Vector> tmp2(tmp.data(), tmp.size());
                     this->A.col(i) = tmp2;
 
                 }
-                this->A = this->activation();
 
-                //std::cout << "CONV INPUT: " << input.rows() << "," << input.cols() << std::endl << input << std::endl;
-                //std::cout << "CONV ACTIVATED: " << this->A.rows() << "," << this->A.cols() << std::endl << this->A << std::endl;
-
-                // normalization
-                //this->A.colwise().normalize();
-                return this->A;
+                return this->A = this->activation();
             }
 
             T_Size Conv::getOutputHeight() {
@@ -127,11 +119,6 @@ namespace Impulse {
             double Conv::error(T_Size m) {
                 // TODO
                 return 0.0;
-            }
-
-            void Conv::debug() {
-                std::cout << this->getOutputWidth() << "," << this->getOutputHeight() << "," << this->getOutputDepth()
-                          << std::endl;
             }
         }
     }

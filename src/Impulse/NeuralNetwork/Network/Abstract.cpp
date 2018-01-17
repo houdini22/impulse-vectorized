@@ -124,7 +124,7 @@ namespace Impulse {
             }
 
             void Abstract::debug() {
-                this->layers.at(0)->debug();
+
             }
         }
     }

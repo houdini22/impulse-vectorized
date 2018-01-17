@@ -35,16 +35,11 @@ namespace Impulse {
 #pragma omp parallel
 #pragma omp for
                 for (T_Size i = 0; i < input.cols(); i++) {
-                    //std::cout << result.rows() << "," << maxPool.rows() << std::endl;
-                    //std::cout << (this->width) << "," << (this->filterSize) << std::endl;
                     this->A.col(i) = Utils::maxpool(input.col(i), this->depth,
                                                    this->height, this->width,
                                                    this->filterSize, this->filterSize,
                                                    this->stride, this->stride);
                 }
-
-                //std::cout << "MAX POOL INPUT: " << input.rows() << "," << input.cols() << std::endl;
-                //std::cout << "MAX POOL OUTPUT: " << this->A.rows() << "," << this->A.cols() << std::endl;
 
                 return this->A;
             }
@@ -54,8 +49,7 @@ namespace Impulse {
             }
 
             Math::T_Matrix MaxPool::derivative() {
-                // TODO
-                return Math::T_Matrix();
+                return Math::T_Matrix(); // no derivative for maxpool layer
             }
 
             const T_String MaxPool::getType() {
@@ -63,13 +57,11 @@ namespace Impulse {
             }
 
             double MaxPool::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
-                // TODO
-                return 0.0;
+                return 0.0; // no loss for maxpool layer
             }
 
             double MaxPool::error(T_Size m) {
-                // TODO
-                return 0.0;
+                return 0.0; // no error for maxpool layer
             }
 
             T_Size MaxPool::getOutputHeight() {
@@ -82,11 +74,6 @@ namespace Impulse {
 
             T_Size MaxPool::getOutputDepth() {
                 return this->depth;
-            }
-
-            void MaxPool::debug() {
-                std::cout << this->getOutputWidth() << "," << this->getOutputHeight() << "," << this->getOutputDepth()
-                          << std::endl;
             }
         }
     }
