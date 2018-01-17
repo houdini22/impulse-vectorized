@@ -331,7 +331,7 @@ void test_conv_mnist() {
         layer->setFilterSize(3);
         layer->setPadding(1);
         layer->setStride(1);
-        layer->setNumFilters(128);
+        layer->setNumFilters(32);
     });
 
     builder.createLayer<Layer::MaxPool>([](auto *layer) {
@@ -343,7 +343,7 @@ void test_conv_mnist() {
         layer->setFilterSize(3);
         layer->setPadding(1);
         layer->setStride(1);
-        layer->setNumFilters(128);
+        layer->setNumFilters(64);
     });
 
     builder.createLayer<Layer::MaxPool>([](auto *layer) {
