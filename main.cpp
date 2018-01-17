@@ -370,7 +370,7 @@ void test_conv_backward3() {
     std::cout << "OUTPUT: " << std::endl << netOutput << std::endl;
 
     Trainer::GradientDescent trainer(net);
-    trainer.setLearningIterations(10000);
+    trainer.setLearningIterations(1000);
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
     trainer.setVerbose(true);
@@ -399,15 +399,15 @@ void test_conv_mnist() {
 
     Impulse::SlicedDataset slicedDataset = slicer.slice();
 
-    Impulse::DatasetModifier::Modifier::MinMaxScaling modifier(&slicedDataset.input);
-    modifier.apply();
+    //Impulse::DatasetModifier::Modifier::MinMaxScaling modifier(&slicedDataset.input);
+    //modifier.apply();
     Impulse::DatasetModifier::Modifier::Category modifier2(&slicedDataset.output);
     modifier2.applyToColumn(0);
 
     Builder::ConvBuilder builder({28, 28, 1});
 
     builder.createLayer<Layer::Conv>([](auto *layer) {
-        layer->setFilterSize(3);
+        layer->setFilterSize(4);
         layer->setPadding(1);
         layer->setStride(1);
         layer->setNumFilters(32);
@@ -817,7 +817,7 @@ int main() {
     //test_test();
     //test_conv_backward();
     //test_conv_backward2();
-    test_conv_backward3();
-    //test_conv_mnist();
+    //test_conv_backward3();
+    test_conv_mnist();
     return 0;
 }

@@ -56,13 +56,11 @@ namespace Impulse {
                                                 double z = 0;
                                                 if (padding == 0) {
                                                     z = previousLayer->Z((d * inputWidth * inputHeight) + (vertical * inputWidth) + horizontal, m);
-                                                    //z = previousLayer->A((c * outputDepth * outputHeight) + (h * outputWidth) + w);
                                                 } else {
                                                     if (verticalPad >= 0 && horizontalPad >= 0 && verticalPad < inputHeight && horizontalPad < inputWidth) {
                                                         z = previousLayer->Z((d * inputWidth * inputHeight) + (verticalPad * inputWidth) + horizontalPad, m);
                                                     }
                                                 }
-                                                // double z = previousLayer->A((c * outputWidth * outputHeight) + (h * outputWidth) + w);
 
                                                 previousLayer->gW(c, (d * filterSize * filterSize) + (y * filterSize) + x) +=
                                                         (

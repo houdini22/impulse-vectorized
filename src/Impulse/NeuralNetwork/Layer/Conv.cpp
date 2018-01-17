@@ -11,11 +11,14 @@ namespace Impulse {
             void Conv::configure() {
                 this->W.resize(this->numFilters, this->filterSize * this->filterSize * this->depth);
                 this->W.setRandom();
-                this->W = this->W.array() * sqrt(2.0 / (this->width * this->height * this->depth));
+                this->W = this->W.unaryExpr([this](const double x) {
+                    return x * sqrt(2.0 / (this->width * this->height * this->depth));
+                });
 
                 this->b.resize(this->numFilters, 1);
-                this->b.setRandom();
-                this->b = this->b.array() * sqrt(2.0 / (this->width * this->height * this->depth));
+                this->b = this->b.unaryExpr([](const double x) {
+                    return 0.01;
+                });
 
                 this->gW.resize(this->numFilters, this->filterSize * this->filterSize * this->depth);
                 this->gb.resize(this->numFilters, 1);
