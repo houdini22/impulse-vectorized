@@ -32,8 +32,8 @@ namespace Impulse {
                     previousLayer->gW.setZero();
                     previousLayer->gb.setZero();
 
-//#pragma omp parallel
-//#pragma omp for
+#pragma omp parallel
+#pragma omp for
                     for (int m = 0; m < numberOfExamples; m++) {
                         for (int c = 0; c < outputDepth; c++) {
                             for (int h = 0; h < outputHeight; h++) {
@@ -48,19 +48,21 @@ namespace Impulse {
                                         for (int y = 0, vertical = vertStart, verticalPad = -padding; y < filterSize; y++, vertical++, verticalPad++) {
                                             for (int x = 0, horizontal = horizStart, horizontalPad = -padding; x < filterSize; x++, horizontal++, horizontalPad++) {
                                                 tmpResult(((d * (inputWidth + 2 * padding) * (inputHeight + 2 * padding)) + (vertical * (inputWidth + 2 * padding)) + horizontal), m) +=
-                                                        previousLayer->W(c, d * (filterSize * filterSize) + (y * filterSize) + x) *
+                                                        previousLayer->W(c, (d * filterSize * filterSize) + (y * filterSize) + x) *
                                                         delta((c * outputWidth * outputHeight) + (h * outputWidth) + w, m);
 
                                                 double z = 0;
                                                 if (padding == 0) {
                                                     z = previousLayer->Z((d * inputWidth * inputHeight) + (vertical * inputWidth) + horizontal, m);
+                                                    //z = previousLayer->A((c * outputDepth * outputHeight) + (h * outputWidth) + w);
                                                 } else {
                                                     if (verticalPad >= 0 && horizontalPad >= 0 && verticalPad < inputHeight && horizontalPad < inputWidth) {
                                                         z = previousLayer->Z((d * inputWidth * inputHeight) + (verticalPad * inputWidth) + horizontalPad, m);
                                                     }
                                                 }
+                                                //double z = previousLayer->A((c * outputWidth * outputHeight) + (h * outputWidth) + w);
 
-                                                previousLayer->gW(c, d * (filterSize * filterSize) + (y * filterSize) + x) +=
+                                                previousLayer->gW(c, (d * filterSize * filterSize) + (y * filterSize) + x) +=
                                                         z *
                                                         delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
                                             }

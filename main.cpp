@@ -242,10 +242,10 @@ void test_conv_backward() {
 }
 
 void test_conv_backward2() {
-    Builder::ConvBuilder builder({4, 4, 1});
+    Builder::ConvBuilder builder({8, 8, 1});
 
     builder.createLayer<Layer::Conv>([](auto *layer) {
-        layer->setFilterSize(1);
+        layer->setFilterSize(2);
         layer->setPadding(0);
         layer->setStride(1);
         layer->setNumFilters(32);
@@ -295,7 +295,7 @@ void test_conv_backward2() {
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
     trainer.setVerbose(true);
-    trainer.setLearningRate(0.05);
+    trainer.setLearningRate(0.01);
 
     std::cout << "ERROR: " << trainer.cost(dataset).getCost() << std::endl;
 
@@ -737,7 +737,7 @@ int main() {
     //videoFace();
     //test_test();
     //test_conv_backward();
-    //test_conv_backward2();
-    test_conv_mnist();
+    test_conv_backward2();
+    //test_conv_mnist();
     return 0;
 }

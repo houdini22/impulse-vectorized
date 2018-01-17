@@ -22,15 +22,13 @@ namespace Impulse {
             }
 
             Math::T_Matrix Conv::forward(Math::T_Matrix input) {
-                this->Z.resize(this->width * this->height * this->depth, input.cols());
+                this->Z = input;
                 this->A.resize(this->getOutputWidth() * this->getOutputHeight() * this->getOutputDepth(),
                                input.cols());
 
 #pragma omp parallel
 #pragma omp for
                 for (T_Size i = 0; i < input.cols(); i++) {
-                    this->Z.col(i) = input.col(i);
-
                     Math::T_Matrix conv = Utils::im2col(input.col(i), this->depth,
                                                         this->height, this->width,
                                                         this->filterSize, this->filterSize,
