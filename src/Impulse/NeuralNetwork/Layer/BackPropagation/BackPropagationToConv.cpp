@@ -29,6 +29,8 @@ namespace Impulse {
 
                     Math::T_Matrix result(inputWidth * inputHeight * inputDepth, numberOfExamples);
 
+                    Math::T_Matrix aPrev = previousLayer->derivative();
+
                     previousLayer->gW.setZero();
                     previousLayer->gb.setZero();
 
@@ -60,16 +62,18 @@ namespace Impulse {
                                                         z = previousLayer->Z((d * inputWidth * inputHeight) + (verticalPad * inputWidth) + horizontalPad, m);
                                                     }
                                                 }
-                                                //double z = previousLayer->A((c * outputWidth * outputHeight) + (h * outputWidth) + w);
+                                                // double z = previousLayer->A((c * outputWidth * outputHeight) + (h * outputWidth) + w);
 
                                                 previousLayer->gW(c, (d * filterSize * filterSize) + (y * filterSize) + x) +=
-                                                        z *
-                                                        delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
+                                                        (
+                                                                z *
+                                                                delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m)
+                                                        ) / numberOfExamples;
                                             }
                                         }
                                     }
 
-                                    previousLayer->gb(c, 0) += delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m);
+                                    previousLayer->gb(c, 0) += delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m) / numberOfExamples;
                                 }
                             }
                         }
@@ -79,8 +83,7 @@ namespace Impulse {
                                 for (int h = -padding, y = 0; h < inputHeight + padding; h++, y++) {
                                     for (int w = -padding, x = 0; w < inputWidth + padding; w++, x++) {
                                         if (w >= 0 && h >= 0 && w < inputWidth && h < inputHeight) {
-                                            result((c * inputWidth * inputHeight) + (h * inputWidth) + w, m);
-                                            tmpResult((c * (inputWidth + 2 * padding) * (inputHeight + 2 * padding)) + (y * (inputWidth + 2 * padding)) + x, m);
+                                            result((c * inputWidth * inputHeight) + (h * inputWidth) + w, m) = tmpResult((c * (inputWidth + 2 * padding) * (inputHeight + 2 * padding)) + (y * (inputWidth + 2 * padding)) + x, m);
                                         }
                                     }
                                 }

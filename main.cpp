@@ -308,6 +308,85 @@ void test_conv_backward2() {
     std::cout << net.forward(datasetInput.getSampleAt(1)->exportToEigen()) << std::endl;
 }
 
+void test_conv_backward3() {
+    Builder::ConvBuilder builder({28, 28, 1});
+
+    builder.createLayer<Layer::Conv>([](auto *layer) {
+        layer->setFilterSize(3);
+        layer->setPadding(1);
+        layer->setStride(1);
+        layer->setNumFilters(32);
+    });
+
+    builder.createLayer<Layer::MaxPool>([](auto *layer) {
+        layer->setFilterSize(2);
+        layer->setStride(2);
+    });
+
+    builder.createLayer<Layer::Conv>([](auto *layer) {
+        layer->setFilterSize(3);
+        layer->setPadding(1);
+        layer->setStride(1);
+        layer->setNumFilters(64);
+    });
+
+    builder.createLayer<Layer::MaxPool>([](auto *layer) {
+        layer->setFilterSize(2);
+        layer->setStride(2);
+    });
+
+    builder.createLayer<Layer::FullyConnected>([](auto *layer) {
+
+    });
+
+    builder.createLayer<Layer::FullyConnected>([](auto *layer) {
+        layer->setSize(1024);
+    });
+
+    builder.createLayer<Layer::Softmax>([](auto *layer) {
+        layer->setSize(2);
+    });
+
+    Network::ConvNetwork net = builder.getNetwork();
+
+    Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
+            "/home/hud/CLionProjects/impulse-vectorized/data/test1_x.csv");
+    Impulse::Dataset datasetInput = datasetBuilder1.build();
+
+    Impulse::DatasetBuilder::CSVBuilder datasetBuilder2(
+            "/home/hud/CLionProjects/impulse-vectorized/data/test1_y.csv");
+    Impulse::Dataset datasetOutput = datasetBuilder2.build();
+
+    Impulse::SlicedDataset dataset;
+    dataset.input = datasetInput;
+    dataset.output = datasetOutput;
+
+    /*std::cout << "INPUT: " << std::endl;
+    dataset.input.out();
+    std::cout << "OUTPUT: " << std::endl;
+    dataset.output.out();*/
+
+    Math::T_Matrix netOutput = net.forward(datasetInput.getSampleAt(1)->exportToEigen());
+    std::cout << "OUTPUT: " << std::endl << netOutput << std::endl;
+
+    Trainer::GradientDescent trainer(net);
+    trainer.setLearningIterations(10000);
+    trainer.setVerboseStep(1);
+    trainer.setRegularization(0.0);
+    trainer.setVerbose(true);
+    trainer.setLearningRate(0.01);
+
+    std::cout << "ERROR: " << trainer.cost(dataset).getCost() << std::endl;
+
+    trainer.train(dataset);
+
+    Serializer serializer(net);
+    serializer.toJSON("/home/hud/CLionProjects/impulse-vectorized/saved/conv.json");
+
+    std::cout << net.forward(datasetInput.getSampleAt(0)->exportToEigen()) << std::endl;
+    std::cout << net.forward(datasetInput.getSampleAt(1)->exportToEigen()) << std::endl;
+}
+
 void test_conv_mnist() {
     Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
             "/home/hud/CLionProjects/impulse-vectorized/data/mnist_test_1000.csv");
@@ -737,7 +816,8 @@ int main() {
     //videoFace();
     //test_test();
     //test_conv_backward();
-    test_conv_backward2();
+    //test_conv_backward2();
+    test_conv_backward3();
     //test_conv_mnist();
     return 0;
 }
