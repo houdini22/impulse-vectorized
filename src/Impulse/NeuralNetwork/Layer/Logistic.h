@@ -1,8 +1,9 @@
-#ifndef IMPULSE_VECTORIZED_SIGMOID_H
-#define IMPULSE_VECTORIZED_SIGMOID_H
+#ifndef IMPULSE_NEURALNETWORK_LAYER_LOGISTIC_H
+#define IMPULSE_NEURALNETWORK_LAYER_LOGISTIC_H
 
-#include <string>
-#include "Abstract.h"
+#include "../include.h"
+
+using namespace Impulse::NeuralNetwork;
 
 namespace Impulse {
 
@@ -10,30 +11,25 @@ namespace Impulse {
 
         namespace Layer {
 
-            const std::string TYPE_LOGISTIC = "logistic";
+            const T_String TYPE_LOGISTIC = "logistic";
 
-            class Logistic : public Abstract {
+            class Logistic : public Abstract1D {
             protected:
             public:
+                Logistic();
 
-                Logistic(unsigned int size, unsigned int prevSize) : Abstract(size, prevSize) {
+                Math::T_Matrix activation() override;
 
-                }
+                Math::T_Matrix derivative() override;
 
-                Eigen::MatrixXd activation(Eigen::MatrixXd input) {
-                    return input.unaryExpr([](const double x) {
-                        return 1.0 / (1.0 + exp(-x));
-                    });
-                }
+                const T_String getType() override;
 
-                Eigen::MatrixXd derivative() {
-                    return this->A.array() * (1.0 - this->A.array());
-                }
+                double loss(Math::T_Matrix output, Math::T_Matrix predictions) override;
+
+                double error(T_Size m) override;
             };
         }
-
     }
-
 }
 
-#endif //IMPULSE_VECTORIZED_SIGMOID_H
+#endif //IMPULSE_NEURALNETWORK_LAYER_LOGISTIC_H

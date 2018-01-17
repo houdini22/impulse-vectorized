@@ -1,8 +1,9 @@
-#ifndef IMPULSE_VECTORIZED_RELU_H
-#define IMPULSE_VECTORIZED_RELU_H
+#ifndef IMPULSE_NEURALNETWORK_LAYER_RELU_H
+#define IMPULSE_NEURALNETWORK_LAYER_RELU_H
 
-#include <string>
-#include "Abstract.h"
+#include "../include.h"
+
+using namespace Impulse::NeuralNetwork;
 
 namespace Impulse {
 
@@ -10,38 +11,25 @@ namespace Impulse {
 
         namespace Layer {
 
-            const std::string TYPE_RELU = "relu";
+            const T_String TYPE_RELU = "relu";
 
-            class Relu : public Abstract {
+            class Relu : public Abstract1D {
             protected:
             public:
+                Relu();
 
-                Relu(unsigned int size, unsigned int prevSize) : Abstract(size, prevSize) {
+                Math::T_Matrix activation() override;
 
-                }
+                Math::T_Matrix derivative() override;
 
-                Eigen::MatrixXd activation(Eigen::MatrixXd input) {
-                    return input.unaryExpr([](const double x) {
-                        if (x < 0.0) {
-                            return 0.0;
-                        }
-                        return x;
-                    });
-                }
+                const T_String getType() override;
 
-                Eigen::MatrixXd derivative() {
-                    return this->A.unaryExpr([](const double x) {
-                        if (x < 0.0) {
-                            return 0.0;
-                        }
-                        return 1.0;
-                    });
-                }
+                double loss(Math::T_Matrix output, Math::T_Matrix predictions) override;
+
+                double error(T_Size m) override;
             };
         }
-
     }
-
 }
 
-#endif //IMPULSE_VECTORIZED_RELU_H
+#endif //IMPULSE_NEURALNETWORK_LAYER_RELU_H
