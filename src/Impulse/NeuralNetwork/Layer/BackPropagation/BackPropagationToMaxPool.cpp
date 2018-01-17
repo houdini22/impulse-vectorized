@@ -8,16 +8,9 @@ namespace Impulse {
 
             namespace BackPropagation {
 
-                BackPropagationToMaxPool::BackPropagationToMaxPool
-                        (Layer::LayerPointer layer, Layer::LayerPointer previousLayer) :
-                        Abstract(layer, previousLayer) {
+                BackPropagationToMaxPool::BackPropagationToMaxPool(Layer::LayerPointer layer, Layer::LayerPointer previousLayer) : Abstract(layer, previousLayer) {}
 
-                }
-
-                Math::T_Matrix BackPropagationToMaxPool::propagate(Math::T_Matrix input,
-                                                                   T_Size numberOfExamples,
-                                                                   double regularization,
-                                                                   Math::T_Matrix delta) {
+                Math::T_Matrix BackPropagationToMaxPool::propagate(Math::T_Matrix input, T_Size numberOfExamples, double regularization, Math::T_Matrix delta) {
 
                     Layer::MaxPool *prevLayer = (Layer::MaxPool *) this->previousLayer.get();
                     Math::T_Matrix result(prevLayer->Z.rows(), prevLayer->Z.cols());
@@ -32,8 +25,8 @@ namespace Impulse {
                     T_Size outputHeight = prevLayer->getOutputHeight();
                     T_Size outputDepth = prevLayer->getOutputDepth();
 
-//#pragma omp parallel
-//#pragma omp for
+#pragma omp parallel
+#pragma omp for
                     for (T_Size m = 0; m < numberOfExamples; m++) {
                         for (T_Size c = 0; c < outputDepth; c++) {
                             for (T_Size h = 0; h < outputHeight; h++) {

@@ -328,10 +328,10 @@ void test_conv_mnist() {
     Builder::ConvBuilder builder({28, 28, 1});
 
     builder.createLayer<Layer::Conv>([](auto *layer) {
-        layer->setFilterSize(5);
-        layer->setPadding(0);
+        layer->setFilterSize(3);
+        layer->setPadding(1);
         layer->setStride(1);
-        layer->setNumFilters(32);
+        layer->setNumFilters(128);
     });
 
     builder.createLayer<Layer::MaxPool>([](auto *layer) {
@@ -340,10 +340,10 @@ void test_conv_mnist() {
     });
 
     builder.createLayer<Layer::Conv>([](auto *layer) {
-        layer->setFilterSize(5);
-        layer->setPadding(0);
+        layer->setFilterSize(3);
+        layer->setPadding(1);
         layer->setStride(1);
-        layer->setNumFilters(64);
+        layer->setNumFilters(128);
     });
 
     builder.createLayer<Layer::MaxPool>([](auto *layer) {
@@ -737,7 +737,7 @@ int main() {
     //videoFace();
     //test_test();
     //test_conv_backward();
-    test_conv_backward2();
-    //test_conv_mnist();
+    //test_conv_backward2();
+    test_conv_mnist();
     return 0;
 }
