@@ -51,6 +51,27 @@ namespace Impulse {
 
                 return result;
             }
+
+            double AbstractTrainer::accuracy(Impulse::SlicedDataset &dataset) {
+                Math::T_Matrix netOutput = this->network.forward(dataset.getInput());
+                Math::T_Matrix correctOutput = dataset.getOutput();
+
+                double result = 0.0;
+
+                for (T_Size i = 0; i < netOutput.cols(); i++) {
+                    int index1;
+                    int index2;
+
+                    netOutput.col(i).maxCoeff(&index1);
+                    correctOutput.col(i).maxCoeff(&index2);
+
+                    if (index1 == index2) {
+                        result++;
+                    }
+                }
+
+                return result / netOutput.cols() * 100;
+            }
         }
     }
 }

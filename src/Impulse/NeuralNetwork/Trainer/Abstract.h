@@ -64,6 +64,11 @@ namespace Impulse {
                 CostGradientResult cost(Impulse::SlicedDataset &dataSet);
 
                 /**
+                 * Computes loss.
+                 */
+                double accuracy(Impulse::SlicedDataset &dataSet);
+
+                /**
                  * Trains network with given dataset.
                  * @param dataSet
                  */

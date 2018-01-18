@@ -434,7 +434,7 @@ void test_conv_mnist() {
 
     });
 
-    builder.createLayer<Layer::FullyConnected>([](auto *layer) {
+    builder.createLayer<Layer::Relu>([](auto *layer) {
         layer->setSize(1024);
     });
 
@@ -457,6 +457,8 @@ void test_conv_mnist() {
     std::cout << "ERROR: " << trainer.cost(slicedDataset).getCost() << std::endl;
 
     trainer.train(slicedDataset);
+
+    std::cout << "OUTPUT: " << std::endl << net.forward(slicedDataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 }
 
 void test_conv() {
