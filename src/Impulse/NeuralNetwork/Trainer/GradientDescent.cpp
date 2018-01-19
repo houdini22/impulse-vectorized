@@ -10,7 +10,7 @@ namespace Impulse {
 
             GradientDescent::GradientDescent(Network::Abstract &net) : AbstractTrainer(net) {}
 
-            void GradientDescent::train(Impulse::SlicedDataset &dataSet) {
+            void GradientDescent::train(Impulse::Dataset::SlicedDataset &dataSet) {
                 Network::Abstract network = this->network;
                 double learningRate = this->learningRate;
                 T_Size iterations = this->learningIterations;

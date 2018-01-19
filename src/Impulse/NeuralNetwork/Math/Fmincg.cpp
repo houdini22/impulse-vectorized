@@ -95,7 +95,7 @@ namespace Impulse {
                 double d1 = (s * -1.0).dot(s); // this is the slope
                 double z1 = red / (1.0 - d1); // initial step is red/(|s|+1)
 
-                while (i < abs(length)) { // while not finished
+                while (i < length) { // while not finished
                     high_resolution_clock::time_point begin = high_resolution_clock::now();
                     i = i + (length > 0 ? 1 : 0); // count iterations?!
                     // make a copy of current values
@@ -245,7 +245,7 @@ namespace Impulse {
                         f1 = f0;
                         df1 = df0; // restore point from before failed line search
                         // line search failed twice in a row?
-                        if (ls_failed == 1 || i > abs(length)) {
+                        if (ls_failed == 1 || i > length) {
                             break; // or we ran out of time, so we give up
                         }
                         // swap derivatives

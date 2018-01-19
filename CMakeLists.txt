@@ -4,30 +4,35 @@ project(impulse_vectorized)
 set(CMAKE_CXX_STANDARD 14)
 
 set(SOURCE_FILES
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetBuilder/BaseBuilder.cpp
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetBuilder/BaseBuilder.h
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetBuilder/CSVBuilder.cpp
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetBuilder/CSVBuilder.h
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/Modifier/Callback.cpp
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/Modifier/Callback.h
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/Modifier/Category.cpp
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/Modifier/Category.h
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/Modifier/MinMaxScaling.cpp
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/Modifier/MinMaxScaling.h
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/Modifier/MissingData.cpp
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/Modifier/MissingData.h
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/Modifier/ZScoresScaling.cpp
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/Modifier/ZScoresScaling.h
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/BaseDatasetModifier.cpp
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/BaseDatasetModifier.h
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.cpp
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSplitter.cpp
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSplitter.h
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset.cpp
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset.h
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetSample.cpp
-        src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetSample.h
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/common.h
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/common.cpp
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetBuilder/Abstract.cpp
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetBuilder/Abstract.h
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetBuilder/CSVBuilder.cpp
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetBuilder/CSVBuilder.h
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetModifier/Modifier/Callback.cpp
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetModifier/Modifier/Callback.h
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetModifier/Modifier/Category.cpp
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetModifier/Modifier/Category.h
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetModifier/Modifier/CategoryId.cpp
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetModifier/Modifier/CategoryId.h
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetModifier/Modifier/MinMaxScaling.cpp
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetModifier/Modifier/MinMaxScaling.h
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetModifier/Modifier/MissingData.cpp
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetModifier/Modifier/MissingData.h
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetModifier/Modifier/ZScoresScaling.cpp
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetModifier/Modifier/ZScoresScaling.h
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetModifier/Modifier/Abstract.cpp
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetModifier/Modifier/Abstract.h
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetModifier/DatasetSlicer.cpp
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetModifier/DatasetSlicer.h
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetModifier/DatasetSplitter.cpp
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetModifier/DatasetSplitter.h
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/Dataset.cpp
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/Dataset.h
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetSample.cpp
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/DatasetSample.h
+        src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/include.h
         main.cpp
         src/Vendor/json/src/json.hpp
         src/Impulse/NeuralNetwork/common.h
@@ -78,7 +83,19 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Layer/Abstract1D.h
         src/Impulse/NeuralNetwork/Layer/Abstract1D.cpp
         src/Impulse/NeuralNetwork/Layer/Abstract3D.h
-        src/Impulse/NeuralNetwork/Layer/Abstract3D.cpp src/Impulse/NeuralNetwork/Layer/BackPropagation/Factory.cpp src/Impulse/NeuralNetwork/Layer/BackPropagation/Factory.h src/Impulse/NeuralNetwork/Layer/BackPropagation/Abstract.h src/Impulse/NeuralNetwork/Layer/BackPropagation/Abstract.cpp src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation1DTo1D.h src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation1DTo1D.cpp src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagationToMaxPool.h src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagationToMaxPool.cpp src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagationToConv.cpp src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagationToConv.h src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation3DTo1D.h src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation3DTo1D.cpp)
+        src/Impulse/NeuralNetwork/Layer/Abstract3D.cpp
+        src/Impulse/NeuralNetwork/Layer/BackPropagation/Factory.cpp
+        src/Impulse/NeuralNetwork/Layer/BackPropagation/Factory.h
+        src/Impulse/NeuralNetwork/Layer/BackPropagation/Abstract.h
+        src/Impulse/NeuralNetwork/Layer/BackPropagation/Abstract.cpp
+        src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation1DTo1D.h
+        src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation1DTo1D.cpp
+        src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagationToMaxPool.h
+        src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagationToMaxPool.cpp
+        src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagationToConv.cpp
+        src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagationToConv.h
+        src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation3DTo1D.h
+        src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation3DTo1D.cpp)
 
 find_package(Boost 1.57.0 COMPONENTS system filesystem REQUIRED)
 if (BOOST_FOUND)

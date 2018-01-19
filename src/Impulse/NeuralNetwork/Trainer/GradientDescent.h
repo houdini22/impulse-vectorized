@@ -15,7 +15,7 @@ namespace Impulse {
             public:
                 explicit GradientDescent(Network::Abstract &net);
 
-                void train(Impulse::SlicedDataset &dataSet) override;
+                void train(Impulse::Dataset::SlicedDataset &dataSet) override;
             };
         }
     }

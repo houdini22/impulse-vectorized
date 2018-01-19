@@ -16,7 +16,7 @@
 #include <fstream>
 #include <utility>
 
-#include "../../Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
+#include "../../Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/include.h"
 
 #include "common.h"
 #include "Math/common.h"

@@ -23,29 +23,24 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
-#include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetBuilder/CSVBuilder.h"
-#include "src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset.h"
-#include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/DatasetSlicer.h"
-
+#include "src/Vendor/impulse-ml-dataset/src/src/Impulse/Dataset/include.h"
 #include "src/Impulse/NeuralNetwork/include.h"
-#include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/Modifier/Category.h"
-#include "src/Vendor/impulse-ml-dataset/src/src/Impulse/DatasetModifier/Modifier/MinMaxScaling.h"
 
 using namespace std::chrono;
 using namespace Impulse::NeuralNetwork;
 using namespace cv;
 
-Impulse::SlicedDataset getDataset() {
+Impulse::Dataset::SlicedDataset getDataset() {
     // create dataset
-    Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
+    Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder1(
             "/home/hud/projekty/impulse-vectorized/data/ex4data1_x.csv");
-    Impulse::Dataset datasetInput = datasetBuilder1.build();
+    Impulse::Dataset::Dataset datasetInput = datasetBuilder1.build();
 
-    Impulse::DatasetBuilder::CSVBuilder datasetBuilder2(
+    Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder2(
             "/home/hud/projekty/impulse-vectorized/data/ex4data1_y.csv");
-    Impulse::Dataset datasetOutput = datasetBuilder2.build();
+    Impulse::Dataset::Dataset datasetOutput = datasetBuilder2.build();
 
-    Impulse::SlicedDataset dataset;
+    Impulse::Dataset::SlicedDataset dataset;
     dataset.input = datasetInput;
     dataset.output = datasetOutput;
 
@@ -53,7 +48,7 @@ Impulse::SlicedDataset getDataset() {
 }
 
 /*void test_logistic() {
-    Impulse::SlicedDataset dataset = getDataset();
+    Impulse::Dataset::SlicedDataset dataset = getDataset();
 
     Builder builder(400);
     builder.createLayer(100, Layer::TYPE_LOGISTIC);
@@ -86,7 +81,7 @@ Impulse::SlicedDataset getDataset() {
 
 void test_softmax_gradient_descent() {
 
-    Impulse::SlicedDataset dataset = getDataset();
+    Impulse::Dataset::SlicedDataset dataset = getDataset();
 
     Builder::ClassifierBuilder builder({400});
 
@@ -130,7 +125,7 @@ void test_softmax_gradient_descent() {
 
 void test_softmax_cg() {
 
-    Impulse::SlicedDataset dataset = getDataset();
+    Impulse::Dataset::SlicedDataset dataset = getDataset();
 
     Builder::ClassifierBuilder builder({400});
 
@@ -168,7 +163,7 @@ void test_softmax_cg() {
 }
 
 void test_conv_backward() {
-    Impulse::SlicedDataset dataset = getDataset();
+    Impulse::Dataset::SlicedDataset dataset = getDataset();
 
     Builder::ConvBuilder builder({20, 20, 1});
 
@@ -270,15 +265,15 @@ void test_conv_backward2() {
 
     Network::ConvNetwork net = builder.getNetwork();
 
-    Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
+    Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder1(
             "/home/hud/CLionProjects/impulse-vectorized/data/test1_x.csv");
-    Impulse::Dataset datasetInput = datasetBuilder1.build();
+    Impulse::Dataset::Dataset datasetInput = datasetBuilder1.build();
 
-    Impulse::DatasetBuilder::CSVBuilder datasetBuilder2(
+    Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder2(
             "/home/hud/CLionProjects/impulse-vectorized/data/test1_y.csv");
-    Impulse::Dataset datasetOutput = datasetBuilder2.build();
+    Impulse::Dataset::Dataset datasetOutput = datasetBuilder2.build();
 
-    Impulse::SlicedDataset dataset;
+    Impulse::Dataset::SlicedDataset dataset;
     dataset.input = datasetInput;
     dataset.output = datasetOutput;
 
@@ -349,15 +344,15 @@ void test_conv_backward3() {
 
     Network::ConvNetwork net = builder.getNetwork();
 
-    Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
+    Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder1(
             "/home/hud/CLionProjects/impulse-vectorized/data/test1_x.csv");
-    Impulse::Dataset datasetInput = datasetBuilder1.build();
+    Impulse::Dataset::Dataset datasetInput = datasetBuilder1.build();
 
-    Impulse::DatasetBuilder::CSVBuilder datasetBuilder2(
+    Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder2(
             "/home/hud/CLionProjects/impulse-vectorized/data/test1_y.csv");
-    Impulse::Dataset datasetOutput = datasetBuilder2.build();
+    Impulse::Dataset::Dataset datasetOutput = datasetBuilder2.build();
 
-    Impulse::SlicedDataset dataset;
+    Impulse::Dataset::SlicedDataset dataset;
     dataset.input = datasetInput;
     dataset.output = datasetOutput;
 
@@ -388,20 +383,18 @@ void test_conv_backward3() {
 }
 
 void test_conv_mnist() {
-    Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
-            "/home/hud/CLionProjects/impulse-vectorized/data/mnist_test_1000.csv");
-    Impulse::Dataset dataset = datasetBuilder1.build();
-    Impulse::DatasetModifier::DatasetSlicer slicer(&dataset);
+    Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder1(
+            "/home/hud/Projekty/impulse-vectorized/data/mnist_test_1000.csv");
+    Impulse::Dataset::Dataset dataset = datasetBuilder1.build();
+    Impulse::Dataset::DatasetModifier::DatasetSlicer slicer(dataset);
     slicer.addOutputColumn(0);
     for (int i = 0; i < 28 * 28; i++) {
         slicer.addInputColumn(i + 1);
     }
 
-    Impulse::SlicedDataset slicedDataset = slicer.slice();
+    Impulse::Dataset::SlicedDataset slicedDataset = slicer.slice();
 
-    //Impulse::DatasetModifier::Modifier::MinMaxScaling modifier(&slicedDataset.input);
-    //modifier.apply();
-    Impulse::DatasetModifier::Modifier::Category modifier2(&slicedDataset.output);
+    Impulse::Dataset::DatasetModifier::Modifier::Category modifier2(slicedDataset.output);
     modifier2.applyToColumn(0);
 
     Builder::ConvBuilder builder({28, 28, 1});
@@ -461,137 +454,8 @@ void test_conv_mnist() {
     std::cout << "OUTPUT: " << std::endl << net.forward(slicedDataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 }
 
-void test_conv() {
-    //Impulse::SlicedDataset dataset = getDataset();
-
-    Builder::ConvBuilder builder({5, 5, 3});
-
-    builder.createLayer<Layer::Conv>([](auto *layer) {
-        layer->setFilterSize(3);
-        layer->setPadding(1);
-        layer->setStride(2);
-        layer->setNumFilters(2);
-    });
-    /*builder.createLayer<Layer::MaxPool>([](auto *layer) {
-        layer->setFilterSize(2);
-        layer->setStride(2);
-    });*/
-
-    /*builder.createLayer<Layer::FullyConnected>([](auto *layer) {
-        layer->setSize(8);
-    });
-    builder.createLayer<Layer::FullyConnected>([](auto *layer) {
-        layer->setSize(4);
-    });
-    */
-
-    Network::ConvNetwork net = builder.getNetwork();
-    // net.debug();
-
-    Math::T_Matrix input;
-    input.resize(5 * 5 * 3, 1);
-    input.col(0) <<
-                 2, 1, 1, 2, 1,
-            2, 1, 1, 2, 0,
-            1, 2, 0, 2, 0,
-            2, 2, 1, 2, 2,
-            2, 1, 2, 0, 0,
-            1, 2, 2, 0, 2,
-            0, 2, 2, 0, 1,
-            2, 1, 0, 0, 0,
-            0, 2, 1, 0, 0,
-            0, 1, 1, 1, 1,
-            2, 1, 2, 1, 2,
-            0, 2, 0, 1, 0,
-            2, 0, 0, 0, 0,
-            2, 2, 1, 0, 0,
-            0, 1, 2, 2, 0;
-
-
-    std::cout << "INPUT: " << input << std::endl;
-    Math::T_Matrix output = net.forward(input);
-
-    std::cout << "OUTPUT: " << std::endl;
-    std::cout << output << std::endl;
-
-    Impulse::SlicedDataset dataset;
-
-    Impulse::DatasetSample sampleInput({
-                                               2, 1, 1, 2, 1,
-                                               2, 1, 1, 2, 0,
-                                               1, 2, 0, 2, 0,
-                                               2, 2, 1, 2, 2,
-                                               2, 1, 2, 0, 0,
-                                               1, 2, 2, 0, 2,
-                                               0, 2, 2, 0, 1,
-                                               2, 1, 0, 0, 0,
-                                               0, 2, 1, 0, 0,
-                                               0, 1, 1, 1, 1,
-                                               2, 1, 2, 1, 2,
-                                               0, 2, 0, 1, 0,
-                                               2, 0, 0, 0, 0,
-                                               2, 2, 1, 0, 0,
-                                               0, 1, 2, 2, 0
-                                       });
-    dataset.input.addSample(sampleInput);
-
-    Impulse::DatasetSample outputSample({0, 1});
-    dataset.output.addSample(outputSample);
-
-    Trainer::GradientDescent trainer(net);
-    trainer.setLearningIterations(1);
-    trainer.setVerboseStep(1);
-    trainer.setRegularization(0.0);
-    trainer.setVerbose(true);
-    trainer.setLearningRate(0.01);
-
-    trainer.train(dataset);
-
-    /*
-    // MAX POOL TEST
-    Math::T_Matrix test(16, 3);
-    test.col(0) << 1, 1, 2, 4,
-                    5, 6, 7, 8,
-                    3, 2, 1, 0,
-                    1, 2, 3, 4;
-
-    test.col(1) << 9, 1, 12, 4,
-            5, 6, 7, 8,
-            13, 2, 14, 0,
-            1, 2, 3, 4;
-
-    test.col(2) << 11, 1, 12, 4,
-            5, 6, 7, 8,
-            13, 2, 1, 0,
-            1, 2, 3, 14;
-
-    Math::T_Matrix output = Utils::maxpool(test, 3, 4, 4, 2, 2, 2, 2);
-    std::cout << output << std::endl;*/
-
-    /*
-    Trainer::ConjugateGradient trainer(net);
-    trainer.setLearningIterations(400);
-    trainer.setVerboseStep(1);
-    trainer.setRegularization(0.0);
-
-    Trainer::CostGradientResult cost = trainer.cost(dataset);
-    std::cout << "Cost: " << cost.getCost() << std::endl;
-
-    std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
-
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();
-    trainer.train(dataset);
-    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    auto duration = duration_cast<seconds>(t2 - t1).count();
-    std::cout << "Time: " << duration << std::endl;
-
-    std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
-    Serializer serializer(net);
-    serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/softmax.json");*/
-}
-
 /*void test_xor() {
-    Impulse::DatasetBuilder::CSVBuilder datasetBuilder(
+    Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder(
             "/home/hud/projekty/impulse-vectorized/data/xor.csv");
     Impulse::Dataset dataset = datasetBuilder.build();
 
@@ -601,7 +465,7 @@ void test_conv() {
     slicer.addInputColumn(1);
     slicer.addOutputColumn(2);
 
-    Impulse::SlicedDataset slicedDataset = slicer.slice();
+    Impulse::Dataset::SlicedDataset slicedDataset = slicer.slice();
 
     Builder builder(2);
     builder.createLayer(3, Layer::TYPE_LOGISTIC);
@@ -635,7 +499,7 @@ void test_logistic_load() {
     Builder builder = Builder::fromJSON("/home/hud/projekty/impulse-vectorized/saved/logistic.json");
     Abstract net = builder.getNetwork();
 
-    Impulse::SlicedDataset dataset = getDataset();
+    Impulse::Dataset::SlicedDataset dataset = getDataset();
 
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
     std::cout << "Saved Forward: " << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen())
@@ -651,7 +515,7 @@ void test_logistic_load() {
 }
 
 void test_linear() {
-    Impulse::DatasetBuilder::CSVBuilder datasetBuilder(
+    Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder(
             "/home/hud/projekty/impulse-vectorized/data/linear.csv");
     Impulse::Dataset dataset = datasetBuilder.build();
 
@@ -661,7 +525,7 @@ void test_linear() {
     slicer.addInputColumn(1);
     slicer.addOutputColumn(2);
 
-    Impulse::SlicedDataset slicedDataset = slicer.slice();
+    Impulse::Dataset::SlicedDataset slicedDataset = slicer.slice();
 
     Builder builder(2);
     builder.createLayer(3, Layer::TYPE_PURELIN);
@@ -693,7 +557,7 @@ void test_linear() {
 
 void face() {
     // create dataset
-    Impulse::DatasetBuilder::CSVBuilder datasetBuilder1(
+    Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder1(
             "/media/hud/INTENSO/ML/facedb/exported_all_scale_0_5/X.csv");
     Impulse::Dataset datasetInput = datasetBuilder1.build();
 
@@ -704,13 +568,13 @@ void face() {
 
     std::cout << "X modified." << std::endl;
 
-    Impulse::DatasetBuilder::CSVBuilder datasetBuilder2(
+    Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder2(
             "/media/hud/INTENSO/ML/facedb/exported_all_scale_0_5/Y.csv");
     Impulse::Dataset datasetOutput = datasetBuilder2.build();
 
     std::cout << "Y loaded." << std::endl;
 
-    Impulse::SlicedDataset dataset;
+    Impulse::Dataset::SlicedDataset dataset;
     dataset.input = datasetInput;
     dataset.output = datasetOutput;
 

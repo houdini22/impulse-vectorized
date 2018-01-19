@@ -10,7 +10,7 @@ namespace Impulse {
 
             ConjugateGradient::ConjugateGradient(Network::Abstract &net) : AbstractTrainer(net) {}
 
-            void ConjugateGradient::train(Impulse::SlicedDataset &dataSet) {
+            void ConjugateGradient::train(Impulse::Dataset::SlicedDataset &dataSet) {
                 Math::Fmincg minimizer;
                 Network::Abstract network = this->network;
                 Math::T_Vector theta = network.getRolledTheta();

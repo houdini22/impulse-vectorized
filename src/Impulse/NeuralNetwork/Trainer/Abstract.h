@@ -61,18 +61,18 @@ namespace Impulse {
                  * @param dataSet
                  * @return
                  */
-                CostGradientResult cost(Impulse::SlicedDataset &dataSet);
+                CostGradientResult cost(Impulse::Dataset::SlicedDataset &dataSet);
 
                 /**
                  * Computes loss.
                  */
-                double accuracy(Impulse::SlicedDataset &dataSet);
+                double accuracy(Impulse::Dataset::SlicedDataset &dataSet);
 
                 /**
                  * Trains network with given dataset.
                  * @param dataSet
                  */
-                virtual void train(Impulse::SlicedDataset &dataSet) = 0;
+                virtual void train(Impulse::Dataset::SlicedDataset &dataSet) = 0;
             };
         }
     }

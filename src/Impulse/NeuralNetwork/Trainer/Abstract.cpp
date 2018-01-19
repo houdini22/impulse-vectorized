@@ -28,7 +28,7 @@ namespace Impulse {
                 this->verboseStep = value;
             }
 
-            Impulse::NeuralNetwork::Trainer::CostGradientResult AbstractTrainer::cost(Impulse::SlicedDataset &dataSet) {
+            Impulse::NeuralNetwork::Trainer::CostGradientResult AbstractTrainer::cost(Impulse::Dataset::SlicedDataset &dataSet) {
                 T_Size m = dataSet.output.getSize();
                 Math::T_Matrix A = this->network.forward(dataSet.getInput());
                 Math::T_Matrix Y = dataSet.getOutput();
@@ -52,7 +52,7 @@ namespace Impulse {
                 return result;
             }
 
-            double AbstractTrainer::accuracy(Impulse::SlicedDataset &dataset) {
+            double AbstractTrainer::accuracy(Impulse::Dataset::SlicedDataset &dataset) {
                 Math::T_Matrix netOutput = this->network.forward(dataset.getInput());
                 Math::T_Matrix correctOutput = dataset.getOutput();
 
