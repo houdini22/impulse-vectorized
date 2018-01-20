@@ -49,5 +49,6 @@
 #include "Trainer/Abstract.h"
 #include "Trainer/ConjugateGradient.h"
 #include "Trainer/GradientDescent.h"
+#include "Trainer/MiniBatchGradientDescent.h"
 
 #endif //IMPULSE_NEURALNETWORK_INCLUDE_H

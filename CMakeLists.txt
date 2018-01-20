@@ -61,6 +61,8 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Trainer/ConjugateGradient.h
         src/Impulse/NeuralNetwork/Trainer/GradientDescent.cpp
         src/Impulse/NeuralNetwork/Trainer/GradientDescent.h
+        src/Impulse/NeuralNetwork/Trainer/MiniBatchGradientDescent.cpp
+        src/Impulse/NeuralNetwork/Trainer/MiniBatchGradientDescent.h
         src/Impulse/NeuralNetwork/Math/common.cpp
         src/Impulse/NeuralNetwork/Network/Abstract.cpp
         src/Impulse/NeuralNetwork/Serializer.cpp

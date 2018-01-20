@@ -454,6 +454,79 @@ void test_conv_mnist() {
     std::cout << "OUTPUT: " << std::endl << net.forward(slicedDataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 }
 
+void test_conv_mnist_batch() {
+    Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder1(
+            "/home/hud/Projekty/impulse-vectorized/data/mnist_test_1000.csv");
+    Impulse::Dataset::Dataset dataset = datasetBuilder1.build();
+    Impulse::Dataset::DatasetModifier::DatasetSlicer slicer(dataset);
+    slicer.addOutputColumn(0);
+    for (int i = 0; i < 28 * 28; i++) {
+        slicer.addInputColumn(i + 1);
+    }
+
+    Impulse::Dataset::SlicedDataset slicedDataset = slicer.slice();
+
+    Impulse::Dataset::DatasetModifier::Modifier::Category modifier2(slicedDataset.output);
+    modifier2.applyToColumn(0);
+
+    Builder::ConvBuilder builder({28, 28, 1});
+
+    builder.createLayer<Layer::Conv>([](auto *layer) {
+        layer->setFilterSize(4);
+        layer->setPadding(1);
+        layer->setStride(1);
+        layer->setNumFilters(32);
+    });
+
+    builder.createLayer<Layer::MaxPool>([](auto *layer) {
+        layer->setFilterSize(2);
+        layer->setStride(2);
+    });
+
+    builder.createLayer<Layer::Conv>([](auto *layer) {
+        layer->setFilterSize(3);
+        layer->setPadding(1);
+        layer->setStride(1);
+        layer->setNumFilters(64);
+    });
+
+    builder.createLayer<Layer::MaxPool>([](auto *layer) {
+        layer->setFilterSize(2);
+        layer->setStride(2);
+    });
+
+    builder.createLayer<Layer::FullyConnected>([](auto *layer) {
+
+    });
+
+    builder.createLayer<Layer::Relu>([](auto *layer) {
+        layer->setSize(1024);
+    });
+
+    builder.createLayer<Layer::Softmax>([](auto *layer) {
+        layer->setSize(10);
+    });
+
+    Network::ConvNetwork net = builder.getNetwork();
+
+    Math::T_Matrix netOutput = net.forward(slicedDataset.input.getSampleAt(0)->exportToEigen());
+    std::cout << "OUTPUT: " << std::endl << netOutput << std::endl;
+
+    Trainer::MiniBatchGradientDescent trainer(net);
+    trainer.setLearningIterations(1000);
+    trainer.setVerboseStep(1);
+    trainer.setRegularization(0.0);
+    trainer.setVerbose(true);
+    trainer.setLearningRate(0.01);
+    trainer.setBatchSize(100);
+
+    std::cout << "ERROR: " << trainer.cost(slicedDataset).getCost() << std::endl;
+
+    trainer.train(slicedDataset);
+
+    std::cout << "OUTPUT: " << std::endl << net.forward(slicedDataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
+}
+
 /*void test_xor() {
     Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder(
             "/home/hud/projekty/impulse-vectorized/data/xor.csv");
@@ -684,6 +757,7 @@ int main() {
     //test_conv_backward();
     //test_conv_backward2();
     //test_conv_backward3();
-    test_conv_mnist();
+    //test_conv_mnist();
+    test_conv_mnist_batch();
     return 0;
 }
