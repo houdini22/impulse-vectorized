@@ -20,6 +20,7 @@ namespace Impulse {
                 T_Size iterations = this->learningIterations;
                 T_Size batchSize = this->batchSize;
                 T_Size numberOfExamples = (T_Size) dataSet.getInput().cols();
+                high_resolution_clock::time_point beginTrain = high_resolution_clock::now();
 
                 for (T_Size i = 0; i < iterations; i++) {
                     high_resolution_clock::time_point beginIteration = high_resolution_clock::now();
@@ -44,7 +45,7 @@ namespace Impulse {
                             high_resolution_clock::time_point endIterationBatch = high_resolution_clock::now();
                             auto durationBatch = duration_cast<milliseconds>(endIterationBatch - beginIterationBatch).count();
                             std::cout << "Batch: " << (offset + 1) << "/" << ceil((double) numberOfExamples / batchSize)
-                                      << " | Time: " << durationBatch
+                                      << " | Time: " << durationBatch << "ms"
                                       << std::endl;
                         }
                     }
@@ -59,10 +60,16 @@ namespace Impulse {
                             std::cout << "Iteration: " << (i + 1)
                                       << " | Cost: " << currentResult.getCost()
                                       << " | Accuracy: " << accuracy
-                                      << "% | Time: " << duration
+                                      << "% | Time: " << duration << "ms"
                                       << std::endl;
                         }
                     }
+                }
+
+                if (this->verbose) {
+                    high_resolution_clock::time_point endTrain = high_resolution_clock::now();
+                    auto duration = duration_cast<seconds>(endTrain - beginTrain).count();
+                    std::cout << "Training end. " << duration << "s" << std::endl;
                 }
             }
         }

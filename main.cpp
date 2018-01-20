@@ -456,7 +456,7 @@ void test_conv_mnist() {
 
 void test_conv_mnist_batch() {
     Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder1(
-            "/home/hud/Projekty/impulse-vectorized/data/mnist_test_1000.csv");
+            "/home/hud/Projekty/impulse-vectorized/data/mnist_test.csv");
     Impulse::Dataset::Dataset dataset = datasetBuilder1.build();
     Impulse::Dataset::DatasetModifier::DatasetSlicer slicer(dataset);
     slicer.addOutputColumn(0);
@@ -513,7 +513,7 @@ void test_conv_mnist_batch() {
     std::cout << "OUTPUT: " << std::endl << netOutput << std::endl;
 
     Trainer::MiniBatchGradientDescent trainer(net);
-    trainer.setLearningIterations(1000);
+    trainer.setLearningIterations(1);
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
     trainer.setVerbose(true);
