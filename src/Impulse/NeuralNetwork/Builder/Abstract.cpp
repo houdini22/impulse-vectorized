@@ -80,6 +80,10 @@ namespace Impulse {
             Abstract<Network::ConvNetwork>::createLayer<Layer::Relu>(
                     std::function<void(Layer::Relu *)> callback);
 
+            template void
+            Abstract<Network::ConvNetwork>::createLayer<Layer::Purelin>(
+                    std::function<void(Layer::Purelin *)> callback);
+
             template<class NETWORK_TYPE>
             NETWORK_TYPE &Abstract<NETWORK_TYPE>::getNetwork() {
                 return this->network;

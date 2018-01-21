@@ -17,8 +17,6 @@ namespace Impulse {
                 explicit ClassifierBuilder(T_Dimension dims);
 
                 void firstLayerTransition(Layer::LayerPointer layer) override;
-
-                static ClassifierBuilder fromJSON(T_String path);
             };
         }
     }

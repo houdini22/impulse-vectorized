@@ -21,6 +21,9 @@ namespace Impulse {
                 T_Size batchSize = this->batchSize;
                 T_Size numberOfExamples = (T_Size) dataSet.getInput().cols();
                 high_resolution_clock::time_point beginTrain = high_resolution_clock::now();
+                double beta1 = this->beta1;
+                double beta2 = this->beta2;
+                double epsilon = this->epsilon;
 
                 for (T_Size i = 0; i < iterations; i++) {
                     high_resolution_clock::time_point beginIteration = high_resolution_clock::now();

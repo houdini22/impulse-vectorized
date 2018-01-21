@@ -54,8 +54,12 @@ namespace Impulse {
 
                 for (T_Size i = 0; i < this->getSize(); i++) {
                     auto layer = this->getLayer(i);
-                    tmp.reserve(
-                            (unsigned long) (layer->W.cols() * layer->W.rows()) + (layer->b.cols() * layer->b.rows()));
+
+                    if (layer->getType() == Layer::TYPE_MAXPOOL) {
+                        continue;
+                    }
+
+                    tmp.reserve((unsigned long) (layer->W.cols() * layer->W.rows()) + (layer->b.cols() * layer->b.rows()));
 
                     for (T_Size j = 0; j < layer->W.rows(); j++) {
                         for (T_Size k = 0; k < layer->W.cols(); k++) {
@@ -80,6 +84,10 @@ namespace Impulse {
                 for (T_Size i = 0; i < this->getSize(); i++) {
                     auto layer = this->layers.at(i);
 
+                    if (layer->getType() == Layer::TYPE_MAXPOOL) {
+                        continue;
+                    }
+
                     for (T_Size j = 0; j < layer->gW.rows(); j++) {
                         for (T_Size k = 0; k < layer->gW.cols(); k++) {
                             tmp.push_back(layer->gW(j, k));
@@ -102,11 +110,17 @@ namespace Impulse {
 
                 for (T_Size i = 0; i < this->getSize(); i++) {
                     auto layer = this->layers.at(i);
+
+                    if (layer->getType() == Layer::TYPE_MAXPOOL) {
+                        continue;
+                    }
+
                     for (T_Size j = 0; j < layer->W.rows(); j++) {
                         for (T_Size k = 0; k < layer->W.cols(); k++) {
                             layer->W(j, k) = theta(t++);
                         }
                     }
+
                     for (T_Size j = 0; j < layer->b.rows(); j++) {
                         for (T_Size k = 0; k < layer->b.cols(); k++) {
                             layer->b(j, k) = theta(t++);

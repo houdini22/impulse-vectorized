@@ -17,6 +17,8 @@ namespace Impulse {
                 explicit ConvBuilder(T_Dimension dims);
 
                 void firstLayerTransition(Layer::LayerPointer layer) override;
+
+                static ConvBuilder fromJSON(T_String path);
             };
         }
     }

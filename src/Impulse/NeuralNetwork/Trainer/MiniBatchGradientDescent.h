@@ -14,6 +14,9 @@ namespace Impulse {
             class MiniBatchGradientDescent : public AbstractTrainer {
             protected:
                 T_Size batchSize = 100;
+                double beta1 = 0.9;
+                double beta2 = 0.999;
+                double epsilon = 1e-8;
             public:
                 explicit MiniBatchGradientDescent(Network::Abstract &net);
 

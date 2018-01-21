@@ -456,7 +456,7 @@ void test_conv_mnist() {
 
 void test_conv_mnist_batch() {
     Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder1(
-            "/home/hud/Projekty/impulse-vectorized/data/mnist_test.csv");
+            "/home/hud/Projekty/impulse-vectorized/data/mnist_test_1000.csv");
     Impulse::Dataset::Dataset dataset = datasetBuilder1.build();
     Impulse::Dataset::DatasetModifier::DatasetSlicer slicer(dataset);
     slicer.addOutputColumn(0);
@@ -513,18 +513,21 @@ void test_conv_mnist_batch() {
     std::cout << "OUTPUT: " << std::endl << netOutput << std::endl;
 
     Trainer::MiniBatchGradientDescent trainer(net);
-    trainer.setLearningIterations(1);
+    trainer.setLearningIterations(10);
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
     trainer.setVerbose(true);
     trainer.setLearningRate(0.01);
-    trainer.setBatchSize(100);
+    trainer.setBatchSize(50);
 
     std::cout << "ERROR: " << trainer.cost(slicedDataset).getCost() << std::endl;
 
     trainer.train(slicedDataset);
 
     std::cout << "OUTPUT: " << std::endl << net.forward(slicedDataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
+
+    Serializer serializer(net);
+    serializer.toJSON("/home/hud/Projekty/impulse-vectorized/saved/conv.json");
 }
 
 /*void test_xor() {
@@ -742,6 +745,34 @@ void videoFace() {
             break;
     }
 }*/
+void test_restore_mnist() {
+    Builder::ConvBuilder builder = Builder::ConvBuilder::fromJSON("/home/hud/Projekty/impulse-vectorized/saved/conv.json");
+    Network::ConvNetwork net = builder.getNetwork();
+
+    Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder1(
+            "/home/hud/Projekty/impulse-vectorized/data/mnist_test_1000.csv");
+    Impulse::Dataset::Dataset dataset = datasetBuilder1.build();
+    Impulse::Dataset::DatasetModifier::DatasetSlicer slicer(dataset);
+    slicer.addOutputColumn(0);
+    for (int i = 0; i < 28 * 28; i++) {
+        slicer.addInputColumn(i + 1);
+    }
+
+    Impulse::Dataset::SlicedDataset slicedDataset = slicer.slice();
+
+    Impulse::Dataset::DatasetModifier::Modifier::Category modifier2(slicedDataset.output);
+    modifier2.applyToColumn(0);
+
+    Math::T_Matrix sample = slicedDataset.input.getSampleAt(0)->exportToEigen();
+
+    high_resolution_clock::time_point begin = high_resolution_clock::now();
+    Math::T_Matrix netOutput = net.forward(sample);
+    high_resolution_clock::time_point end = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(end - begin).count();
+
+    std::cout << "OUTPUT: " << std::endl << netOutput << std::endl;
+    std::cout << "FORWARD TIME: " << duration << std::endl;
+}
 
 int main() {
     //test_logistic();
@@ -758,6 +789,7 @@ int main() {
     //test_conv_backward2();
     //test_conv_backward3();
     //test_conv_mnist();
-    test_conv_mnist_batch();
+    //test_conv_mnist_batch();
+    test_restore_mnist();
     return 0;
 }
