@@ -23,6 +23,20 @@ namespace Impulse {
                 void transition(Layer::LayerPointer prevLayer) override;
 
                 void setSize(T_Size value) override;
+
+                void setFilterSize(T_Size value) override;
+
+                void setPadding(T_Size value) override;
+
+                void setStride(T_Size value) override;
+
+                void setWidth(T_Size value) override;
+
+                void setHeight(T_Size value) override;
+
+                void setDepth(T_Size value) override;
+
+                void setNumFilters(T_Size value) override;
             };
         }
     }

@@ -32,19 +32,19 @@ namespace Impulse {
 
                 T_Size getOutputDepth() override;
 
-                void setFilterSize(T_Size value);
+                virtual void setFilterSize(T_Size value);
 
                 T_Size getFilterSize();
 
-                void setPadding(T_Size value);
+                virtual void setPadding(T_Size value);
 
                 T_Size getPadding();
 
-                void setStride(T_Size value);
+                virtual void setStride(T_Size value);
 
                 T_Size getStride();
 
-                void setNumFilters(T_Size value);
+                virtual void setNumFilters(T_Size value);
 
                 T_Size getNumFilters();
 

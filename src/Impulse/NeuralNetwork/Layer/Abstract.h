@@ -89,7 +89,7 @@ namespace Impulse {
                  *
                  * @param value
                  */
-                void setWidth(T_Size value);
+                virtual void setWidth(T_Size value);
 
                 /**
                  *
@@ -101,7 +101,7 @@ namespace Impulse {
                  *
                  * @param value
                  */
-                void setHeight(T_Size value);
+                virtual void setHeight(T_Size value);
 
                 /**
                  *
@@ -113,7 +113,7 @@ namespace Impulse {
                  *
                  * @param value
                  */
-                void setDepth(T_Size value);
+                virtual void setDepth(T_Size value);
 
                 /**
                  *
