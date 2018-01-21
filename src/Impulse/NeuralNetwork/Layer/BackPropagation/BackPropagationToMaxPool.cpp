@@ -12,7 +12,7 @@ namespace Impulse {
 
                 Math::T_Matrix BackPropagationToMaxPool::propagate(Math::T_Matrix input, T_Size numberOfExamples, double regularization, Math::T_Matrix delta) {
 
-                    Layer::MaxPool *prevLayer = (Layer::MaxPool *) this->previousLayer.get();
+                    auto *prevLayer = (Layer::MaxPool *) this->previousLayer.get();
                     Math::T_Matrix result(prevLayer->Z.rows(), prevLayer->Z.cols());
                     result.setZero();
 

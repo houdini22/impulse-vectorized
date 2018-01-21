@@ -31,7 +31,7 @@ namespace Impulse {
             Impulse::NeuralNetwork::Trainer::CostGradientResult AbstractTrainer::cost(Impulse::Dataset::SlicedDataset &dataSet, bool rollGradient) {
                 T_Size batchSize = 100;
                 T_Size numberOfExamples = dataSet.getNumberOfExamples();
-                T_Size numBatches = (T_Size) ceil((double) numberOfExamples / (double) batchSize);
+                auto numBatches = (T_Size) ceil((double) numberOfExamples / (double) batchSize);
 
                 double cost = 0.0;
                 double accuracy = 0.0;
@@ -49,7 +49,7 @@ namespace Impulse {
                     Math::T_Matrix predictedOutput = this->network.forward(dataSet.getInput(offset, batchSize));
                     Math::T_Matrix correctOutput = dataSet.getOutput(offset, batchSize);
 
-                    T_Size miniBatchSize = (T_Size) correctOutput.cols();
+                    auto miniBatchSize = (T_Size) correctOutput.cols();
 
                     double loss = this->network.loss(correctOutput, predictedOutput); // loss for the mini-batch
                     double error = this->network.error(miniBatchSize); // error for the mini-batch

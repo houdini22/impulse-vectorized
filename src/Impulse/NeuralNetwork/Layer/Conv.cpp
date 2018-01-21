@@ -112,12 +112,12 @@ namespace Impulse {
             }
 
             double Conv::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
-                assert("No loss for CONV layer.");
+                static_assert("No loss for CONV layer.", "");
                 return 0.0;
             }
 
             double Conv::error(T_Size m) {
-                assert("No error for CONV layer.");
+                static_assert("No error for CONV layer.", "");
                 return 0.0;
             }
         }

@@ -19,7 +19,7 @@ namespace Impulse {
                 double learningRate = this->learningRate;
                 T_Size iterations = this->learningIterations;
                 T_Size batchSize = this->batchSize;
-                T_Size numberOfExamples = (T_Size) dataSet.getInput().cols();
+                auto numberOfExamples = (T_Size) dataSet.getInput().cols();
                 high_resolution_clock::time_point beginTrain = high_resolution_clock::now();
                 double beta1 = this->beta1;
                 double beta2 = this->beta2;
