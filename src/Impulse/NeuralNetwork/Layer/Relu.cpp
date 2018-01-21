@@ -8,13 +8,10 @@ namespace Impulse {
 
             Relu::Relu() : Abstract1D() {};
 
-            Math::T_Matrix Relu::activation() {
-                // apply relu
-                Math::T_Matrix result = this->Z.unaryExpr([](const double x) {
+            Math::T_Matrix Relu::activation(Math::T_Matrix &m) {
+                Math::T_Matrix result = m.unaryExpr([](const double x) {
                     return std::max(0.0, x);
                 });
-                // apply normalization // TODO CONFIGURE
-                //result.colwise().normalize();
                 return result;
             }
 

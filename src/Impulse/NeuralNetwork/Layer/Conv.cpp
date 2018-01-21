@@ -26,8 +26,8 @@ namespace Impulse {
 
             Math::T_Matrix Conv::forward(Math::T_Matrix input) {
                 this->Z = input;
-                this->A.resize(this->getOutputWidth() * this->getOutputHeight() * this->getOutputDepth(),
-                               input.cols());
+
+                Math::T_Matrix result(this->getOutputWidth() * this->getOutputHeight() * this->getOutputDepth(), input.cols());
 
 #pragma omp parallel
 #pragma omp for
@@ -41,11 +41,11 @@ namespace Impulse {
                     Math::T_Matrix tmp = ((this->W * conv).colwise() + this->b).transpose(); // transpose for
                     // rolling to vector
                     Eigen::Map<Math::T_Vector> tmp2(tmp.data(), tmp.size());
-                    this->A.col(i) = tmp2;
-
+                    result.col(i) = tmp2;
                 }
 
-                return this->A = this->activation();
+                this->A = this->activation(result);
+                return this->A;
             }
 
             T_Size Conv::getOutputHeight() {
@@ -92,14 +92,14 @@ namespace Impulse {
                 return this->numFilters;
             }
 
-            Math::T_Matrix Conv::activation() {
-                return this->A.unaryExpr([](const double x) {
-                    return std::max(0.0, x); // TODO: set it; relu by default
+            Math::T_Matrix Conv::activation(Math::T_Matrix &m) {
+                return m.unaryExpr([](const double x) {
+                    return std::max(0.0, x); // TODO: set it; RELU by default
                 });
             }
 
             Math::T_Matrix Conv::derivative() {
-                return this->A.unaryExpr([](const double x) {
+                return this->A.unaryExpr([](const double x) { // TODO: derivative for RELU
                     if (x > 0.0) {
                         return 1.0;
                     }
@@ -112,12 +112,12 @@ namespace Impulse {
             }
 
             double Conv::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
-                // TODO
+                assert("No loss for CONV layer.");
                 return 0.0;
             }
 
             double Conv::error(T_Size m) {
-                // TODO
+                assert("No error for CONV layer.");
                 return 0.0;
             }
         }

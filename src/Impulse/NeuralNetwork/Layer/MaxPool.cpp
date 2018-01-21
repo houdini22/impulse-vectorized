@@ -8,7 +8,9 @@ namespace Impulse {
 
             MaxPool::MaxPool() : Abstract3D() {}
 
-            void MaxPool::configure() {}
+            void MaxPool::configure() {
+                // empty configure - no parameters.
+            }
 
             void MaxPool::setFilterSize(T_Size value) {
                 this->filterSize = value;
@@ -28,27 +30,27 @@ namespace Impulse {
 
             Math::T_Matrix MaxPool::forward(Math::T_Matrix input) {
                 this->Z = input;
-                this->A.resize(this->getOutputWidth() *
-                               this->getOutputHeight() *
-                               this->getOutputDepth(), input.cols());
+                Math::T_Matrix result(this->getOutputWidth() * this->getOutputHeight() * this->getOutputDepth(), input.cols());
 
 #pragma omp parallel
 #pragma omp for
                 for (T_Size i = 0; i < input.cols(); i++) {
-                    this->A.col(i) = Utils::maxpool(input.col(i), this->depth,
+                    result.col(i) = Utils::maxpool(input.col(i), this->depth,
                                                    this->height, this->width,
                                                    this->filterSize, this->filterSize,
                                                    this->stride, this->stride);
                 }
 
-                return this->A;
+                return result;
             }
 
-            Math::T_Matrix MaxPool::activation() {
+            Math::T_Matrix MaxPool::activation(Math::T_Matrix &m) {
+                assert("No activation for MAXPOOL layer.");
                 return Math::T_Matrix(); // no activation for maxpool layer
             }
 
             Math::T_Matrix MaxPool::derivative() {
+                assert("No derivative for MAXPOOL layer.");
                 return Math::T_Matrix(); // no derivative for maxpool layer
             }
 
@@ -57,11 +59,13 @@ namespace Impulse {
             }
 
             double MaxPool::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
-                return 0.0; // no loss for maxpool layer
+                assert("No loss for MAXPOOL layer.");
+                return 0.0;
             }
 
             double MaxPool::error(T_Size m) {
-                return 0.0; // no error for maxpool layer
+                assert("No error for MAXPOOL layer.");
+                return 0.0;
             }
 
             T_Size MaxPool::getOutputHeight() {

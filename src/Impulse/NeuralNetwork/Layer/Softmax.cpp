@@ -8,8 +8,8 @@ namespace Impulse {
 
             Softmax::Softmax() : Abstract1D() {}
 
-            Math::T_Matrix Softmax::activation() {
-                Math::T_Matrix t = this->Z.unaryExpr([](const double x) {
+            Math::T_Matrix Softmax::activation(Math::T_Matrix &m) {
+                Math::T_Matrix t = m.unaryExpr([](const double x) {
                     return exp(x);
                 });
                 Math::T_Matrix divider = t.colwise().sum().replicate(t.rows(), 1);

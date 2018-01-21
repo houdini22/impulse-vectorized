@@ -8,8 +8,8 @@ namespace Impulse {
 
             Logistic::Logistic() : Abstract1D() {};
 
-            Math::T_Matrix Logistic::activation() {
-                return this->Z.unaryExpr([](const double x) {
+            Math::T_Matrix Logistic::activation(Math::T_Matrix &m) {
+                return m.unaryExpr([](const double x) {
                     return 1.0 / (1.0 + exp(-x));
                 });
             }

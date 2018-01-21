@@ -24,13 +24,12 @@ namespace Impulse {
                         this->setHeight(layer->getOutputHeight());
                         this->setDepth(layer->getOutputDepth());
                         this->setNumFilters(layer->getOutputWidth() * layer->getOutputHeight() * layer->getOutputDepth());
-
                     }
                 }
             }
 
             void FullyConnected::setSize(T_Size value) {
-                this->setNumFilters(value);
+                assert("No setSize for FULLYCONNECTED layer.");
             }
         }
     }

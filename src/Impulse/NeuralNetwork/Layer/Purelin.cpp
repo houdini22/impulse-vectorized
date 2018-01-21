@@ -8,8 +8,8 @@ namespace Impulse {
 
             Purelin::Purelin() : Abstract1D() {};
 
-            Math::T_Matrix Purelin::activation() {
-                return this->Z;
+            Math::T_Matrix Purelin::activation(Math::T_Matrix &m) {
+                return m;
             }
 
             Math::T_Matrix Purelin::derivative() {

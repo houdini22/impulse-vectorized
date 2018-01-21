@@ -774,6 +774,39 @@ void test_restore_mnist() {
     std::cout << "FORWARD TIME: " << duration << std::endl;
 }
 
+void test_cost() {
+    Builder::ConvBuilder builder = Builder::ConvBuilder::fromJSON("/home/hud/Projekty/impulse-vectorized/saved/conv.json");
+    Network::ConvNetwork net = builder.getNetwork();
+
+    Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder1(
+            "/home/hud/Projekty/impulse-vectorized/data/mnist_test.csv");
+    Impulse::Dataset::Dataset dataset = datasetBuilder1.build();
+    Impulse::Dataset::DatasetModifier::DatasetSlicer slicer(dataset);
+    slicer.addOutputColumn(0);
+    for (int i = 0; i < 28 * 28; i++) {
+        slicer.addInputColumn(i + 1);
+    }
+
+    Impulse::Dataset::SlicedDataset slicedDataset = slicer.slice();
+
+    Impulse::Dataset::DatasetModifier::Modifier::Category modifier2(slicedDataset.output);
+    modifier2.applyToColumn(0);
+
+    Trainer::MiniBatchGradientDescent trainer(net);
+
+    std::cout << "COST: " << trainer.cost(slicedDataset).getCost() << std::endl;
+
+    //std::cout << "COST1: " << trainer.cost(slicedDataset).getCost() << std::endl;
+    /*high_resolution_clock::time_point begin = high_resolution_clock::now();
+    std::cout << "ACCURACY: " << trainer.accuracy(slicedDataset) << std::endl;
+    high_resolution_clock::time_point end = high_resolution_clock::now();
+
+    auto duration = duration_cast<milliseconds>(end - begin).count();
+    std::cout << "TIME: " << duration << std::endl;
+
+    std::cout << "ACCURACY2: " << trainer.accuracy(slicedDataset) << std::endl;*/
+}
+
 int main() {
     //test_logistic();
     //test_softmax_gradient_descent();
@@ -790,6 +823,8 @@ int main() {
     //test_conv_backward3();
     //test_conv_mnist();
     //test_conv_mnist_batch();
-    test_restore_mnist();
+    //test_restore_mnist();
+
+    test_cost();
     return 0;
 }

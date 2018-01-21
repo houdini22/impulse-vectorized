@@ -10,7 +10,8 @@ namespace Impulse {
 
             Math::T_Matrix Abstract::forward(Math::T_Matrix input) {
                 this->Z = (this->W * input).colwise() + this->b;
-                return this->A = this->activation();
+                this->A = this->activation(this->Z);
+                return this->A;
             }
 
             void Abstract::setSize(T_Size value) {

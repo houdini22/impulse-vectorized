@@ -18,7 +18,7 @@ namespace Impulse {
             public:
                 Relu();
 
-                Math::T_Matrix activation() override;
+                Math::T_Matrix activation(Math::T_Matrix &m) override;
 
                 Math::T_Matrix derivative() override;
 
