@@ -456,7 +456,7 @@ void test_conv_mnist() {
 
 void test_conv_mnist_batch() {
     Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder1(
-            "/home/hud/Projekty/impulse-vectorized/data/mnist_test_1000.csv");
+            "/home/hud/Projekty/impulse-vectorized/data/mnist_test.csv");
     Impulse::Dataset::Dataset dataset = datasetBuilder1.build();
     Impulse::Dataset::DatasetModifier::DatasetSlicer slicer(dataset);
     slicer.addOutputColumn(0);
@@ -513,7 +513,7 @@ void test_conv_mnist_batch() {
     std::cout << "OUTPUT: " << std::endl << netOutput << std::endl;
 
     Trainer::MiniBatchGradientDescent trainer(net);
-    trainer.setLearningIterations(10);
+    trainer.setLearningIterations(5);
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
     trainer.setVerbose(true);
@@ -794,17 +794,43 @@ void test_cost() {
 
     Trainer::MiniBatchGradientDescent trainer(net);
 
-    std::cout << "COST: " << trainer.cost(slicedDataset).getCost() << std::endl;
-
-    //std::cout << "COST1: " << trainer.cost(slicedDataset).getCost() << std::endl;
-    /*high_resolution_clock::time_point begin = high_resolution_clock::now();
-    std::cout << "ACCURACY: " << trainer.accuracy(slicedDataset) << std::endl;
+    high_resolution_clock::time_point begin = high_resolution_clock::now();
+    Trainer::CostGradientResult result = trainer.cost(slicedDataset);
     high_resolution_clock::time_point end = high_resolution_clock::now();
 
     auto duration = duration_cast<milliseconds>(end - begin).count();
     std::cout << "TIME: " << duration << std::endl;
+    std::cout << "COST: " << result.getCost() << std::endl;
+    std::cout << "ACCURACY: " << result.getAccuracy() << std::endl;
+}
 
-    std::cout << "ACCURACY2: " << trainer.accuracy(slicedDataset) << std::endl;*/
+void test_conv_mnist_batch_restore() {
+    Builder::ConvBuilder builder = Builder::ConvBuilder::fromJSON("/home/hud/Projekty/impulse-vectorized/saved/conv.json");
+    Network::ConvNetwork net = builder.getNetwork();
+
+    Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder1(
+            "/home/hud/Projekty/impulse-vectorized/data/mnist_test.csv");
+    Impulse::Dataset::Dataset dataset = datasetBuilder1.build();
+    Impulse::Dataset::DatasetModifier::DatasetSlicer slicer(dataset);
+    slicer.addOutputColumn(0);
+    for (int i = 0; i < 28 * 28; i++) {
+        slicer.addInputColumn(i + 1);
+    }
+
+    Impulse::Dataset::SlicedDataset slicedDataset = slicer.slice();
+
+    Impulse::Dataset::DatasetModifier::Modifier::Category modifier2(slicedDataset.output);
+    modifier2.applyToColumn(0);
+
+    Trainer::MiniBatchGradientDescent trainer(net);
+    trainer.setLearningIterations(1);
+    trainer.setVerboseStep(1);
+    trainer.setRegularization(0.0);
+    trainer.setVerbose(true);
+    trainer.setLearningRate(0.01);
+    trainer.setBatchSize(50);
+
+    trainer.train(slicedDataset);
 }
 
 int main() {
@@ -824,7 +850,7 @@ int main() {
     //test_conv_mnist();
     //test_conv_mnist_batch();
     //test_restore_mnist();
-
-    test_cost();
+    //test_cost();
+    test_conv_mnist_batch_restore();
     return 0;
 }

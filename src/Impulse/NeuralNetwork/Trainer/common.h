@@ -13,10 +13,15 @@ namespace Impulse {
 
             struct CostGradientResult {
                 double cost;
+                double accuracy;
                 Math::T_Vector gradient;
 
                 double &getCost() {
                     return this->cost;
+                }
+
+                double &getAccuracy() {
+                    return this->accuracy;
                 }
 
                 Math::T_Vector &getGradient() {
@@ -24,8 +29,7 @@ namespace Impulse {
                 }
             };
 
-            typedef std::function<CostGradientResult(
-                    Math::T_Vector)> StepFunction;
+            typedef std::function<CostGradientResult(Math::T_Vector)> StepFunction;
         }
     }
 }

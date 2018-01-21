@@ -24,7 +24,7 @@ namespace Impulse {
                             this->network.setRolledTheta(input);
                             this->network.backward(dataSet.getInput(), dataSet.getOutput(),
                                                    this->network.forward(dataSet.getInput()), regularization);
-                            return this->cost(dataSet);
+                            return this->cost(dataSet, true);
                         });
 
                 this->network.setRolledTheta(

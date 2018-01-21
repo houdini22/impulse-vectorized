@@ -34,7 +34,6 @@ namespace Impulse {
                     }
 
                     Trainer::CostGradientResult currentResult = this->cost(dataSet);
-                    double accuracy = this->accuracy(dataSet);
 
                     if (this->verbose) {
                         if ((i + 1) % this->verboseStep == 0) {
@@ -42,7 +41,7 @@ namespace Impulse {
                             auto duration = duration_cast<milliseconds>(end - begin).count();
                             std::cout << "Iteration: " << (i + 1)
                                       << " | Cost: " << currentResult.getCost()
-                                      << " | Accuracy: " << accuracy
+                                      << " | Accuracy: " << currentResult.getAccuracy()
                                       << "% | Time: " << duration
                                       << std::endl;
                         }

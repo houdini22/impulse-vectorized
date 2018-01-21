@@ -57,16 +57,11 @@ namespace Impulse {
                 void setVerboseStep(int value);
 
                 /**
-                 * Computes cost and gradient for given dataset.
+                 * Computes error, accuracy and gradient for given dataset.
                  * @param dataSet
                  * @return
                  */
-                CostGradientResult cost(Impulse::Dataset::SlicedDataset &dataSet);
-
-                /**
-                 * Computes loss.
-                 */
-                double accuracy(Impulse::Dataset::SlicedDataset &dataSet);
+                CostGradientResult cost(Impulse::Dataset::SlicedDataset &dataSet, bool rollGradient = false);
 
                 /**
                  * Trains network with given dataset.
