@@ -33,7 +33,7 @@ namespace Impulse {
 
                 for (long i = this->layers.size() - 1; i >= 0; i--) {
                     auto layer = this->layers.at(static_cast<unsigned long>(i));
-                    delta = layer->backpropagation->propagate(X, m, regularization, delta);
+                    delta = layer->backpropagation->propagate(X, (T_Size) m, regularization, delta);
                 }
             }
 
