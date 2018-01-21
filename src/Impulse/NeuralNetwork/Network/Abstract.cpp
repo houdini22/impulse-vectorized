@@ -15,7 +15,7 @@ namespace Impulse {
                 this->layers.push_back(layer);
             }
 
-            Math::T_Matrix Abstract::forward(Math::T_Matrix input) {
+            Math::T_Matrix Abstract::forward(const Math::T_Matrix &input) {
                 Math::T_Matrix output = input;
 
                 for (auto &layer : this->layers) {

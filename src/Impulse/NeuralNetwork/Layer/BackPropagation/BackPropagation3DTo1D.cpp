@@ -14,10 +14,10 @@ namespace Impulse {
 
                 }
 
-                Math::T_Matrix BackPropagation3DTo1D::propagate(Math::T_Matrix input,
+                Math::T_Matrix BackPropagation3DTo1D::propagate(const Math::T_Matrix &input,
                                                                 T_Size numberOfExamples,
                                                                 double regularization,
-                                                                Math::T_Matrix sigma) {
+                                                                const Math::T_Matrix &sigma) {
 
                     return sigma;
                 }

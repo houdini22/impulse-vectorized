@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 project(impulse_vectorized)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 set(CMAKE_CXX_STANDARD 14)
 
 set(SOURCE_FILES
@@ -105,6 +106,15 @@ if (BOOST_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
 endif ()
 
+#Intel MLK
+#[[find_package(MKL REQUIRED)
+if(MKL_FOUND)
+    message("MKL FOUND")
+    add_definitions(-DENABLE_MKL)
+    add_definitions(-DMKL_LP64)
+    add_definitions(-DEIGEN_BLAS_INDEX=int)
+endif()]]
+
 #OpenMP
 #-fopenmp
 FIND_PACKAGE(OpenMP REQUIRED)
@@ -113,23 +123,17 @@ if (OPENMP_FOUND)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+    include_directories(/opt/intel/mkl/include)
 endif ()
 
-#Intel MLK
-#[[include(cmake/FindMKL.cmake)
-if(MKL_FOUND)
-    include_directories(MLK_INCLUDE_DIRS)
-    link_directories(MKL_LIBRARIES)
-endif()]]
-
 #-lblas
-#[[FIND_PACKAGE(BLAS REQUIRED)
+FIND_PACKAGE(BLAS REQUIRED)
 if(BLAS_FOUND)
     message("BLAS FOUND")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${BLAS_C_FLAGS}")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${BLAS_CXX_FLAGS}")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${BLAS_EXE_LINKER_FLAGS}")
-endif()]]
+endif()
 
 #its slower with lapack
 #-llapack
@@ -142,10 +146,11 @@ endif()]]
 
 find_package(OpenCV REQUIRED)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -m64 -lboost_system -lboost_filesystem -flto -march=native -funroll-loops -mavx -msse4.2 -fopenmp")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -m64 -flto -march=native -funroll-loops -mavx -msse4.2 -fopenmp")
 
 add_executable(impulse_vectorized ${SOURCE_FILES})
 
 target_link_libraries(impulse_vectorized ${Boost_LIBRARIES})
-#target_link_libraries(impulse_vectorized ${BLAS_LIBRARIES})
 target_link_libraries(impulse_vectorized ${OpenCV_LIBS})
+target_link_libraries(impulse_vectorized ${BLAS_LIBRARIES})
+#target_link_libraries(impulse_vectorized ${MKL_LIBRARIES})

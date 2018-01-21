@@ -10,7 +10,7 @@ namespace Impulse {
 
                 BackPropagationToMaxPool::BackPropagationToMaxPool(Layer::LayerPointer layer, Layer::LayerPointer previousLayer) : Abstract(layer, previousLayer) {}
 
-                Math::T_Matrix BackPropagationToMaxPool::propagate(Math::T_Matrix input, T_Size numberOfExamples, double regularization, Math::T_Matrix delta) {
+                Math::T_Matrix BackPropagationToMaxPool::propagate(const Math::T_Matrix &input, T_Size numberOfExamples, double regularization, const Math::T_Matrix &sigma) {
 
                     auto *prevLayer = (Layer::MaxPool *) this->previousLayer.get();
                     Math::T_Matrix result(prevLayer->Z.rows(), prevLayer->Z.cols());
@@ -52,7 +52,7 @@ namespace Impulse {
                                         }
                                     }
 
-                                    result(inputOffset + (maxY * inputWidth) + maxX, m) = delta(outputOffset + (h * outputWidth) + w, m);
+                                    result(inputOffset + (maxY * inputWidth) + maxX, m) = sigma(outputOffset + (h * outputWidth) + w, m);
                                 }
                             }
                         }

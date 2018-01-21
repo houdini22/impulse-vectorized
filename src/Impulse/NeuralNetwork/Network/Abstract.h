@@ -23,7 +23,7 @@ namespace Impulse {
 
                 void addLayer(Layer::LayerPointer layer);
 
-                Math::T_Matrix forward(Math::T_Matrix input);
+                Math::T_Matrix forward(const Math::T_Matrix &input);
 
                 void backward(Math::T_Matrix X, Math::T_Matrix Y, Math::T_Matrix predictions, double regularization);
 

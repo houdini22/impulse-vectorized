@@ -14,10 +14,10 @@ namespace Impulse {
 
                 }
 
-                Math::T_Matrix BackPropagation1DTo1D::propagate(Math::T_Matrix input,
+                Math::T_Matrix BackPropagation1DTo1D::propagate(const Math::T_Matrix &input,
                                                                 T_Size numberOfExamples,
                                                                 double regularization,
-                                                                Math::T_Matrix sigma) {
+                                                                const Math::T_Matrix &sigma) {
 
                     Math::T_Matrix previousActivations =
                             this->previousLayer == nullptr ? input : this->previousLayer->A;

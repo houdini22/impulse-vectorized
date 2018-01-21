@@ -1,7 +1,10 @@
-/*
-#define EIGEN_USE_MKL_ALL
 #define EIGEN_USE_BLAS
 #define EIGEN_USE_THREADS
+/*
+#define EIGEN_USE_MKL_ALL
+#define EIGEN_USE_THREADS
+#define MKL_LP64
+#define EIGEN_USE_BLAS
 #define EIGEN_USE_GPU
 #define EIGEN_USE_SYCL
 */

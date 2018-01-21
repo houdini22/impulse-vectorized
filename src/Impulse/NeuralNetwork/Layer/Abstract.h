@@ -44,7 +44,7 @@ namespace Impulse {
                  * @param input
                  * @return
                  */
-                virtual Math::T_Matrix forward(Math::T_Matrix input);
+                virtual Math::T_Matrix forward(const Math::T_Matrix &input);
 
                 /**
                  * Calculates activated values.

@@ -15,10 +15,10 @@ namespace Impulse {
                 public:
                     BackPropagationToMaxPool(Layer::LayerPointer layer, Layer::LayerPointer previousLayer);
 
-                    Math::T_Matrix propagate(Math::T_Matrix input,
+                    Math::T_Matrix propagate(const Math::T_Matrix &input,
                                              T_Size numberOfExamples,
                                              double regularization,
-                                             Math::T_Matrix delta) override;
+                                             const Math::T_Matrix &sigma) override;
                 };
             }
         }

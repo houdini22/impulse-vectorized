@@ -30,7 +30,7 @@ namespace Impulse {
 
                 T_Size getStride();
 
-                Math::T_Matrix forward(Math::T_Matrix input) override;
+                Math::T_Matrix forward(const Math::T_Matrix &input) override;
 
                 Math::T_Matrix activation(Math::T_Matrix &m) override;
 

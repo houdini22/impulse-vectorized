@@ -24,7 +24,7 @@ namespace Impulse {
                 this->gb.resize(this->numFilters, 1);
             }
 
-            Math::T_Matrix Conv::forward(Math::T_Matrix input) {
+            Math::T_Matrix Conv::forward(const Math::T_Matrix &input) {
                 this->Z = input;
 
                 Math::T_Matrix result(this->getOutputWidth() * this->getOutputHeight() * this->getOutputDepth(), input.cols());

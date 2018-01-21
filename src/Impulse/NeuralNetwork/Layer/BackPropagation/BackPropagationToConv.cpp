@@ -10,7 +10,7 @@ namespace Impulse {
 
                 BackPropagationToConv::BackPropagationToConv(Layer::LayerPointer layer, Layer::LayerPointer previousLayer) : Abstract(layer, previousLayer) {}
 
-                Math::T_Matrix BackPropagationToConv::propagate(Math::T_Matrix input, T_Size numberOfExamples, double regularization, Math::T_Matrix delta) {
+                Math::T_Matrix BackPropagationToConv::propagate(const Math::T_Matrix &input, T_Size numberOfExamples, double regularization, const Math::T_Matrix &sigma) {
 
                     auto *previousLayer = (Layer::Conv *) this->previousLayer.get();
 
@@ -51,7 +51,7 @@ namespace Impulse {
                                             for (int x = 0, horizontal = horizStart, horizontalPad = -padding; x < filterSize; x++, horizontal++, horizontalPad++) {
                                                 tmpResult(((d * (inputWidth + 2 * padding) * (inputHeight + 2 * padding)) + (vertical * (inputWidth + 2 * padding)) + horizontal), m) +=
                                                         previousLayer->W(c, (d * filterSize * filterSize) + (y * filterSize) + x) *
-                                                        delta((c * outputWidth * outputHeight) + (h * outputWidth) + w, m);
+                                                        sigma((c * outputWidth * outputHeight) + (h * outputWidth) + w, m);
 
                                                 double z = 0;
                                                 if (padding == 0) {
@@ -65,13 +65,13 @@ namespace Impulse {
                                                 previousLayer->gW(c, (d * filterSize * filterSize) + (y * filterSize) + x) +=
                                                         (
                                                                 z *
-                                                                delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m)
+                                                                sigma(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m)
                                                         ) / numberOfExamples;
                                             }
                                         }
                                     }
 
-                                    previousLayer->gb(c, 0) += delta(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m) / numberOfExamples;
+                                    previousLayer->gb(c, 0) += sigma(c * (outputWidth * outputHeight) + (h * outputWidth) + w, m) / numberOfExamples;
                                 }
                             }
                         }
