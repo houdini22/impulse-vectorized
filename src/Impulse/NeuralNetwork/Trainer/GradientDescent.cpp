@@ -16,7 +16,7 @@ namespace Impulse {
                 T_Size iterations = this->learningIterations;
 
                 for (T_Size i = 0; i < iterations; i++) {
-                    std::chrono::high_resolution_clock::time_point begin = std::chrono::high_resolution_clock::now();
+                    auto begin = Utils::timestamp();
 
                     network.backward(dataSet.getInput(), dataSet.getOutput(), network.forward(dataSet.getInput()), this->regularization);
 
@@ -37,7 +37,7 @@ namespace Impulse {
 
                     if (this->verbose) {
                         if ((i + 1) % this->verboseStep == 0) {
-                            std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+                            auto end = Utils::timestamp();
                             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
                             std::cout << "Iteration: " << (i + 1)
                                       << " | Cost: " << currentResult.getCost()

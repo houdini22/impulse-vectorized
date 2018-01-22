@@ -103,12 +103,8 @@ void test_softmax_gradient_descent() {
     std::cout << "Cost: " << cost.getCost() << std::endl;
     std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();
     trainer.train(dataset);
-    high_resolution_clock::time_point t2 = high_resolution_clock::now();
 
-    auto duration = duration_cast<seconds>(t2 - t1).count();
-    std::cout << "Time: " << duration << std::endl;
     std::cout << "Forward:" << std::endl << net.forward(dataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
     Serializer serializer(net);
@@ -758,14 +754,9 @@ void test_restore_mnist() {
     modifier2.applyToColumn(0);
 
     Math::T_Matrix sample = slicedDataset.input.getSampleAt(0)->exportToEigen();
-
-    high_resolution_clock::time_point begin = high_resolution_clock::now();
     Math::T_Matrix netOutput = net.forward(sample);
-    high_resolution_clock::time_point end = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(end - begin).count();
 
     std::cout << "OUTPUT: " << std::endl << netOutput << std::endl;
-    std::cout << "FORWARD TIME: " << duration << std::endl;
 }
 
 void test_cost() {
@@ -788,12 +779,8 @@ void test_cost() {
 
     Trainer::MiniBatchGradientDescent trainer(net);
 
-    high_resolution_clock::time_point begin = high_resolution_clock::now();
     Trainer::CostGradientResult result = trainer.cost(slicedDataset);
-    high_resolution_clock::time_point end = high_resolution_clock::now();
 
-    auto duration = duration_cast<milliseconds>(end - begin).count();
-    std::cout << "TIME: " << duration << std::endl;
     std::cout << "COST: " << result.getCost() << std::endl;
     std::cout << "ACCURACY: " << result.getAccuracy() << std::endl;
 }

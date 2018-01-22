@@ -12,13 +12,15 @@ namespace Impulse {
             // fwd declarations
             class Abstract;
 
+            // types
             typedef std::shared_ptr<Abstract> LayerPointer;
 
             namespace BackPropagation {
 
-                // fwd declaration
+                // fwd declarations
                 class Abstract;
 
+                // types
                 typedef std::shared_ptr<Abstract> BackPropagationPointer;
 
                 class Abstract {

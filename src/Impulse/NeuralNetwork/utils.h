@@ -19,6 +19,12 @@ namespace Impulse {
                                    int height, int width,
                                    int kernel_h, int kernel_w,
                                    int stride_h, int stride_w);
+
+            std::chrono::high_resolution_clock::time_point timestamp();
+
+            long timeDifferenceMS(std::chrono::high_resolution_clock::time_point end, std::chrono::high_resolution_clock::time_point begin);
+
+            long timeDifferenceS(std::chrono::high_resolution_clock::time_point end, std::chrono::high_resolution_clock::time_point begin);
         }
     }
 }

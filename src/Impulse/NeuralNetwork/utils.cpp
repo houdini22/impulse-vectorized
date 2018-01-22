@@ -76,6 +76,18 @@ namespace Impulse {
                 }
                 return result;
             }
+
+            std::chrono::high_resolution_clock::time_point timestamp() {
+                return std::chrono::high_resolution_clock::now();
+            }
+
+            long timeDifferenceMS(std::chrono::high_resolution_clock::time_point end, std::chrono::high_resolution_clock::time_point begin) {
+                return std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
+            }
+
+            long timeDifferenceS(std::chrono::high_resolution_clock::time_point end, std::chrono::high_resolution_clock::time_point begin) {
+                return std::chrono::duration_cast<std::chrono::seconds>(end - begin).count();
+            }
         }
     }
 }
