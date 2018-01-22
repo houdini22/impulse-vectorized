@@ -1,8 +1,7 @@
 #ifndef IMPULSE_NEURALNETWORK_INCLUDE_H
 #define IMPULSE_NEURALNETWORK_INCLUDE_H
 
-#include <eigen3/Eigen/Core>
-#include <eigen3/Eigen/Dense>
+#include <armadillo>
 #include "../../Vendor/json/src/json.hpp"
 #include <string>
 #include <vector>
@@ -20,8 +19,11 @@
 
 #include "common.h"
 #include "Math/common.h"
+#include "Math/Matrix.h"
 #include "utils.h"
 #include "Trainer/common.h"
+#include "Layer/ActivationFunction.h"
+#include "Layer/Derivative.h"
 #include "Layer/BackPropagation/Abstract.h"
 #include "Layer/BackPropagation/BackPropagation1DTo1D.h"
 #include "Layer/BackPropagation/BackPropagationToMaxPool.h"

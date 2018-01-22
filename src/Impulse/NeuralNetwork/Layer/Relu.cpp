@@ -8,20 +8,12 @@ namespace Impulse {
 
             Relu::Relu() : Abstract1D() {};
 
-            Math::T_Matrix Relu::activation(Math::T_Matrix &m) {
-                Math::T_Matrix result = m.unaryExpr([](const double x) {
-                    return std::max(0.0, x);
-                });
-                return result;
+            Math::T_Matrix Relu::activation(Math::T_Matrix m) {
+                return ActivationFunction::reluActivation(m);
             }
 
             Math::T_Matrix Relu::derivative() {
-                return this->A.unaryExpr([](const double x) {
-                    if (x < 0.0) {
-                        return 0.0;
-                    }
-                    return 1.0;
-                });
+                return Derivative::reluDerivative(this->A);
             }
 
             const T_String Relu::getType() {
@@ -29,12 +21,13 @@ namespace Impulse {
             }
 
             double Relu::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
-                // TODO
+                static_assert("No loss function for RELU layer.");
                 return 0.0;
             }
 
             double Relu::error(T_Size m) {
-                return 0.0; // TODO
+                static_assert("No error function for RELU layer.");
+                return 0.0;
             }
         }
     }

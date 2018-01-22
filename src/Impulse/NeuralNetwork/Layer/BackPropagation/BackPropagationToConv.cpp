@@ -25,14 +25,14 @@ namespace Impulse {
                     int inputDepth = previousLayer->getDepth();
 
                     Math::T_Matrix tmpResult((inputWidth + 2 * padding) * (inputHeight + 2 * padding) * inputDepth, numberOfExamples);
-                    tmpResult.setZero();
+                    tmpResult.zeros();
 
                     Math::T_Matrix result(inputWidth * inputHeight * inputDepth, numberOfExamples);
 
                     Math::T_Matrix aPrev = previousLayer->derivative();
 
-                    previousLayer->gW.setZero();
-                    previousLayer->gb.setZero();
+                    previousLayer->gW.zeros();
+                    previousLayer->gb.zeros();
 
 #pragma omp parallel
 #pragma omp for

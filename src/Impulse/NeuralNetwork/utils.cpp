@@ -19,7 +19,7 @@ namespace Impulse {
                 int currentResultCol = 0;
 
                 Math::T_Matrix result(rows, cols);
-                result.setZero();
+                result.zeros();
 
                 for (int boundingY = -pad_h;
                      boundingY + kernel_h <= height + pad_h;
@@ -56,7 +56,7 @@ namespace Impulse {
                 int currentResultCol = 0;
 
                 Math::T_Matrix result(resultWidth * resultHeight * resultDepth, 1);
-                result.setZero();
+                result.zeros();
 
                 for (int boundingY = 0; boundingY + kernel_h <= height; boundingY += stride_h) {
                     for (int boundingX = 0; boundingX + kernel_w <= width; boundingX += stride_w) {

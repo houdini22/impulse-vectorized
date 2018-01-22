@@ -51,7 +51,7 @@ namespace Impulse {
                  * @param input
                  * @return
                  */
-                virtual Math::T_Matrix activation(Math::T_Matrix &m) = 0;
+                virtual Math::T_Matrix activation(Math::T_Matrix m) = 0;
 
                 /**
                  * Calculates derivative. It depends on activation function.

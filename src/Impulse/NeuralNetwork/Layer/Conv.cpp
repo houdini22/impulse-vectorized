@@ -9,38 +9,34 @@ namespace Impulse {
             Conv::Conv() : Abstract3D() {}
 
             void Conv::configure() {
-                this->W.resize(this->numFilters, this->filterSize * this->filterSize * this->depth);
-                this->W.setRandom();
-                this->W = this->W.unaryExpr([this](const double x) {
-                    return x * sqrt(2.0 / (this->width * this->height * this->depth));
-                });
+                this->W = Math::Matrix::resize(this->W, this->numFilters, this->filterSize * this->filterSize * this->depth);
+                this->W = Math::Matrix::fillRandom(this->W, this->width * this->height * this->depth);
 
-                this->b.resize(this->numFilters, 1);
-                this->b = this->b.unaryExpr([](const double x) {
-                    return 0.01;
-                });
+                this->b = Math::Matrix::resize(this->b, this->numFilters, 1);
+                this->b = Math::Matrix::fill(this->b, 0.01);
 
-                this->gW.resize(this->numFilters, this->filterSize * this->filterSize * this->depth);
-                this->gb.resize(this->numFilters, 1);
+                this->gW = Math::Matrix::resize(this->gW, this->numFilters, this->filterSize * this->filterSize * this->depth);
+                this->gb = Math::Matrix::resize(this->gb, this->numFilters, 1);
             }
 
             Math::T_Matrix Conv::forward(const Math::T_Matrix &input) {
                 this->Z = input;
 
-                Math::T_Matrix result(this->getOutputWidth() * this->getOutputHeight() * this->getOutputDepth(), input.cols());
+                Math::T_Matrix result = Math::Matrix::create(this->getOutputWidth() * this->getOutputHeight() * this->getOutputDepth(), Math::Matrix::cols(input));
 
 #pragma omp parallel
 #pragma omp for
-                for (T_Size i = 0; i < input.cols(); i++) {
+                for (T_Size i = 0; i < Math::Matrix::cols(input); i++) {
                     Math::T_Matrix conv = Utils::im2col(input.col(i), this->depth,
                                                         this->height, this->width,
                                                         this->filterSize, this->filterSize,
                                                         this->padding, this->padding,
                                                         this->stride, this->stride);
 
-                    Math::T_Matrix tmp = ((this->W * conv).colwise() + this->b).transpose(); // transpose for
+                    Math::T_Matrix tmp = Math::Matrix::colwiseAdd(Math::Matrix::multiply(this->W, conv), this->b);
+
                     // rolling to vector
-                    Eigen::Map<Math::T_Vector> tmp2(tmp.data(), tmp.size());
+                    arma::dcolvec tmp2 = arma::vectorise(tmp);
                     result.col(i) = tmp2;
                 }
 
@@ -92,19 +88,12 @@ namespace Impulse {
                 return this->numFilters;
             }
 
-            Math::T_Matrix Conv::activation(Math::T_Matrix &m) {
-                return m.unaryExpr([](const double x) {
-                    return std::max(0.0, x); // TODO: set it; RELU by default
-                });
+            Math::T_Matrix Conv::activation(Math::T_Matrix m) {
+                return ActivationFunction::reluActivation(m);
             }
 
             Math::T_Matrix Conv::derivative() {
-                return this->A.unaryExpr([](const double x) { // TODO: derivative for RELU
-                    if (x > 0.0) {
-                        return 1.0;
-                    }
-                    return 0.0;
-                });
+                return Derivative::reluDerivative(this->A);
             }
 
             const T_String Conv::getType() {

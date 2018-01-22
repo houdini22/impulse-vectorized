@@ -30,11 +30,11 @@ namespace Impulse {
 
             Math::T_Matrix MaxPool::forward(const Math::T_Matrix &input) {
                 this->Z = input;
-                Math::T_Matrix result(this->getOutputWidth() * this->getOutputHeight() * this->getOutputDepth(), input.cols());
+                Math::T_Matrix result(this->getOutputWidth() * this->getOutputHeight() * this->getOutputDepth(), input.n_cols);
 
 #pragma omp parallel
 #pragma omp for
-                for (T_Size i = 0; i < input.cols(); i++) {
+                for (T_Size i = 0; i < input.n_cols; i++) {
                     result.col(i) = Utils::maxpool(input.col(i), this->depth,
                                                    this->height, this->width,
                                                    this->filterSize, this->filterSize,
@@ -44,7 +44,7 @@ namespace Impulse {
                 return result;
             }
 
-            Math::T_Matrix MaxPool::activation(Math::T_Matrix &m) {
+            Math::T_Matrix MaxPool::activation(Math::T_Matrix m) {
                 static_assert("No activation for MAXPOOL layer.", "");
                 return Math::T_Matrix(); // no activation for maxpool layer
             }

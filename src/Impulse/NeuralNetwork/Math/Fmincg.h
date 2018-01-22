@@ -1,3 +1,5 @@
+#if FALSE
+
 #ifndef IMPULSE_NEURALNETWORK_MATH_FMINCG_H
 #define IMPULSE_NEURALNETWORK_MATH_FMINCG_H
 
@@ -51,3 +53,5 @@ namespace Impulse {
 }
 
 #endif //IMPULSE_NEURALNETWORK_MATH_FMINCG_H
+
+#endif

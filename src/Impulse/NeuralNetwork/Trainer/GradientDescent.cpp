@@ -16,7 +16,7 @@ namespace Impulse {
                 T_Size iterations = this->learningIterations;
 
                 for (T_Size i = 0; i < iterations; i++) {
-                    high_resolution_clock::time_point begin = high_resolution_clock::now();
+                    std::chrono::high_resolution_clock::time_point begin = std::chrono::high_resolution_clock::now();
 
                     network.backward(dataSet.getInput(), dataSet.getOutput(), network.forward(dataSet.getInput()), this->regularization);
 
@@ -29,16 +29,16 @@ namespace Impulse {
                             continue;
                         }
 
-                        layer->W = layer->W.array() - learningRate * (layer->gW.array());
-                        layer->b = layer->b.array() - learningRate * (layer->gb.array());
+                        layer->W = layer->W - learningRate * (layer->gW);
+                        layer->b = layer->b - learningRate * (layer->gb);
                     }
 
                     Trainer::CostGradientResult currentResult = this->cost(dataSet);
 
                     if (this->verbose) {
                         if ((i + 1) % this->verboseStep == 0) {
-                            high_resolution_clock::time_point end = high_resolution_clock::now();
-                            auto duration = duration_cast<milliseconds>(end - begin).count();
+                            std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+                            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
                             std::cout << "Iteration: " << (i + 1)
                                       << " | Cost: " << currentResult.getCost()
                                       << " | Accuracy: " << currentResult.getAccuracy()

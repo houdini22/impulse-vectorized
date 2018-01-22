@@ -1,3 +1,5 @@
+#if FALSE
+
 #include "../include.h"
 
 using namespace Impulse::NeuralNetwork;
@@ -33,3 +35,5 @@ namespace Impulse {
         }
     }
 }
+
+#endif

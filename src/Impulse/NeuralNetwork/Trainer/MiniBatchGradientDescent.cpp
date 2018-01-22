@@ -19,17 +19,17 @@ namespace Impulse {
                 double learningRate = this->learningRate;
                 T_Size iterations = this->learningIterations;
                 T_Size batchSize = this->batchSize;
-                auto numberOfExamples = (T_Size) dataSet.getInput().cols();
-                high_resolution_clock::time_point beginTrain = high_resolution_clock::now();
+                auto numberOfExamples = (T_Size) dataSet.getInput().n_cols;
+                std::chrono::high_resolution_clock::time_point beginTrain = std::chrono::high_resolution_clock::now();
                 double beta1 = this->beta1;
                 double beta2 = this->beta2;
                 double epsilon = this->epsilon;
 
                 for (T_Size i = 0; i < iterations; i++) {
-                    high_resolution_clock::time_point beginIteration = high_resolution_clock::now();
+                    std::chrono::high_resolution_clock::time_point beginIteration = std::chrono::high_resolution_clock::now();
 
                     for (T_Size batch = 0, offset = 0; batch < numberOfExamples; batch += batchSize, offset++) {
-                        high_resolution_clock::time_point beginIterationBatch = high_resolution_clock::now();
+                        std::chrono::high_resolution_clock::time_point beginIterationBatch = std::chrono::high_resolution_clock::now();
 
                         network.backward(dataSet.getInput(offset, batchSize), dataSet.getOutput(offset, batchSize), network.forward(dataSet.getInput(offset, batchSize)), this->regularization);
 
@@ -40,13 +40,13 @@ namespace Impulse {
                                 continue;
                             }
 
-                            layer->W = layer->W.array() - learningRate * (layer->gW.array());
-                            layer->b = layer->b.array() - learningRate * (layer->gb.array());
+                            layer->W = layer->W - learningRate * (layer->gW);
+                            layer->b = layer->b - learningRate * (layer->gb);
                         }
 
                         if (this->verbose) {
-                            high_resolution_clock::time_point endIterationBatch = high_resolution_clock::now();
-                            auto durationBatch = duration_cast<milliseconds>(endIterationBatch - beginIterationBatch).count();
+                            std::chrono::high_resolution_clock::time_point endIterationBatch = std::chrono::high_resolution_clock::now();
+                            auto durationBatch = std::chrono::duration_cast<std::chrono::milliseconds>(endIterationBatch - beginIterationBatch).count();
                             std::cout << "Batch: " << (offset + 1) << "/" << ceil((double) numberOfExamples / batchSize)
                                       << " | Time: " << durationBatch << "ms"
                                       << std::endl;
@@ -57,8 +57,8 @@ namespace Impulse {
                         Trainer::CostGradientResult currentResult = this->cost(dataSet);
 
                         if ((i + 1) % this->verboseStep == 0) {
-                            high_resolution_clock::time_point endIteration = high_resolution_clock::now();
-                            auto duration = duration_cast<milliseconds>(endIteration - beginIteration).count();
+                            std::chrono::high_resolution_clock::time_point endIteration = std::chrono::high_resolution_clock::now();
+                            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endIteration - beginIteration).count();
                             std::cout << "Iteration: " << (i + 1)
                                       << " | Cost: " << currentResult.getCost()
                                       << " | Accuracy: " << currentResult.getAccuracy()
@@ -69,8 +69,8 @@ namespace Impulse {
                 }
 
                 if (this->verbose) {
-                    high_resolution_clock::time_point endTrain = high_resolution_clock::now();
-                    auto duration = duration_cast<seconds>(endTrain - beginTrain).count();
+                    std::chrono::high_resolution_clock::time_point endTrain = std::chrono::high_resolution_clock::now();
+                    auto duration = std::chrono::duration_cast<std::chrono::seconds>(endTrain - beginTrain).count();
                     std::cout << "Training end. " << duration << "s" << std::endl;
                 }
             }

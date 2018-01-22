@@ -9,8 +9,8 @@ namespace Impulse {
 
         namespace Math {
 
-            typedef Eigen::MatrixXd T_Matrix;
-            typedef Eigen::VectorXd T_Vector;
+            typedef arma::Mat<double> T_Matrix;
+            typedef arma::Mat<double> T_Vector;
             typedef std::vector<double> T_RawVector;
 
             /**

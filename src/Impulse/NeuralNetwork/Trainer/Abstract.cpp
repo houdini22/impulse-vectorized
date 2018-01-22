@@ -39,9 +39,7 @@ namespace Impulse {
                 // calculate penalty
                 double penalty = 0.0;
                 for (T_Size i = 0; i < this->network.getSize(); i++) {
-                    penalty += this->network.getLayer(i)->W.unaryExpr([](const double x) {
-                        return pow(x, 2.0);
-                    }).sum();
+                    penalty += Math::Matrix::sum(Math::Matrix::pow(this->network.getLayer(i)->W, 2.0));
                 }
 
                 // calculate cost from mini-batches
@@ -49,7 +47,7 @@ namespace Impulse {
                     Math::T_Matrix predictedOutput = this->network.forward(dataSet.getInput(offset, batchSize));
                     Math::T_Matrix correctOutput = dataSet.getOutput(offset, batchSize);
 
-                    auto miniBatchSize = (T_Size) correctOutput.cols();
+                    auto miniBatchSize = (T_Size) correctOutput.n_cols;
 
                     double loss = this->network.loss(correctOutput, predictedOutput); // loss for the mini-batch
                     double error = this->network.error(miniBatchSize); // error for the mini-batch
@@ -59,12 +57,10 @@ namespace Impulse {
                             // TODO: fix it
                             ((double) numBatches * ((double) miniBatchSize / (double) batchSize));
 
-                    for (T_Size i = 0; i < predictedOutput.cols(); i++) {
-                        int index1;
-                        int index2;
+                    for (T_Size i = 0; i < predictedOutput.n_cols; i++) {
 
-                        predictedOutput.col(i).maxCoeff(&index1);
-                        correctOutput.col(i).maxCoeff(&index2);
+                        arma::uword index1 = predictedOutput.col(i).index_max();
+                        arma::uword index2 = correctOutput.col(i).index_max();
 
                         if (index1 == index2) {
                             accuracy++;

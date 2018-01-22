@@ -8,14 +8,12 @@ namespace Impulse {
 
             Logistic::Logistic() : Abstract1D() {};
 
-            Math::T_Matrix Logistic::activation(Math::T_Matrix &m) {
-                return m.unaryExpr([](const double x) {
-                    return 1.0 / (1.0 + exp(-x));
-                });
+            Math::T_Matrix Logistic::activation(Math::T_Matrix m) {
+                return ActivationFunction::logisticActivation(m);
             }
 
             Math::T_Matrix Logistic::derivative() {
-                return this->A.array() * (1.0 - this->A.array());
+                return Derivative::logisticDerivative(this->A);
             }
 
             const T_String Logistic::getType() {
@@ -23,14 +21,17 @@ namespace Impulse {
             }
 
             double Logistic::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
-                Math::T_Matrix loss =
-                        (output.array() * predictions.unaryExpr([](const double x) { return log(x); }).array())
-                        +
-                        (output.unaryExpr([](const double x) { return 1.0 - x; }).array()
-                         *
-                         predictions.unaryExpr([](const double x) { return log(1.0 - x); }).array()
-                        );
-                return loss.sum();
+                Math::T_Matrix p1(predictions);
+                p1 = arma::log(p1);
+
+                Math::T_Matrix p2(predictions);
+                p2.for_each([](arma::mat::elem_type &x) { x = log(1.0 - x); });
+
+                Math::T_Matrix output2(output);
+                output2.for_each([](arma::mat::elem_type &x) { x = 1.0 - x; });
+
+                Math::T_Matrix loss = (output % p1) + (output2 % p2);
+                return arma::sum(arma::sum(loss));
             }
 
             double Logistic::error(T_Size m) {

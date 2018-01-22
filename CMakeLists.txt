@@ -98,7 +98,10 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagationToConv.cpp
         src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagationToConv.h
         src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation3DTo1D.h
-        src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation3DTo1D.cpp)
+        src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation3DTo1D.cpp
+        src/Impulse/NeuralNetwork/Math/Matrix.h
+        src/Impulse/NeuralNetwork/Layer/ActivationFunction.h
+        src/Impulse/NeuralNetwork/Layer/Derivative.h)
 
 find_package(Boost 1.57.0 COMPONENTS system filesystem REQUIRED)
 if (BOOST_FOUND)
@@ -107,13 +110,12 @@ if (BOOST_FOUND)
 endif ()
 
 #Intel MLK
-#[[find_package(MKL REQUIRED)
+find_package(MKL REQUIRED)
 if(MKL_FOUND)
     message("MKL FOUND")
     add_definitions(-DENABLE_MKL)
     add_definitions(-DMKL_LP64)
-    add_definitions(-DEIGEN_BLAS_INDEX=int)
-endif()]]
+endif()
 
 #OpenMP
 #-fopenmp
@@ -137,20 +139,24 @@ endif()
 
 #its slower with lapack
 #-llapack
-#[[FIND_PACKAGE(LAPACK REQUIRED)
+FIND_PACKAGE(LAPACK REQUIRED)
 if(LAPACK_FOUND)
     message("LAPACK FOUND")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LAPACK_LINKER_FLAGS}")
     link_directories(LAPACK_LIBRARIES)
-endif()]]
+endif()
+
+find_package(Armadillo REQUIRED)
+include_directories(${ARMADILLO_INCLUDE_DIRS})
 
 find_package(OpenCV REQUIRED)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -m64 -flto -march=native -funroll-loops -mavx -msse4.2 -fopenmp")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -m64 -flto -march=native -funroll-loops -mavx -msse4.2 -fopenmp -llapack -lblas -lmlpack -larmadillo -lboost_serialization -lboost_program_options")
 
 add_executable(impulse_vectorized ${SOURCE_FILES})
 
 target_link_libraries(impulse_vectorized ${Boost_LIBRARIES})
 target_link_libraries(impulse_vectorized ${OpenCV_LIBS})
 target_link_libraries(impulse_vectorized ${BLAS_LIBRARIES})
-#target_link_libraries(impulse_vectorized ${MKL_LIBRARIES})
+target_link_libraries(impulse_vectorized ${MKL_LIBRARIES})
+target_link_libraries(impulse_vectorized ${ARMADILLO_LIBRARIES})

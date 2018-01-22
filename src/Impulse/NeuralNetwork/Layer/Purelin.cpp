@@ -8,13 +8,13 @@ namespace Impulse {
 
             Purelin::Purelin() : Abstract1D() {};
 
-            Math::T_Matrix Purelin::activation(Math::T_Matrix &m) {
+            Math::T_Matrix Purelin::activation(Math::T_Matrix m) {
                 return m;
             }
 
             Math::T_Matrix Purelin::derivative() {
-                Math::T_Matrix d(this->Z.rows(), this->Z.cols());
-                d.setOnes();
+                Math::T_Matrix d(this->Z.n_rows, this->Z.n_cols);
+                d.ones();
                 return d;
             }
 
@@ -23,10 +23,11 @@ namespace Impulse {
             }
 
             double Purelin::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
-                Math::T_Matrix loss = (predictions.array() - output.array()).unaryExpr([](const double x) {
-                    return pow(x, 2.0);
+                Math::T_Matrix loss = predictions - output;
+                loss = loss.for_each([](arma::mat::elem_type& x) {
+                    x = pow(x, 2.0);
                 });
-                return loss.sum();
+                return arma::sum(arma::sum(loss));
             }
 
             double Purelin::error(T_Size m) {

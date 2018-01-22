@@ -27,9 +27,9 @@ namespace Impulse {
 
             void
             Abstract::backward(Math::T_Matrix X, Math::T_Matrix Y, Math::T_Matrix predictions, double regularization) {
-                long m = X.cols();
+                long m = X.n_cols;
 
-                Math::T_Matrix delta = predictions.array() - Y.array();
+                Math::T_Matrix delta = predictions - Y;
 
                 for (long i = this->layers.size() - 1; i >= 0; i--) {
                     auto layer = this->layers.at(static_cast<unsigned long>(i));
@@ -59,16 +59,16 @@ namespace Impulse {
                         continue;
                     }
 
-                    tmp.reserve((unsigned long) (layer->W.cols() * layer->W.rows()) + (layer->b.cols() * layer->b.rows()));
+                    tmp.reserve((unsigned long) (layer->W.n_cols * layer->W.n_rows) + (layer->b.n_cols * layer->b.n_rows));
 
-                    for (T_Size j = 0; j < layer->W.rows(); j++) {
-                        for (T_Size k = 0; k < layer->W.cols(); k++) {
+                    for (T_Size j = 0; j < layer->W.n_rows; j++) {
+                        for (T_Size k = 0; k < layer->W.n_cols; k++) {
                             tmp.push_back(layer->W(j, k));
                         }
                     }
 
-                    for (T_Size j = 0; j < layer->b.rows(); j++) {
-                        for (T_Size k = 0; k < layer->b.cols(); k++) {
+                    for (T_Size j = 0; j < layer->b.n_rows; j++) {
+                        for (T_Size k = 0; k < layer->b.n_cols; k++) {
                             tmp.push_back(layer->b(j, k));
                         }
                     }
@@ -88,14 +88,14 @@ namespace Impulse {
                         continue;
                     }
 
-                    for (T_Size j = 0; j < layer->gW.rows(); j++) {
-                        for (T_Size k = 0; k < layer->gW.cols(); k++) {
+                    for (T_Size j = 0; j < layer->gW.n_rows; j++) {
+                        for (T_Size k = 0; k < layer->gW.n_cols; k++) {
                             tmp.push_back(layer->gW(j, k));
                         }
                     }
 
-                    for (T_Size j = 0; j < layer->gb.rows(); j++) {
-                        for (T_Size k = 0; k < layer->gb.cols(); k++) {
+                    for (T_Size j = 0; j < layer->gb.n_rows; j++) {
+                        for (T_Size k = 0; k < layer->gb.n_cols; k++) {
                             tmp.push_back(layer->gb(j, k));
                         }
                     }
@@ -115,14 +115,14 @@ namespace Impulse {
                         continue;
                     }
 
-                    for (T_Size j = 0; j < layer->W.rows(); j++) {
-                        for (T_Size k = 0; k < layer->W.cols(); k++) {
+                    for (T_Size j = 0; j < layer->W.n_rows; j++) {
+                        for (T_Size k = 0; k < layer->W.n_cols; k++) {
                             layer->W(j, k) = theta(t++);
                         }
                     }
 
-                    for (T_Size j = 0; j < layer->b.rows(); j++) {
-                        for (T_Size k = 0; k < layer->b.cols(); k++) {
+                    for (T_Size j = 0; j < layer->b.n_rows; j++) {
+                        for (T_Size k = 0; k < layer->b.n_cols; k++) {
                             layer->b(j, k) = theta(t++);
                         }
                     }
