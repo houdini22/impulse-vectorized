@@ -13,8 +13,8 @@ namespace Impulse {
             }
 
             Math::T_Matrix Purelin::derivative() {
-                Math::T_Matrix d(this->Z.n_rows, this->Z.n_cols);
-                d.ones();
+                Math::T_Matrix d = Math::Matrix::create(Math::Matrix::rows(this->Z), Math::Matrix::cols(this->Z));
+                Math::Matrix::fill(d, 1.0);
                 return d;
             }
 
@@ -23,11 +23,8 @@ namespace Impulse {
             }
 
             double Purelin::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
-                Math::T_Matrix loss = predictions - output;
-                loss = loss.for_each([](arma::mat::elem_type& x) {
-                    x = pow(x, 2.0);
-                });
-                return arma::sum(arma::sum(loss));
+                Math::T_Matrix loss = Math::Matrix::pow(Math::Matrix::subtract(predictions, output), 2.0);
+                return Math::Matrix::sum(loss);
             }
 
             double Purelin::error(T_Size m) {

@@ -10,15 +10,15 @@ namespace Impulse {
 
             void Abstract1D::configure() {
                 // initialize weights
-                this->W = Math::Matrix::resize(this->W, this->height, this->width);
-                this->W = Math::Matrix::fillRandom(this->W, this->width);
+                Math::Matrix::resize(this->W, this->height, this->width);
+                Math::Matrix::fillRandom(this->W, this->width);
 
                 // initialize bias
-                this->b = Math::Matrix::resize(this->b, this->height, 1);
-                this->b = Math::Matrix::fillRandom(this->b, this->width);
+                Math::Matrix::resize(this->b, this->height, 1);
+                Math::Matrix::fillRandom(this->b, this->width);
 
-                this->gW = Math::Matrix::resize(this->W, this->height, this->width);
-                this->gb = Math::Matrix::resize(this->b, this->height, 1);
+                Math::Matrix::resize(this->W, this->height, this->width);
+                Math::Matrix::resize(this->b, this->height, 1);
             }
 
             bool Abstract1D::is1D() {

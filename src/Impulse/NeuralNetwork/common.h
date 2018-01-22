@@ -7,7 +7,7 @@ namespace Impulse {
 
     namespace NeuralNetwork {
 
-        typedef unsigned int T_Size;
+        typedef unsigned long long T_Size;
         typedef std::string T_String;
 
         typedef struct {

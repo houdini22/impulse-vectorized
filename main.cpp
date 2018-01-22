@@ -1,13 +1,4 @@
-#define EIGEN_USE_BLAS
-#define EIGEN_USE_THREADS
-/*
-#define EIGEN_USE_MKL_ALL
-#define EIGEN_USE_THREADS
-#define MKL_LP64
-#define EIGEN_USE_BLAS
-#define EIGEN_USE_GPU
-#define EIGEN_USE_SYCL
-*/
+#define ARMA_DONT_USE_WRAPPER
 
 #include <iostream>
 #include <cstdlib>
@@ -19,8 +10,6 @@
 #include <ctime>
 #include <experimental/filesystem>
 #include <boost/filesystem.hpp>
-#include <eigen3/Eigen/Core>
-#include <eigen3/Eigen/Dense>
 
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/highgui/highgui.hpp"

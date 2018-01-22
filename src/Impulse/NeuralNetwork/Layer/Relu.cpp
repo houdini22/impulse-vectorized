@@ -9,11 +9,11 @@ namespace Impulse {
             Relu::Relu() : Abstract1D() {};
 
             Math::T_Matrix Relu::activation(Math::T_Matrix m) {
-                return ActivationFunction::reluActivation(m);
+                return ActivationFunction::relu(m);
             }
 
             Math::T_Matrix Relu::derivative() {
-                return Derivative::reluDerivative(this->A);
+                return Derivative::relu(this->A);
             }
 
             const T_String Relu::getType() {

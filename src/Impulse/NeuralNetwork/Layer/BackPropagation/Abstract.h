@@ -28,10 +28,7 @@ namespace Impulse {
                 public:
                     Abstract(Layer::LayerPointer layer, Layer::LayerPointer previousLayer);
 
-                    virtual Math::T_Matrix propagate(const Math::T_Matrix &input,
-                                                     T_Size numberOfExamples,
-                                                     double regularization,
-                                                     const Math::T_Matrix &delta) = 0;
+                    virtual Math::T_Matrix propagate(const Math::T_Matrix &input, T_Size numberOfExamples, double regularization, const Math::T_Matrix &delta) = 0;
                 };
             }
         }

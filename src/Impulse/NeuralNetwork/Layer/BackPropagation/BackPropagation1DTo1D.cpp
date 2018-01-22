@@ -15,19 +15,17 @@ namespace Impulse {
                                                                 double regularization,
                                                                 const Math::T_Matrix &sigma) {
 
-                    Math::T_Matrix previousActivations =
-                            this->previousLayer == nullptr ? input : this->previousLayer->A;
+                    Math::T_Matrix previousActivations = this->previousLayer == nullptr ? input : this->previousLayer->A;
+                    Math::T_Matrix delta = Math::Matrix::multiply(sigma, Math::Matrix::conjugate(Math::Matrix::transpose(previousActivations)));
 
-                    Math::T_Matrix delta = sigma * arma::conj(previousActivations.t());
-
-                    this->layer->gW = delta / numberOfExamples + (regularization / numberOfExamples * this->layer->W);
-                    this->layer->gb = arma::sum(sigma, 1) / numberOfExamples;
+                    this->layer->gW = (delta / numberOfExamples) + (regularization / numberOfExamples * this->layer->W);
+                    this->layer->gb = Math::Matrix::rowwiseSum(sigma) / numberOfExamples;
 
                     if (this->previousLayer != nullptr) {
-                        Math::T_Matrix tmp1 = this->layer->W.t() * sigma;
+                        Math::T_Matrix tmp1 = Math::Matrix::multiply(Math::Matrix::transpose(this->layer->W), sigma);
                         Math::T_Matrix tmp2 = this->previousLayer->derivative();
 
-                        return tmp1 % tmp2;
+                        return Math::Matrix::elementWiseMultiply(tmp1, tmp2);
                     }
                     return Math::T_Matrix(); // return empty - this is first layer
                 }

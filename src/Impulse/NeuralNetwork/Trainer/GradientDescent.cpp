@@ -29,8 +29,8 @@ namespace Impulse {
                             continue;
                         }
 
-                        layer->W = layer->W - learningRate * (layer->gW);
-                        layer->b = layer->b - learningRate * (layer->gb);
+                        layer->W = Math::Matrix::subtract(layer->W, layer->gW * learningRate);
+                        layer->b = Math::Matrix::subtract(layer->b, layer->b * learningRate);
                     }
 
                     Trainer::CostGradientResult currentResult = this->cost(dataSet);

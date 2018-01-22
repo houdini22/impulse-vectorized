@@ -30,7 +30,7 @@ namespace Impulse {
 
             Math::T_Matrix MaxPool::forward(const Math::T_Matrix &input) {
                 this->Z = input;
-                Math::T_Matrix result(this->getOutputWidth() * this->getOutputHeight() * this->getOutputDepth(), input.n_cols);
+                Math::T_Matrix result = Math::Matrix::create(this->getOutputWidth() * this->getOutputHeight() * this->getOutputDepth(), Math::Matrix::cols(input));
 
 #pragma omp parallel
 #pragma omp for

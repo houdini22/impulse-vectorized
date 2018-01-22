@@ -24,15 +24,14 @@ namespace Impulse {
                     int inputHeight = previousLayer->getHeight();
                     int inputDepth = previousLayer->getDepth();
 
-                    Math::T_Matrix tmpResult((inputWidth + 2 * padding) * (inputHeight + 2 * padding) * inputDepth, numberOfExamples);
-                    tmpResult.zeros();
+                    Math::T_Matrix tmpResult = Math::Matrix::create((inputWidth + 2 * padding) * (inputHeight + 2 * padding) * inputDepth, numberOfExamples);
+                    Math::Matrix::fill(tmpResult, 0.0);
 
-                    Math::T_Matrix result(inputWidth * inputHeight * inputDepth, numberOfExamples);
-
+                    Math::T_Matrix result = Math::Matrix::create(inputWidth * inputHeight * inputDepth, numberOfExamples);
                     Math::T_Matrix aPrev = previousLayer->derivative();
 
-                    previousLayer->gW.zeros();
-                    previousLayer->gb.zeros();
+                    Math::Matrix::fill(previousLayer->gW, 0.0);
+                    Math::Matrix::fill(previousLayer->gb, 0.0);
 
 #pragma omp parallel
 #pragma omp for
@@ -41,9 +40,7 @@ namespace Impulse {
                             for (int h = 0; h < outputHeight; h++) {
                                 for (int w = 0; w < outputWidth; w++) {
                                     int vertStart = stride * h;
-                                    int vertEnd = vertStart + filterSize;
                                     int horizStart = stride * w;
-                                    int horizEnd = horizStart + filterSize;
 
                                     // filter loop
                                     for (int d = 0; d < inputDepth; d++) {
@@ -81,7 +78,8 @@ namespace Impulse {
                                 for (int h = -padding, y = 0; h < inputHeight + padding; h++, y++) {
                                     for (int w = -padding, x = 0; w < inputWidth + padding; w++, x++) {
                                         if (w >= 0 && h >= 0 && w < inputWidth && h < inputHeight) {
-                                            result((c * inputWidth * inputHeight) + (h * inputWidth) + w, m) = tmpResult((c * (inputWidth + 2 * padding) * (inputHeight + 2 * padding)) + (y * (inputWidth + 2 * padding)) + x, m);
+                                            result((c * inputWidth * inputHeight) + (h * inputWidth) + w, m) =
+                                                    tmpResult((c * (inputWidth + 2 * padding) * (inputHeight + 2 * padding)) + (y * (inputWidth + 2 * padding)) + x, m);
                                         }
                                     }
                                 }

@@ -9,14 +9,14 @@ namespace Impulse {
             Conv::Conv() : Abstract3D() {}
 
             void Conv::configure() {
-                this->W = Math::Matrix::resize(this->W, this->numFilters, this->filterSize * this->filterSize * this->depth);
-                this->W = Math::Matrix::fillRandom(this->W, this->width * this->height * this->depth);
+                Math::Matrix::resize(this->W, this->numFilters, this->filterSize * this->filterSize * this->depth);
+                Math::Matrix::fillRandom(this->W, this->width * this->height * this->depth);
 
-                this->b = Math::Matrix::resize(this->b, this->numFilters, 1);
-                this->b = Math::Matrix::fill(this->b, 0.01);
+                Math::Matrix::resize(this->b, this->numFilters, 1);
+                Math::Matrix::fill(this->b, 0.01);
 
-                this->gW = Math::Matrix::resize(this->gW, this->numFilters, this->filterSize * this->filterSize * this->depth);
-                this->gb = Math::Matrix::resize(this->gb, this->numFilters, 1);
+                Math::Matrix::resize(this->gW, this->numFilters, this->filterSize * this->filterSize * this->depth);
+                Math::Matrix::resize(this->gb, this->numFilters, 1);
             }
 
             Math::T_Matrix Conv::forward(const Math::T_Matrix &input) {
@@ -89,11 +89,11 @@ namespace Impulse {
             }
 
             Math::T_Matrix Conv::activation(Math::T_Matrix m) {
-                return ActivationFunction::reluActivation(m);
+                return ActivationFunction::relu(m);
             }
 
             Math::T_Matrix Conv::derivative() {
-                return Derivative::reluDerivative(this->A);
+                return Derivative::relu(this->A);
             }
 
             const T_String Conv::getType() {

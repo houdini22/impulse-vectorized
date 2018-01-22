@@ -13,14 +13,13 @@ namespace Impulse {
                 Math::T_Matrix BackPropagationToMaxPool::propagate(const Math::T_Matrix &input, T_Size numberOfExamples, double regularization, const Math::T_Matrix &sigma) {
 
                     auto *prevLayer = (Layer::MaxPool *) this->previousLayer.get();
-                    Math::T_Matrix result(prevLayer->Z.n_rows, prevLayer->Z.n_cols);
-                    result.zeros();
+                    Math::T_Matrix result = Math::Matrix::create(Math::Matrix::rows(prevLayer->Z), Math::Matrix::cols(prevLayer->Z));
+                    Math::Matrix::fill(result, 0.0);
 
                     T_Size filterSize = prevLayer->getFilterSize();
                     T_Size stride = prevLayer->getStride();
                     T_Size inputWidth = prevLayer->getWidth();
                     T_Size inputHeight = prevLayer->getHeight();
-                    T_Size inputDepth = prevLayer->getDepth();
                     T_Size outputWidth = prevLayer->getOutputWidth();
                     T_Size outputHeight = prevLayer->getOutputHeight();
                     T_Size outputDepth = prevLayer->getOutputDepth();
@@ -32,9 +31,7 @@ namespace Impulse {
                             for (T_Size h = 0; h < outputHeight; h++) {
                                 for (T_Size w = 0; w < outputWidth; w++) {
                                     T_Size vertStart = stride * h;
-                                    T_Size vertEnd = vertStart + filterSize;
                                     T_Size horizStart = stride * w;
-                                    T_Size horizEnd = horizStart + filterSize;
 
                                     double _max = -INFINITY;
                                     T_Size inputOffset = inputHeight * inputWidth * c;

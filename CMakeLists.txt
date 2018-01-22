@@ -101,7 +101,7 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation3DTo1D.cpp
         src/Impulse/NeuralNetwork/Math/Matrix.h
         src/Impulse/NeuralNetwork/Layer/ActivationFunction.h
-        src/Impulse/NeuralNetwork/Layer/Derivative.h)
+        src/Impulse/NeuralNetwork/Layer/Derivative.h src/Impulse/NeuralNetwork/Math/Matrix.cpp)
 
 find_package(Boost 1.57.0 COMPONENTS system filesystem REQUIRED)
 if (BOOST_FOUND)
@@ -151,7 +151,7 @@ include_directories(${ARMADILLO_INCLUDE_DIRS})
 
 find_package(OpenCV REQUIRED)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -m64 -flto -march=native -funroll-loops -mavx -msse4.2 -fopenmp -llapack -lblas -lmlpack -larmadillo -lboost_serialization -lboost_program_options")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -m64 -flto -march=native -funroll-loops -mavx -msse4.2 -fopenmp -llapack -lblas -lmlpack -larmadillo")
 
 add_executable(impulse_vectorized ${SOURCE_FILES})
 

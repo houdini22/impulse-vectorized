@@ -9,10 +9,7 @@ namespace Impulse {
             Softmax::Softmax() : Abstract1D() {}
 
             Math::T_Matrix Softmax::activation(Math::T_Matrix m) {
-                Math::T_Matrix t = Math::Matrix::exp(m);
-                Math::T_Matrix divider = Math::Matrix::replicateRows(Math::Matrix::colwiseSum(t), Math::Matrix::rows(t));
-                Math::T_Matrix result = Math::Matrix::divide(t, divider);
-                return result;
+                return ActivationFunction::softmax(m);
             }
 
             Math::T_Matrix Softmax::derivative() {
