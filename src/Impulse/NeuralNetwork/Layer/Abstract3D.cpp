@@ -18,10 +18,11 @@ namespace Impulse {
 
             void Abstract3D::transition(Layer::LayerPointer prevLayer) {
                 if (prevLayer->is3D()) {
-                    this->setSize(prevLayer->getOutputHeight(),
-                                  prevLayer->getOutputWidth(),
-                                  prevLayer->getOutputDepth());
+                    return this->setSize(prevLayer->getOutputHeight(),
+                                         prevLayer->getOutputWidth(),
+                                         prevLayer->getOutputDepth());
                 }
+                static_assert(true, "Cannot create 3D layer after 1D layer.");
             }
         }
     }

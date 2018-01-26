@@ -13,7 +13,7 @@ namespace Impulse {
             }
 
             Math::T_Matrix Softmax::derivative() {
-                static_assert("No derivative for SOFTMAX layer.");
+                static_assert(true, "No derivative for SOFTMAX layer.");
                 return Math::T_Matrix();
             }
 

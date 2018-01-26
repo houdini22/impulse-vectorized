@@ -9,9 +9,9 @@ namespace Impulse {
 
             namespace BackPropagation {
 
-                class BackPropagation3DTo1D : public Abstract {
+                class BackPropagationEmpty : public Abstract {
                 public:
-                    BackPropagation3DTo1D(Layer::LayerPointer layer, Layer::LayerPointer previousLayer);
+                    BackPropagationEmpty(Layer::LayerPointer layer, Layer::LayerPointer previousLayer);
 
                     Math::T_Matrix propagate(const Math::T_Matrix &input, T_Size numberOfExamples, double regularization, const Math::T_Matrix &sigma);
                 };

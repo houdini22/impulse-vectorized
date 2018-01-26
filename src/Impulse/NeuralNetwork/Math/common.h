@@ -10,7 +10,7 @@ namespace Impulse {
         namespace Math {
 
             typedef arma::Mat<double> T_Matrix;
-            typedef arma::Mat<double> T_Vector;
+            typedef arma::Col<double> T_ColVector;
             typedef std::vector<double> T_RawVector;
 
             /**
@@ -18,14 +18,14 @@ namespace Impulse {
              * @param vec
              * @return
              */
-            Math::T_RawVector vectorToRaw(Math::T_Vector &vec);
+            Math::T_RawVector vectorToRaw(Math::T_ColVector &vec);
 
             /**
              * Translates std::vector to Eigen3 vector.
              * @param vec
              * @return
              */
-            Math::T_Vector rawToVector(Math::T_RawVector &vec);
+            Math::T_ColVector rawToVector(Math::T_RawVector &vec);
         }
     }
 }

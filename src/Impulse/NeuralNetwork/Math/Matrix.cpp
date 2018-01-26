@@ -102,6 +102,11 @@ namespace Impulse {
                 Math::T_Matrix transpose(Math::T_Matrix m) {
                     return m.t();
                 }
+
+                Math::T_ColVector toVector(Math::T_Matrix m) {
+                    Math::T_ColVector tmp2 = arma::vectorise(m);
+                    return tmp2;
+                }
             }
         }
     }

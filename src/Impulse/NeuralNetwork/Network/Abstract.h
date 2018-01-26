@@ -33,11 +33,11 @@ namespace Impulse {
 
                 Layer::LayerPointer getLayer(T_Size key);
 
-                Math::T_Vector getRolledTheta();
+                Math::T_ColVector getRolledTheta();
 
-                Math::T_Vector getRolledGradient();
+                Math::T_ColVector getRolledGradient();
 
-                void setRolledTheta(Math::T_Vector theta);
+                void setRolledTheta(Math::T_ColVector theta);
 
                 double loss(Math::T_Matrix output, Math::T_Matrix predictions);
 

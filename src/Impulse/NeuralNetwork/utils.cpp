@@ -18,8 +18,8 @@ namespace Impulse {
                            ((height - kernel_h + 2 * pad_h) / stride_h + 1);
                 int currentResultCol = 0;
 
-                Math::T_Matrix result(rows, cols);
-                result.zeros();
+                Math::T_Matrix result = Math::Matrix::create(rows, cols);
+                result.fill(0.0);
 
                 for (int boundingY = -pad_h;
                      boundingY + kernel_h <= height + pad_h;
@@ -55,8 +55,8 @@ namespace Impulse {
                 int resultDepth = channels;
                 int currentResultCol = 0;
 
-                Math::T_Matrix result(resultWidth * resultHeight * resultDepth, 1);
-                result.zeros();
+                Math::T_Matrix result = Math::Matrix::create(resultWidth * resultHeight * resultDepth, 1);
+                result.fill(0.0);
 
                 for (int boundingY = 0; boundingY + kernel_h <= height; boundingY += stride_h) {
                     for (int boundingX = 0; boundingX + kernel_w <= width; boundingX += stride_w) {

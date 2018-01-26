@@ -97,8 +97,8 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagationToMaxPool.cpp
         src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagationToConv.cpp
         src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagationToConv.h
-        src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation3DTo1D.h
-        src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation3DTo1D.cpp
+        src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagationEmpty.h
+        src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagationEmpty.cpp
         src/Impulse/NeuralNetwork/Math/Matrix.h
         src/Impulse/NeuralNetwork/Layer/ActivationFunction.h
         src/Impulse/NeuralNetwork/Layer/Derivative.h src/Impulse/NeuralNetwork/Math/Matrix.cpp)

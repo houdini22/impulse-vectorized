@@ -21,12 +21,12 @@ namespace Impulse {
             }
 
             double Relu::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
-                static_assert("No loss function for RELU layer.");
+                static_assert(true, "No loss function for RELU layer.");
                 return 0.0;
             }
 
             double Relu::error(T_Size m) {
-                static_assert("No error function for RELU layer.");
+                static_assert(true, "No error function for RELU layer.");
                 return 0.0;
             }
         }

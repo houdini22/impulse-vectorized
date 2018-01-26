@@ -38,7 +38,7 @@ namespace Impulse {
                 }
             }
 
-            Math::T_Vector weights = this->network.getRolledTheta();
+            Math::T_ColVector weights = this->network.getRolledTheta();
             result["weights"] = Math::vectorToRaw(weights);
 
             std::ofstream out(path);

@@ -47,7 +47,7 @@ namespace Impulse {
                 return this->layers.at(key);
             }
 
-            Math::T_Vector Abstract::getRolledTheta() {
+            Math::T_ColVector Abstract::getRolledTheta() {
                 Math::T_RawVector tmp;
 
                 for (T_Size i = 0; i < this->getSize(); i++) {
@@ -72,11 +72,11 @@ namespace Impulse {
                     }
                 }
 
-                Math::T_Vector result = Math::rawToVector(tmp);
+                Math::T_ColVector result = Math::rawToVector(tmp);
                 return result;
             }
 
-            Math::T_Vector Abstract::getRolledGradient() {
+            Math::T_ColVector Abstract::getRolledGradient() {
                 Math::T_RawVector tmp;
 
                 for (T_Size i = 0; i < this->getSize(); i++) {
@@ -99,11 +99,11 @@ namespace Impulse {
                     }
                 }
 
-                Math::T_Vector result = Math::rawToVector(tmp);
+                Math::T_ColVector result = Math::rawToVector(tmp);
                 return result;
             }
 
-            void Abstract::setRolledTheta(Math::T_Vector theta) {
+            void Abstract::setRolledTheta(Math::T_ColVector theta) {
                 unsigned long t = 0;
 
                 for (T_Size i = 0; i < this->getSize(); i++) {

@@ -45,13 +45,13 @@ namespace Impulse {
             }
 
             Math::T_Matrix MaxPool::activation(Math::T_Matrix m) {
-                static_assert("No activation for MAXPOOL layer.", "");
-                return Math::T_Matrix(); // no activation for maxpool layer
+                static_assert(true, "No activation for MAXPOOL layer.");
+                return Math::T_Matrix();
             }
 
             Math::T_Matrix MaxPool::derivative() {
-                static_assert("No derivative for MAXPOOL layer.", "");
-                return Math::T_Matrix(); // no derivative for maxpool layer
+                static_assert(true, "No derivative for MAXPOOL layer.");
+                return Math::T_Matrix();
             }
 
             const T_String MaxPool::getType() {
@@ -59,12 +59,12 @@ namespace Impulse {
             }
 
             double MaxPool::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
-                static_assert("No loss for MAXPOOL layer.", "");
+                static_assert(true, "No loss for MAXPOOL layer.");
                 return 0.0;
             }
 
             double MaxPool::error(T_Size m) {
-                static_assert("No error for MAXPOOL layer.", "");
+                static_assert(true, "No error for MAXPOOL layer.");
                 return 0.0;
             }
 

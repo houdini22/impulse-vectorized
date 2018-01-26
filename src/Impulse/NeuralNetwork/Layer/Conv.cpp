@@ -36,8 +36,7 @@ namespace Impulse {
                     Math::T_Matrix tmp = Math::Matrix::colwiseAdd(Math::Matrix::multiply(this->W, conv), this->b);
 
                     // rolling to vector
-                    arma::dcolvec tmp2 = arma::vectorise(tmp);
-                    result.col(i) = tmp2;
+                    result.col(i) = Math::Matrix::toVector(tmp);
                 }
 
                 this->A = this->activation(result);
@@ -101,12 +100,12 @@ namespace Impulse {
             }
 
             double Conv::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
-                static_assert("No loss for CONV layer.", "");
+                static_assert(true, "No loss for CONV layer.");
                 return 0.0;
             }
 
             double Conv::error(T_Size m) {
-                static_assert("No error for CONV layer.", "");
+                static_assert(true, "No error for CONV layer.");
                 return 0.0;
             }
         }

@@ -28,11 +28,11 @@ namespace Impulse {
 
             public:
                 Math::T_Matrix W;                                                       // weights
-                Math::T_Vector b;                                                       // bias
+                Math::T_Matrix b;                                                       // bias
                 Math::T_Matrix A;                                                       // output of the layer after activation
                 Math::T_Matrix Z;                                                       // output of the layer before activation
                 Math::T_Matrix gW;                                                      // gradient for weights
-                Math::T_Vector gb;                                                      // gradient for biases
+                Math::T_Matrix gb;                                                      // gradient for biases
                 BackPropagation::BackPropagationPointer backpropagation = nullptr;      // pointer to the backpropagation algorithm
                 /**
                  * Pure constructor

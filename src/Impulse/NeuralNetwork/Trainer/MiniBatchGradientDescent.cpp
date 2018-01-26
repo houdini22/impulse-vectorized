@@ -54,15 +54,13 @@ namespace Impulse {
                     if (this->verbose) {
                         Trainer::CostGradientResult currentResult = this->cost(dataSet);
 
-                        if ((i + 1) % this->verboseStep == 0) {
-                            auto endIteration = Utils::timestamp();
-                            auto duration = Utils::timeDifferenceMS(endIteration, beginIteration);
-                            std::cout << "Iteration: " << (i + 1)
-                                      << " | Cost: " << currentResult.getCost()
-                                      << " | Accuracy: " << currentResult.getAccuracy()
-                                      << "% | Time: " << duration << "ms"
-                                      << std::endl;
-                        }
+                        auto endIteration = Utils::timestamp();
+                        auto duration = Utils::timeDifferenceMS(endIteration, beginIteration);
+                        std::cout << "Iteration: " << (i + 1)
+                                  << " | Cost: " << currentResult.getCost()
+                                  << " | Accuracy: " << currentResult.getAccuracy()
+                                  << "% | Time: " << duration << "ms"
+                                  << std::endl;
                     }
                 }
 
