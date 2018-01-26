@@ -20,6 +20,7 @@
 
 #include "common.h"
 #include "Math/common.h"
+#include "Math/Matrix.h"
 #include "utils.h"
 #include "Trainer/common.h"
 #include "Layer/BackPropagation/Abstract.h"

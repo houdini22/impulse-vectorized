@@ -9,19 +9,14 @@ namespace Impulse {
             Conv::Conv() : Abstract3D() {}
 
             void Conv::configure() {
-                this->W.resize(this->numFilters, this->filterSize * this->filterSize * this->depth);
-                this->W.setRandom();
-                this->W = this->W.unaryExpr([this](const double x) {
-                    return x * sqrt(2.0 / (this->width * this->height * this->depth));
-                });
+                Math::Matrix::resize(this->W, this->numFilters, this->filterSize * this->filterSize * this->depth);
+                Math::Matrix::fillRandom(this->W, this->width * this->height * this->depth);
 
-                this->b.resize(this->numFilters, 1);
-                this->b = this->b.unaryExpr([](const double x) {
-                    return 0.01;
-                });
+                Math::Matrix::resize(this->b, this->numFilters);
+                Math::Matrix::fill(this->b, 0.01);
 
-                this->gW.resize(this->numFilters, this->filterSize * this->filterSize * this->depth);
-                this->gb.resize(this->numFilters, 1);
+                Math::Matrix::resize(this->gW, this->numFilters, this->filterSize * this->filterSize * this->depth);
+                Math::Matrix::resize(this->gb, this->numFilters);
             }
 
             Math::T_Matrix Conv::forward(const Math::T_Matrix &input) {

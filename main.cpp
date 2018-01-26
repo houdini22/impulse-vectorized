@@ -459,7 +459,7 @@ void test_conv_mnist() {
 
 void test_conv_mnist_batch() {
     Impulse::Dataset::DatasetBuilder::CSVBuilder datasetBuilder1(
-            "/home/hud/Projekty/impulse-vectorized/data/mnist_test.csv");
+            "/home/hud/Projekty/impulse-vectorized/data/mnist_test_1000.csv");
     Impulse::Dataset::Dataset dataset = datasetBuilder1.build();
     Impulse::Dataset::DatasetModifier::DatasetSlicer slicer(dataset);
     slicer.addOutputColumn(0);
@@ -523,14 +523,16 @@ void test_conv_mnist_batch() {
     trainer.setLearningRate(0.01);
     trainer.setBatchSize(50);
 
-    std::cout << "ERROR: " << trainer.cost(slicedDataset).getCost() << std::endl;
+    Trainer::CostGradientResult res = trainer.cost(slicedDataset);
+
+    std::cout << "ERROR: " << res.getCost() << ", ACCURACY: " << res.getAccuracy() << std::endl;
 
     trainer.train(slicedDataset);
 
     std::cout << "OUTPUT: " << std::endl << net.forward(slicedDataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
-    Serializer serializer(net);
-    serializer.toJSON("/home/hud/Projekty/impulse-vectorized/saved/conv.json");
+    /*Serializer serializer(net);
+    serializer.toJSON("/home/hud/Projekty/impulse-vectorized/saved/conv.json");*/
 }
 
 /*void test_xor() {
@@ -851,9 +853,9 @@ int main() {
     //test_conv_backward2();
     //test_conv_backward3();
     //test_conv_mnist();
-    //test_conv_mnist_batch();
+    test_conv_mnist_batch();
     //test_restore_mnist();
     //test_cost();
-    test_conv_mnist_batch_restore();
+    //test_conv_mnist_batch_restore();
     return 0;
 }

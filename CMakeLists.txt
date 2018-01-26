@@ -98,7 +98,7 @@ set(SOURCE_FILES
         src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagationToConv.cpp
         src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagationToConv.h
         src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation3DTo1D.h
-        src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation3DTo1D.cpp)
+        src/Impulse/NeuralNetwork/Layer/BackPropagation/BackPropagation3DTo1D.cpp src/Impulse/NeuralNetwork/Math/Matrix.h src/Impulse/NeuralNetwork/Math/Matrix.cpp)
 
 find_package(Boost 1.57.0 COMPONENTS system filesystem REQUIRED)
 if (BOOST_FOUND)
