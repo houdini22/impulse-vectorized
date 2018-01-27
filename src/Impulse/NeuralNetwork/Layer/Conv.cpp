@@ -22,7 +22,7 @@ namespace Impulse {
             Math::T_Matrix Conv::forward(const Math::T_Matrix &input) {
                 this->Z = input;
 
-                Math::T_Matrix result(this->getOutputWidth() * this->getOutputHeight() * this->getOutputDepth(), input.cols());
+                Math::T_Matrix result = Math::Matrix::create(this->getOutputWidth() * this->getOutputHeight() * this->getOutputDepth(), (T_Size) input.cols());
 
 #pragma omp parallel
 #pragma omp for
@@ -33,10 +33,11 @@ namespace Impulse {
                                                         this->padding, this->padding,
                                                         this->stride, this->stride);
 
-                    Math::T_Matrix tmp = ((this->W * conv).colwise() + this->b).transpose(); // transpose for
-                    // rolling to vector
-                    Eigen::Map<Math::T_Vector> tmp2(tmp.data(), tmp.size());
-                    result.col(i) = tmp2;
+                    Math::T_Matrix tmp = Math::Matrix::add(
+                            Math::Matrix::multiply(this->W, conv),
+                            this->b
+                    );
+                    result.col(i) = Math::Matrix::rollToVector(tmp);
                 }
 
                 this->A = this->activation(result);
@@ -87,14 +88,14 @@ namespace Impulse {
                 return this->numFilters;
             }
 
-            Math::T_Matrix Conv::activation(Math::T_Matrix &m) {
-                return m.unaryExpr([](const double x) {
-                    return std::max(0.0, x); // TODO: set it; RELU by default
+            Math::T_Matrix Conv::activation(Math::T_Matrix m) {
+                return Math::Matrix::forEach(m, [](const double x) {
+                    return std::max(0.0, x);
                 });
             }
 
             Math::T_Matrix Conv::derivative() {
-                return this->A.unaryExpr([](const double x) { // TODO: derivative for RELU
+                return Math::Matrix::forEach(this->A, [](const double x) {
                     if (x > 0.0) {
                         return 1.0;
                     }
@@ -107,12 +108,12 @@ namespace Impulse {
             }
 
             double Conv::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
-                static_assert("No loss for CONV layer.", "");
+                static_assert(true, "No loss for CONV layer.");
                 return 0.0;
             }
 
             double Conv::error(T_Size m) {
-                static_assert("No error for CONV layer.", "");
+                static_assert(true, "No error for CONV layer.");
                 return 0.0;
             }
         }

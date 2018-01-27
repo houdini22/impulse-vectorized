@@ -516,7 +516,7 @@ void test_conv_mnist_batch() {
     std::cout << "OUTPUT: " << std::endl << netOutput << std::endl;
 
     Trainer::MiniBatchGradientDescent trainer(net);
-    trainer.setLearningIterations(5);
+    trainer.setLearningIterations(15);
     trainer.setVerboseStep(1);
     trainer.setRegularization(0.0);
     trainer.setVerbose(true);
@@ -531,8 +531,8 @@ void test_conv_mnist_batch() {
 
     std::cout << "OUTPUT: " << std::endl << net.forward(slicedDataset.input.getSampleAt(0)->exportToEigen()) << std::endl;
 
-    /*Serializer serializer(net);
-    serializer.toJSON("/home/hud/Projekty/impulse-vectorized/saved/conv.json");*/
+    Serializer serializer(net);
+    serializer.toJSON("/home/hud/Projekty/impulse-vectorized/saved/conv.json");
 }
 
 /*void test_xor() {
@@ -839,6 +839,7 @@ void test_conv_mnist_batch_restore() {
 }
 
 int main() {
+    srand((unsigned int) time(0));
     //test_logistic();
     //test_softmax_gradient_descent();
     //test_softmax_cg();

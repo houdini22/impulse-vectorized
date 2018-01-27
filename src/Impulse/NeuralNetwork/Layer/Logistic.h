@@ -18,7 +18,7 @@ namespace Impulse {
             public:
                 Logistic();
 
-                Math::T_Matrix activation(Math::T_Matrix &m) override;
+                Math::T_Matrix activation(Math::T_Matrix m) override;
 
                 Math::T_Matrix derivative() override;
 

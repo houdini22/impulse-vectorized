@@ -29,35 +29,35 @@ namespace Impulse {
             }
 
             void FullyConnected::setSize(T_Size value) {
-                static_assert("No setSize for FULLYCONNECTED layer.", "");
+                static_assert(true, "No setSize for FULLYCONNECTED layer.");
             }
 
             void FullyConnected::setFilterSize(T_Size value) {
-                static_assert("No setFilterSize for FULLYCONNECTED layer.", "");
+                static_assert(true, "No setFilterSize for FULLYCONNECTED layer.");
             }
 
             void FullyConnected::setPadding(T_Size value) {
-                static_assert("No setPadding for FULLYCONNECTED layer.", "");
+                static_assert(true, "No setPadding for FULLYCONNECTED layer.");
             }
 
             void FullyConnected::setStride(T_Size value) {
-                static_assert("No setStride for FULLYCONNNECTED layer.", "");
+                static_assert(true, "No setStride for FULLYCONNNECTED layer.");
             }
 
             void FullyConnected::setWidth(T_Size value) {
-                static_assert("No setWidth for FULLYCONNNECTED layer.", "");
+                static_assert(true, "No setWidth for FULLYCONNNECTED layer.");
             }
 
             void FullyConnected::setHeight(T_Size value) {
-                static_assert("No setHeight for FULLYCONNNECTED layer.", "");
+                static_assert(true, "No setHeight for FULLYCONNNECTED layer.");
             }
 
             void FullyConnected::setDepth(T_Size value) {
-                static_assert("No setDepth for FULLYCONNNECTED layer.", "");
+                static_assert(true, "No setDepth for FULLYCONNNECTED layer.");
             }
 
             void FullyConnected::setNumFilters(T_Size value) {
-                static_assert("No setNumFilters for FULLYCONNECTED layer.", "");
+                static_assert(true, "No setNumFilters for FULLYCONNECTED layer.");
             }
         }
     }

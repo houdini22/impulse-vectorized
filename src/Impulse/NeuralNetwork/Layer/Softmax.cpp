@@ -8,7 +8,7 @@ namespace Impulse {
 
             Softmax::Softmax() : Abstract1D() {}
 
-            Math::T_Matrix Softmax::activation(Math::T_Matrix &m) {
+            Math::T_Matrix Softmax::activation(Math::T_Matrix m) {
                 Math::T_Matrix t = m.unaryExpr([](const double x) {
                     return exp(x);
                 });
@@ -18,7 +18,7 @@ namespace Impulse {
             }
 
             Math::T_Matrix Softmax::derivative() {
-                // TODO
+                static_assert(true, "No derivative for SOFTMAX layer.");
                 return Math::T_Matrix();
             }
 
@@ -27,9 +27,13 @@ namespace Impulse {
             }
 
             double Softmax::loss(Math::T_Matrix output, Math::T_Matrix predictions) {
-                Math::T_Matrix loss = (output.array() *
-                                       predictions.unaryExpr([](const double x) { return log(x); }).array());
-                return loss.sum();
+                Math::T_Matrix loss = Math::Matrix::elementWiseMultiply(
+                        output,
+                        Math::Matrix::forEach(predictions, [](const double x) {
+                            return log(x);
+                        })
+                );
+                return Math::Matrix::sum(loss);
             }
 
             double Softmax::error(T_Size m) {
