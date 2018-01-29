@@ -9,10 +9,7 @@ namespace Impulse {
             Abstract::Abstract() = default;
 
             Math::T_Matrix Abstract::forward(const Math::T_Matrix &input) {
-                this->Z = Math::Matrix::add(
-                        Math::Matrix::multiply(this->W, input),
-                        this->b
-                );
+                this->Z = (this->W * input).colwise() + this->b;
                 this->A = this->activation(this->Z);
                 return this->A;
             }

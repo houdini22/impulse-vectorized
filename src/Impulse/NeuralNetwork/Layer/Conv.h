@@ -48,7 +48,7 @@ namespace Impulse {
 
                 T_Size getNumFilters();
 
-                Math::T_Matrix activation(Math::T_Matrix m) override;
+                Math::T_Matrix activation(Math::T_Matrix &m) override;
 
                 Math::T_Matrix derivative() override;
 
