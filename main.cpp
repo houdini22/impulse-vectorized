@@ -49,11 +49,11 @@ Impulse::Dataset::SlicedDataset getDataset() {
 
     return dataset;
 }
-
-/*void test_logistic() {
+/*
+void test_logistic() {
     Impulse::Dataset::SlicedDataset dataset = getDataset();
 
-    Builder builder(400);
+    Impulse::NeuralNetwork::Builder::ClassifierBuilder builder(400);
     builder.createLayer(100, Layer::TYPE_LOGISTIC);
     builder.createLayer(20, Layer::TYPE_LOGISTIC);
     builder.createLayer(10, Layer::TYPE_LOGISTIC);
@@ -80,7 +80,8 @@ Impulse::Dataset::SlicedDataset getDataset() {
 
     Serializer serializer(net);
     serializer.toJSON("/home/hud/projekty/impulse-vectorized/saved/logistic.json");
-}*/
+}
+*/
 
 void test_softmax_gradient_descent() {
 

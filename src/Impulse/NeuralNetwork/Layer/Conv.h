@@ -13,7 +13,7 @@ namespace Impulse {
 
             const T_String TYPE_CONV = "conv";
 
-            class Conv : public Abstract3D {
+            class Conv : public Abstract2D {
             protected:
                 T_Size filterSize = 3;
                 T_Size padding = 1;

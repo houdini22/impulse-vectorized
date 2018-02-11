@@ -6,7 +6,7 @@ namespace Impulse {
 
         namespace Layer {
 
-            MaxPool::MaxPool() : Abstract3D() {}
+            MaxPool::MaxPool() : Abstract2D() {}
 
             void MaxPool::configure() {
                 // empty configure - no parameters.

@@ -13,7 +13,7 @@ namespace Impulse {
             }
 
             void FullyConnected::transition(Layer::LayerPointer prevLayer) {
-                if (prevLayer->is3D()) {
+                if (prevLayer->is2D()) {
                     if (prevLayer->getType() == Layer::TYPE_MAXPOOL) {
                         auto layer = (Layer::MaxPool *) prevLayer.get();
 

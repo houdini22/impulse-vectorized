@@ -83,12 +83,6 @@ namespace Impulse {
                  *
                  * @param value
                  */
-                void setPrevSize(T_Size value);
-
-                /**
-                 *
-                 * @param value
-                 */
                 virtual void setWidth(T_Size value);
 
                 /**
@@ -172,7 +166,7 @@ namespace Impulse {
                  * Is 3d layer
                  * @return
                  */
-                virtual bool is3D() = 0;
+                virtual bool is2D() = 0;
 
                 /**
                  * Transition

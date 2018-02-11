@@ -26,17 +26,15 @@ namespace Impulse {
                 return true;
             }
 
-            bool Abstract1D::is3D() {
+            bool Abstract1D::is2D() {
                 return false;
             }
 
             void Abstract1D::transition(Layer::LayerPointer prevLayer) {
                 if (prevLayer->is1D()) {
-                    this->setPrevSize(prevLayer->getSize());
-                } else if (prevLayer->is3D()) {
-                    this->setPrevSize(prevLayer->getOutputWidth() *
-                                      prevLayer->getOutputHeight() *
-                                      prevLayer->getOutputDepth());
+                    this->setWidth(prevLayer->getSize());
+                } else if (prevLayer->is2D()) {
+                    this->setWidth(prevLayer->getOutputWidth() * prevLayer->getOutputHeight() * prevLayer->getOutputDepth());
                 }
             }
         }

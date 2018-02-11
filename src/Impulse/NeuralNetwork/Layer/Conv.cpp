@@ -6,7 +6,7 @@ namespace Impulse {
 
         namespace Layer {
 
-            Conv::Conv() : Abstract3D() {}
+            Conv::Conv() : Abstract2D() {}
 
             void Conv::configure() {
                 Math::Matrix::resize(this->W, this->numFilters, this->filterSize * this->filterSize * this->depth);

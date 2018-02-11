@@ -24,10 +24,6 @@ namespace Impulse {
                 this->setDepth(depth);
             }
 
-            void Abstract::setPrevSize(T_Size value) {
-                this->setWidth(value);
-            }
-
             void Abstract::setWidth(T_Size value) {
                 this->width = value;
             }

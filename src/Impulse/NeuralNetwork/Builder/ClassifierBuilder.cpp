@@ -12,7 +12,7 @@ namespace Impulse {
             }
 
             void ClassifierBuilder::firstLayerTransition(Layer::LayerPointer layer) {
-                layer->setPrevSize(this->dimension.width);
+                layer->setWidth(this->dimension.width);
             }
         }
     }

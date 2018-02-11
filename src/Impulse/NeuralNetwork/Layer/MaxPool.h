@@ -13,7 +13,7 @@ namespace Impulse {
 
             const T_String TYPE_MAXPOOL = "maxpool";
 
-            class MaxPool : public Abstract3D {
+            class MaxPool : public Abstract2D {
             protected:
                 T_Size filterSize = 2;
                 T_Size stride = 2;
